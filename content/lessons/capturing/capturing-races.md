@@ -50,7 +50,7 @@ solution: G1 (D1 D2) (D2 D1) (A1 D1)
 expect: capture
 hint: The shared liberty is the last one to fill. Which liberty is White's alone?
 prompt: Win the race.
-success: G1. Now White's only liberty is the shared point, and White cannot play there: it would be self-atari with nothing captured. Whatever White does, Black captures. Had Black filled D1 first, White would simply have extended to G1 and run out with three liberties, and Black's own stones would then have needed defending.
+success: G1. Now White's only liberty is the shared point, and White cannot play there: it would be self-atari with nothing captured. Whatever White does, Black captures. Filling D1 first would also have won this particular race, but only because D2 is empty and gives the stone a liberty of its own; when the shared point has no such spare liberty (the corner problems in the previous lesson), filling it first is self-atari. Outside first is the habit that is never wrong.
 ```
 
 <p class="puzzle-intro">3 · Three liberties against two. Black wins even though White is to move next — but play it correctly.</p>

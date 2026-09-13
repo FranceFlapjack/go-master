@@ -17,7 +17,7 @@
     {
       "id": "capturing",
       "title": "Capturing techniques",
-      "blurb": "The ladder, the net, snapback and the throw-in: the handful of shapes that decide whether stones can be caught.",
+      "blurb": "The ladder, the net, snapback, shortage of liberties, cutting, and the capturing race: the handful of shapes that decide whether stones can be caught.",
       "lessons": [
         { "slug": "the-ladder", "title": "The ladder", "ready": true },
         { "slug": "the-net", "title": "The net", "ready": true },

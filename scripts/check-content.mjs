@@ -81,6 +81,22 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
               if (others.length) fail(tag, `expect: ${p.expect}, but ${others.map(m => coordName(m, pos.size)).join(' ')} also work(s)`)
             }
           }
+          if (p.refute) {
+            // `refute: A1 C4` — moves the prose says fail must fail: no immediate capture, and (with a target) the chain escapes / is caught
+            if (!p.target || p.target === 'move') fail(tag, 'refute: needs target: <a stone>')
+            else {
+              const target = parseCoord(p.target, pos.size)
+              for (const m of parseCoords(p.refute, pos.size)) {
+                const h = g.clone(); const r = h.check(m)
+                if (!r.ok) { fail(tag, `refute: ${coordName(m, pos.size)} is not even legal (${r.reason})`); continue }
+                h.play(m)
+                if (r.captures.length && r.captures.includes(target)) { fail(tag, `refute: ${coordName(m, pos.size)} captures the target outright`); continue }
+                const stillThere = !!h.group(target)
+                const bad = p.expect === 'escape' ? (stillThere && !canCapture(h, target).captured) : (stillThere && !canEscape(h, target).escaped)
+                if (bad) fail(tag, `refute: ${coordName(m, pos.size)} works too (the chain at ${p.target} ${p.expect === 'escape' ? 'is safe' : 'cannot escape'})`)
+              }
+            }
+          }
           if (p.expect === 'capture') {
             // the capturing move must be unique: any other legal capture is an ambiguous problem
             const answers = new Set(tree.children.map(c => c.point))

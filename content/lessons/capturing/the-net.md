@@ -41,6 +41,7 @@ white: E5 G2 B8
 solution: F4 (F5 G5 (E4 E3)) (E4 E3 (F5 G5))
 expect: kill
 target: E5
+refute: F5 E4
 hint: A move that does not touch the white stone, on the diagonal below and to the right.
 prompt: Capture the white stone.
 success: F4 is the net. Whichever way White runs, one atari finishes it. An atari at F5 or E4 would have started a ladder into a white stone.

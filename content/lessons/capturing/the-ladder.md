@@ -53,6 +53,7 @@ white: E5 H8
 solution: F5 (E4 E3 (D4 C4 (D3 D2 (C3 B3 (C2 B2 (C1 B1 (D1 E1)))))))
 expect: kill
 target: E5
+refute: E4
 hint: Follow each diagonal to the edge. One of them passes H7.
 prompt: Capture the white stone in a ladder.
 success: F5, and the ladder runs to the bottom edge with a capture at E1. The other ladder would have reached H7 next to the white stone at H8, connected, and escaped with three liberties.
@@ -67,6 +68,7 @@ white: E5 B2
 solution: E4 (F5 G5 (F6 F7 (G6 H6 (G7 G8 (H7 J7 (H8 J8 (H9 G9 (pass J9))))))))
 expect: kill
 target: E5
+refute: F5
 hint: The ladder that goes down and left passes B2. The other one goes up and right.
 prompt: Capture the white stone in a ladder.
 success: E4 starts the ladder that runs up and to the right, to the top edge, where the chain is captured at J9. The white stone at B2 would have broken the other one at C2.
@@ -81,6 +83,7 @@ white: E5 L11
 solution: F5 (E4 E3 (D4 C4 (D3 D2 (C3 B3 (C2 B2 (C1 B1 (D1 E1)))))))
 expect: kill
 target: E5
+refute: E4
 hint: The ladder going up and right would pass through L11 on its way to the edge.
 prompt: Capture the white stone in a ladder.
 success: F5. The ladder down and left ends at the bottom edge; the one up and right would have hit L11. On 19×19 a ladder can cross the whole board, and the breaker can be a stone played thirty moves earlier — which is why strong players place a stone on a ladder's path as a threat.

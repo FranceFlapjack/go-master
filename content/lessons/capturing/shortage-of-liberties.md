@@ -6,7 +6,7 @@ lede: A chain with two liberties cannot afford to fill one of them. Half of all 
 level: 1
 sources:
   - Wikipedia, "Shortage of liberties" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Shortage_of_liberties
-  - Positions composed for this lesson; every line is checked by the site's rules engine (`expect: capture`). These positions involve counter-attacks on the reader's own stones that the capture search does not read, so they were read by hand as well.
+  - Positions composed for this lesson; problems 1 and 2 are checked by the site's capture search (`expect: kill`, with the self-atari move listed under `refute:` and confirmed to fail), problem 3 by the rules engine and by hand.
 ---
 
 ## The idea
@@ -15,40 +15,44 @@ Count liberties on both sides before you attack. When your own chain has only tw
 
 ```board
 size: 9
-black: A1 B1 D2 E2 F2 C3
-white: B2 D1 E1
-highlight: C1 F1
-caption: Black's two stones have liberties A2 and C1; White's have C1 and F1. Black C1 would be atari on White, but it leaves Black's chain with one liberty, and White answers C2. Black F1 is the move: White's only liberty is then C1, and White cannot play there.
+black: A2 A3 B2 B3 D1 E1
+white: B1 C2 C3 B4
+highlight: A1 C1
+caption: Black's four stones have two liberties, A1 and A4. White's stone at B1 has A1 and C1. Black A1 would be atari on it — and self-atari, since Black's chain would be left with A4 alone, and White captures four stones there. Black C1 is the move: White's only liberty is then A1, and White cannot play there.
 ```
 
-Read White's attempt after F1: White C1 has no liberties of its own and captures nothing, because Black still has A2, so it is self-atari; Black C2 takes three stones. If White plays C2 instead, Black C1 takes two.
+Read White's attempt after C1: White A1 has no liberties and captures nothing, because Black still has A4, so it is suicide and illegal. White can play A4 instead, putting Black in atari; Black then captures at A1 and the chain has liberties again.
 
 ## Problems
 
-<p class="puzzle-intro">1 · The position above. Capture the two white stones without losing your own.</p>
+<p class="puzzle-intro">1 · The position above. Capture the white stone without losing your own.</p>
 
 ```try
 size: 9
-black: A1 B1 D2 E2 F2 C3
-white: B2 D1 E1
-solution: F1 (C1 C2) (C2 C1)
-expect: capture
-hint: Which of White's two liberties is not also yours?
-prompt: Capture the white stones on the first line.
-success: F1. The shared liberty at C1 is the last one to fill, and it is White who runs out first.
+black: A2 A3 B2 B3 D1 E1
+white: B1 C2 C3 B4
+solution: C1 (A4 A1) (pass A1)
+expect: kill
+target: B1
+refute: A1
+hint: Which of the white stone's two liberties is not also yours?
+prompt: Capture the white stone at B1.
+success: C1. The shared liberty at A1 is the last one to fill, and it is White who cannot fill it. If White plays A4 to put you in atari, A1 captures and you are safe.
 ```
 
-<p class="puzzle-intro">2 · The same fight in the other corner, turned round. Read it afresh.</p>
+<p class="puzzle-intro">2 · The same fight in the opposite corner, turned round. Read it afresh.</p>
 
 ```try
 size: 9
-black: J9 H9 F8 E8 D8 G7
-white: H8 F9 E9
-solution: D9 (G9 G8) (G8 G9)
-expect: capture
-hint: Your stones have H9's neighbour J8 and the shared point G9. White has G9 and D9.
-prompt: Capture the white stones on the top edge.
-success: D9. Filling the shared liberty first would have been self-atari; the outside liberty leaves White with nothing.
+black: J8 J7 H8 H7 F9 E9
+white: H9 G8 G7 H6
+solution: G9 (J6 J9) (pass J9)
+expect: kill
+target: H9
+refute: J9
+hint: Your chain has J9 and J6; the white stone has J9 and G9.
+prompt: Capture the white stone at H9.
+success: G9. Filling the shared liberty at J9 first would have been self-atari; the outside liberty leaves White with nothing.
 ```
 
 <p class="puzzle-intro">3 · Two white stones, each with two liberties, and one point touches both. A double atari: White cannot save both.</p>

@@ -21,6 +21,7 @@ white: E5 C8 H2
 solution: D6 (D5 C5 (E6 E7)) (E6 E7 (D5 C5))
 expect: kill
 target: E5
+refute: D5 E6
 hint: Both ladders run into a white stone. Which technique needs no ladder?
 prompt: Capture the white stone.
 success: The net at D6. The ataris at D5 and E6 both start ladders that break on the white stones at C8 and H2.
@@ -35,6 +36,7 @@ white: E5 B2
 solution: D5 (E6 E7 (F6 G6 (F7 F8 (G7 H7 (G8 H8 (G9 F9 (H9 J9)))))))
 expect: kill
 target: E5
+refute: E6
 hint: One ladder path passes the white stone at B2; the other reaches the top edge.
 prompt: Capture the white stone.
 success: D5 starts the ladder that runs up and to the right and ends at J9. The other atari would have run into B2.
@@ -66,17 +68,19 @@ prompt: Capture a white stone.
 success: E4 is a double atari. White saves one stone; Black takes the other.
 ```
 
-<p class="puzzle-intro">5 · Capture the two white stones on the first line — without losing your own.</p>
+<p class="puzzle-intro">5 · Capture the white stone at H1 — without losing your own.</p>
 
 ```try
 size: 9
-black: J1 H1 F2 E2 D2 G3
-white: H2 F1 E1
-solution: D1 (G1 G2) (G2 G1)
-expect: capture
+black: J2 J3 H2 H3 F1 E1
+white: H1 G2 G3 H4
+solution: G1 (J4 J1) (pass J1)
+expect: kill
+target: H1
+refute: J1
 hint: Count your own liberties before you atari.
-prompt: Capture the white stones.
-success: D1, the liberty that is White's alone. Playing the shared point G1 first would have been self-atari.
+prompt: Capture the white stone.
+success: G1, the liberty that is White's alone. Playing the shared point J1 first would have been self-atari.
 ```
 
 <p class="puzzle-intro">6 · Your stone is in atari. Save it.</p>
