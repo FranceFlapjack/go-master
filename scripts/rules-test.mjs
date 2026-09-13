@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Rules engine checks: run before touching js/rules/go.js. Exit code 1 on any failure.
 import { Game, BLACK, WHITE, EMPTY, parseCoord, coordName, parseSgfCoord, sgfCoord, starPoints } from '../js/rules/go.js'
+import { canCapture, canEscape } from '../js/rules/capture-search.js'
 
 let fails = 0
 const ok = (cond, msg) => { if (!cond) { fails++; console.log('FAIL', msg) } else console.log('ok  ', msg) }
@@ -75,6 +76,16 @@ for (const [stone, a, b] of [['A1', 'A2', 'B1'], ['J1', 'J2', 'H1'], ['A9', 'A8'
   ok(alive.black === 9 && alive.white === 37 + 7.5, 'a lone white stone inside black\'s area makes the region neutral while it stands')
   const s = g.score([P(g, 'B5')])
   ok(s.black === 45 && s.white === 36 + 7.5, 'removed as dead, the region is black\'s again') }
+// capture search (ladders and nets)
+{ const pos = (size, b, w) => { const g = new Game(size); g.setup({ black: b.split(' ').map(s => parseCoord(s, size)), white: w.split(' ').map(s => parseCoord(s, size)) }); return g }
+  let g = pos(9, 'D5 E6 F4', 'E5'); ok(canCapture(g, P(g, 'E5')).captured, 'a stone with two liberties and a black stone on the diagonal is caught in a ladder')
+  g = pos(9, 'D5 E6 F4 E4', 'E5'); ok(!canEscape(g, P(g, 'E5')).escaped, 'once in the ladder it cannot escape')
+  g = pos(9, 'D5 E6 F4 E4', 'E5 J7'); ok(canEscape(g, P(g, 'E5')).escaped, 'a ladder breaker on the path lets it escape')
+  g = pos(9, 'D5 E6 F4', 'E5 B2 H8'); ok(!canCapture(g, P(g, 'E5')).captured, 'with both ladders broken the stone is safe')
+  g = pos(9, 'D5 E6', 'E5'); ok(!canCapture(g, P(g, 'E5')).captured, 'a lone stone with two liberties in the open cannot be caught')
+  g = pos(9, 'D5 E6 F6 D4', 'E5 B2 H8 G2 B8')
+  const net = canCapture(g, P(g, 'E5')); ok(net.captured && coordName(net.line[0], 9) === 'F4', `both ladders broken, the net at F4 still catches it (found ${net.line.map(p => coordName(p, 9)).join(' ')})`)
+  for (const m of ['F5', 'E4']) { const h = g.clone(); h.play(P(h, m)); ok(canEscape(h, P(h, 'E5')).escaped, `…while the atari at ${m} lets it escape`) } }
 // legal moves count on an empty board
 ok(g9().legalMoves().length === 81, '81 legal moves on an empty 9×9')
 

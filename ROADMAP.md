@@ -1,13 +1,13 @@
 # Roadmap
 
-Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. Next: the owner's comments on the draft, then *Capturing techniques*.
+Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. *Capturing techniques* complete the same day (7 lessons, 25 problems) with a ladder/net reader as the checker's oracle. Next: the owner's comments, then *Life and death*.
 
 ## Decisions taken in the draft (say so if you want them changed)
 
 - **Scoring: area (Chinese), komi 7.5.** No prisoner bookkeeping, no agreement needed beyond "which stones are dead", so a beginner can count any finished game. Japanese territory counting is explained in the *counting* lesson as what they will meet on some servers; the winner is the same in all but rare cases.
 - **Ko: simple ko only.** A stone that captured exactly one stone and now has exactly one liberty may not be retaken at once. Positional superko (no repetition of any earlier whole-board position) is a later addition to `js/rules/go.js`; triple ko is rare enough to wait.
 - **SGF, tree-native.** The parser keeps every variation; the viewer walks the main line for now. Puzzles are trees from day one (`solution: E3 (D2 E2) (C2 D1)`), because tsumego are trees.
-- **No engine oracle.** Puzzles are authored and read, not engine-verified (see CLAUDE.md). This is the one place where the Chess Master method does not transfer.
+- **Narrow oracles, not an engine.** The scorer checks counted diagrams; a small ladder/net reader checks kill/escape problems; everything else is read by hand (see CLAUDE.md, Oracles). This is the one place where the Chess Master method does not transfer.
 - **Coordinates: `A1`…`T19`, no I.** What servers and books use. SGF's `aa` style stays inside SGF files.
 - **Board sizes are the beginner's ladder:** *First steps* is 9×9 throughout, then 13×13 appears in the capturing and life-and-death tracks, 19×19 from the opening track on.
 
@@ -30,7 +30,7 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete th
 ## Phase 1 — Content
 Write the tracks in this order, one branch each, running both checkers on every commit:
 1. **First steps** (6) — **done 2026-09-13**: board and stones, liberties and capture (7 problems), ko (3, incl. a threat-then-retake tree with a `ko:` set-up point), two eyes (4), how a game ends and is counted (2, every diagram's count asserted by the scorer), reading a game record (AlphaGo – Lee Sedol game 4, record from A. Brouwer's archive checked against Wikipedia; comments ours).
-2. **Capturing techniques** (7): ladder (incl. ladder breakers and reading a ladder to the edge), net, snapback, throw-in, shortage of liberties, connecting and cutting, capturing races. 9×9 and 13×13.
+2. **Capturing techniques** (7) — **done 2026-09-13**: ladder (4 problems incl. a 13×13 read and an escape), net (3), snapback (3), shortage of liberties (3), connecting and cutting (3), capturing races (3), and a mixed problem set (6). The planned *throw-in* lesson was dropped: every beginner-level throw-in shape collapses into a snapback or a ko, so the throw-in is mentioned inside *races* and left for the endgame track. `js/rules/capture-search.js` (ladders, nets, escapes) is the checker's oracle for this track; races and shortage positions were read by hand.
 3. **Life and death** (6): eye shapes (straight three/four, bent four, the bulky five), false eyes, seki, corner shapes, two problem sets. Classical sources for problems: *Xuanxuan Qijing* (1349) and *Igo Hatsuyōron* (1713) are out of copyright.
 4. **The opening** (6): corners → sides → centre, 4-4 and 3-4, enclosures and approaches, extensions, the 9×9 opening, handicap go. Model games needed: professional records whose SGF comes from a checkable source.
 5. **Joseki** (5): a small set, why each move, when to leave. Kogo's Joseki Dictionary is freely distributable for non-commercial use — check the exact terms before quoting lines from it.

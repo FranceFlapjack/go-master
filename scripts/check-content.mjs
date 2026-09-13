@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url'
 import { parseFrontmatter, parseParams } from '../js/frontmatter.js'
 import { positionFrom } from '../js/position.js'
 import { parseSolution, loadSgf } from '../js/sgf.js'
-import { Game, coordName, parseCoords } from '../js/rules/go.js'
+import { Game, coordName, parseCoords, parseCoord } from '../js/rules/go.js'
+import { canCapture, canEscape } from '../js/rules/capture-search.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const curriculum = JSON.parse(readFileSync(join(root, 'content/curriculum.json'), 'utf8'))
@@ -65,6 +66,21 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
           }
           g.turn = pos.turn
           walk(tree, g, 0)
+          if (p.expect === 'kill' || p.expect === 'escape') {
+            // the capture-search oracle: after the reader's first move the target chain cannot escape (kill) / cannot be caught (escape);
+            // for `kill`, every other first move must fail (uniqueness); for `escape`, only when `unique: true`
+            if (!p.target) { fail(tag, `expect: ${p.expect} needs target: <a stone of the chain>`); continue }
+            // `target: move` means the stone the reader just played (cutting problems)
+            const fixed = p.target === 'move' ? null : parseCoord(p.target, pos.size)
+            if (fixed != null && !g.board[fixed]) fail(tag, `target ${p.target} is empty`)
+            const works = m => { const target = fixed ?? m; const h = g.clone(); h.play(m); if (!h.group(target)) return p.expect === 'kill'; return p.expect === 'kill' ? !canEscape(h, target).escaped : !canCapture(h, target).captured }
+            const answers = new Set(tree.children.map(c => c.point))
+            for (const a of answers) if (!works(a)) fail(tag, `expect: ${p.expect}, but after ${coordName(a, pos.size)} the chain at ${p.target} ${p.expect === 'kill' ? 'can escape' : 'can be captured'}`)
+            if (p.expect === 'kill' || p.unique === 'true') {
+              const others = g.legalMoves().filter(m => !answers.has(m) && works(m))
+              if (others.length) fail(tag, `expect: ${p.expect}, but ${others.map(m => coordName(m, pos.size)).join(' ')} also work(s)`)
+            }
+          }
           if (p.expect === 'capture') {
             // the capturing move must be unique: any other legal capture is an ambiguous problem
             const answers = new Set(tree.children.map(c => c.point))

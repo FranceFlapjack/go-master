@@ -19,13 +19,13 @@
       "title": "Capturing techniques",
       "blurb": "The ladder, the net, snapback and the throw-in: the handful of shapes that decide whether stones can be caught.",
       "lessons": [
-        { "slug": "the-ladder", "title": "The ladder", "ready": false },
-        { "slug": "the-net", "title": "The net", "ready": false },
-        { "slug": "snapback", "title": "Snapback", "ready": false },
-        { "slug": "throw-in", "title": "The throw-in", "ready": false },
-        { "slug": "shortage-of-liberties", "title": "Shortage of liberties", "ready": false },
-        { "slug": "connect-and-cut", "title": "Connecting and cutting", "ready": false },
-        { "slug": "capturing-races", "title": "Capturing races", "ready": false }
+        { "slug": "the-ladder", "title": "The ladder", "ready": true },
+        { "slug": "the-net", "title": "The net", "ready": true },
+        { "slug": "snapback", "title": "Snapback", "ready": true },
+        { "slug": "shortage-of-liberties", "title": "Shortage of liberties", "ready": true },
+        { "slug": "connect-and-cut", "title": "Connecting and cutting", "ready": true },
+        { "slug": "capturing-races", "title": "Capturing races", "ready": true },
+        { "slug": "which-technique", "title": "Which technique? A problem set", "ready": true }
       ]
     },
     {

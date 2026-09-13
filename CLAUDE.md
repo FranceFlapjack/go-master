@@ -27,11 +27,16 @@ Validate before committing:
 node scripts/rules-test.mjs       # the rules engine (run before touching js/rules/go.js)
 node scripts/check-content.mjs    # every lesson: sources, legal positions, legal solution trees
 ```
-**There is no engine oracle for problems.** Chess Master verifies every puzzle against Stockfish; here puzzles are authored. What the checker proves: every position is legal; every solution line is legal and ends on a reader move; with `expect: capture`, the last reader move of every line captures and no *other first move* captures (uniqueness is checked at the root only, not at later reader nodes); with `score:`, our scorer agrees with a diagram's count (`dead:` removed first) — that one **is** a real oracle, use it on every counted diagram. Whether a tsumego's reply is the opponent's best move is caught by reading, not by a machine. Do not claim engine verification of problems.
+**Oracles, and their limits.** Chess Master verifies every puzzle against Stockfish; here we have three narrower oracles, and the checker uses each where a fence asks for it:
+- `score: B+3.5` — our scorer agrees with a diagram's count (`dead:` removed first). Use it on every counted diagram.
+- `expect: kill` / `expect: escape` with `target: <stone>` (or `target: move`, the stone just played) — `js/rules/capture-search.js`, a ladder/net reader: after the reader's first move the target chain cannot escape / cannot be caught, and (`kill` always, `escape` with `unique: true`) no other first move works. Scope: the attacker only plays ataris plus at most one quiet move (the net); the defender extends or captures adjacent stones in atari; three liberties is safety. It does **not** read capturing races, counter-attacks on the reader's other chains, or eyes — for those use `expect: capture` and read by hand.
+- `expect: capture` — every solution line is legal, ends on a reader move that captures, and no *other first move* captures (uniqueness at the root only).
+Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound — is caught by reading, not by a machine. Say which oracle checked a lesson in its `sources:`, and never claim more.
 
 ## Layout
 
 - `index.html` shell; `js/app.js` router + sidebar + home; `js/lesson.js` Markdown → components; `js/frontmatter.js` and `js/position.js` are the pure helpers shared with `scripts/`.
+- `js/rules/capture-search.js` the ladder/net reader used only by the checker (see Oracles). `scripts/rules-test.mjs` covers it.
 - `js/rules/go.js` the rules: board, chains and liberties, capture, suicide, **simple ko** (positional superko later), passes, **area (Chinese) scoring with komi 7.5** and a dead-stone list. Coordinates: `A1`…`T19` (no I) in lessons, `aa`…`ss` in SGF.
 - `js/goban.js` is the single board component (SVG goban, stones, marks, labels, ghost stone, input, animation, sounds). Every board in the app goes through it. Everything visual is in `css/app.css` under "the goban itself" and tokens in `css/tokens.css`.
 - `js/sgf.js` SGF parser (keeps the whole tree) + `loadSgf` (main line with positions) + `parseSolution` (the puzzle tree syntax). `js/sgf-viewer.js` annotated game viewer over the main line with keyboard nav; branch navigation is on the roadmap.
@@ -51,7 +56,8 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
     white: D5                start: 0                white: …
     labels: D4=a, E5=b                               turn: b            (default black)
     tri: … / sq: … / x: …                             solution: E3 (D2 E2) (C2 D1)
-    highlight: F5                                    expect: capture    (checker: the last reader move captures, and no other move does)
+    highlight: F5                                    expect: capture | kill | escape   (see Oracles)
+                                                     target: E5 | move   unique: true
     score: B+3.5   (checker: our scorer agrees)        ko: F5             (a pending ko point)
     territory: true  (paint the counted areas; dead: … removes stones first)
     last: E5                                         hint: … / prompt: … / success: …
