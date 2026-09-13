@@ -22,6 +22,7 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13.** Rules engine (33 checks), SVG
 - `scripts/check-content.mjs` validates positions and solution trees.
 
 ### Still to do in Phase 0
+- Paint the counted territory on the play board at game end: `score()` already returns an `owner` array per point; showing it is how a beginner learns to count.
 - Variation navigation in the viewer (branches as a small list under the move; keyboard `v`).
 - Handicap placement helper (`HA[]` + free placement) in the rules and the play page.
 - Mobile polish; a dark mode is not planned until Chess Master has one.

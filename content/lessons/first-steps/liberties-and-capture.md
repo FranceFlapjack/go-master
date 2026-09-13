@@ -28,7 +28,7 @@ size: 9
 black: D5 E5
 white: D3 E3 D2 E2
 labels: C5=a, F5=b, D6=c, E6=d, D4=e, E4=f
-caption: The black chain has six liberties, a to f. The white chain of four has eight.
+caption: The black chain has six liberties, a to f. The white chain of four has eight, and two of them, e and f, are liberties of both chains at once.
 ```
 
 ## Capture

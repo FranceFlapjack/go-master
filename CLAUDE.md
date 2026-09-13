@@ -38,7 +38,7 @@ node scripts/check-content.mjs    # every lesson: sources, legal positions, lega
 - `js/exercise.js` "try it" blocks; `js/progress.js` localStorage progress (lessons, tries, games, and stones played per day); `js/activity-grid.js` the 12-week grid shaded by stones played per day (owner's rule from Chess Master: moves, not points; no streak).
 - `js/play.js` two players on one screen: 9/13/19, pass, undo, resign; after two passes click dead stones and read the area count.
 - `content/curriculum.json` fixes track and lesson order; a lesson shows only when `"ready": true` and `content/lessons/<track>/<slug>.md` exists.
-- `content/games/*.sgf` full games with `C[]` comments; shared between lessons.
+- `content/games/*.sgf` full games with `C[]` comments; shared between lessons. Files starting with `_` are composed fixtures for the checker and the viewer, never game records; the checker loads every `.sgf` here.
 - **localStorage keys are prefixed `go-master.`** and nothing is ever adopted from another prefix: Chess Master will share the github.io origin, so a key collision would corrupt its progress.
 
 ## Lesson format
@@ -51,7 +51,8 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
     white: D5                start: 0                white: …
     labels: D4=a, E5=b                               turn: b            (default black)
     tri: … / sq: … / x: …                             solution: E3 (D2 E2) (C2 D1)
-    highlight: F5                                    expect: capture    (optional check)
+    highlight: F5                                    expect: capture    (checker: the last reader move captures, and no other move does)
+    score: B+3.5   (checker: our scorer agrees)
     last: E5                                         hint: … / prompt: … / success: …
     caption: …
     interactive: true

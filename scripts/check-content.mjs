@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Content checker: every ready lesson exists, has sources, and every board / try / sgf fence is a legal position
 // with a legal solution tree. Run before every commit. Exit code 1 on any failure.
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseFrontmatter, parseParams } from '../js/frontmatter.js'
@@ -37,6 +37,11 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
         g.setup({ black: pos.black, white: pos.white })
         const both = pos.black.filter(x => pos.white.includes(x))
         if (both.length) fail(tag, `point ${coordName(both[0], pos.size)} is both black and white`)
+        if (p.score) {
+          // `score: B+3.5` / `W+6.5` / `jigo` (area count, komi 7.5, no dead stones): the caption's arithmetic, checked by our scorer
+          const s = g.score(), got = s.winner === 1 ? `B+${s.margin}` : s.winner === 2 ? `W+${-s.margin}` : 'jigo'
+          if (got !== p.score) fail(tag, `score: ${p.score} but the scorer says ${got} (black ${s.black}, white ${s.white})`)
+        }
         if (kind === 'try') {
           tries++
           if (!p.solution) { fail(tag, 'no solution'); continue }
@@ -59,6 +64,12 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
           }
           g.turn = pos.turn
           walk(tree, g, 0)
+          if (p.expect === 'capture') {
+            // the capturing move must be unique: any other legal capture is an ambiguous problem
+            const answers = new Set(tree.children.map(c => c.point))
+            const others = g.legalMoves().filter(m => !answers.has(m) && g.check(m).captures.length)
+            if (others.length) fail(tag, `expect: capture, but ${others.map(m => coordName(m, pos.size)).join(' ')} also capture(s)`)
+          }
         }
       } else if (kind === 'sgf') {
         const text = p.file ? readFileSync(join(root, 'content/games', p.file), 'utf8') : p.rest
@@ -68,5 +79,10 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
     } catch (e) { fail(tag, e.message) }
   }
 }
-console.log(`${lessons} lessons, ${fences} fences, ${tries} problems checked; ${problems} problem(s)`)
+let sgfs = 0
+for (const f of readdirSync(join(root, 'content/games')).filter(f => f.endsWith('.sgf'))) {
+  sgfs++
+  try { const g = loadSgf(readFileSync(join(root, 'content/games', f), 'utf8')); if (!g.moves.some(x => x.color)) fail(f, 'no moves') } catch (e) { fail(f, e.message) }
+}
+console.log(`${sgfs} game records; ${lessons} lessons, ${fences} fences, ${tries} problems checked; ${problems} problem(s)`)
 process.exit(problems ? 1 : 0)

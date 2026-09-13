@@ -1,0 +1,7 @@
+(;GM[1]FF[4]CA[UTF-8]SZ[9]KM[7.5]
+PB[Fixture Black]PW[Fixture White]RE[B+R]EV[Composed fixture for the viewer; not a game record]
+SO[Composed for scripts/check-content.mjs and the viewer's file: path. Never cite this in a lesson.]
+C[Root comment: a short composed sequence with one variation, so the parser, the main line and the viewer are all exercised.]
+;B[ee]C[Centre.];W[de];B[ed];W[df];B[ef]
+(;W[cc]C[The main line takes the first variation.];B[dd])
+(;W[gg]C[A side branch, kept in the tree.]))

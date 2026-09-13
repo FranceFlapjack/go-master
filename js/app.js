@@ -27,6 +27,7 @@ async function boot() {
   document.addEventListener('pointerdown', () => sound.unlock(), { once: true })
   progress.onChange(() => renderSidebar())
   window.addEventListener('hashchange', route)
+  window.addEventListener('resize', () => { if (innerWidth > 760) toggleSidebar(false) }) // an `open` left over from the narrow layout is invisible on desktop and must not survive back into it
   route()
 }
 

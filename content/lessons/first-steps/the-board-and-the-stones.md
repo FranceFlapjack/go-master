@@ -40,6 +40,7 @@ The point of the game is not to capture stones. It is to **surround territory**:
 size: 9
 black: A4 B4 C4 D4 E4 E5 E6 F6 G6 H6 J6
 white: A5 B5 C5 D5 D6 D7 E7 F7 G7 H7 J7
+score: B+3.5
 caption: A finished 9×9 game, walls only. Black surrounds the 35 empty points below the wall and has 11 stones, 46 in all. White surrounds 24 and has 11 stones, 35, plus 7.5 komi is 42.5. Black wins by 3.5.
 ```
 
