@@ -7,7 +7,7 @@ level: 1
 sources:
   - Wikipedia, "Net (Go)" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Net_(Go)
   - Arthur Smith, The Game of Go (1908), chapter III, on "geta" — public domain, https://www.gutenberg.org/ebooks/66632
-  - Positions composed for this lesson; every net is checked by the site's capture search (`expect: kill`), which also confirms that the ataris fail.
+  - Positions composed for this lesson; every net is checked by the site's capture search (`expect: kill`), which in problem 1 also confirms that both ataris fail.
 ---
 
 ## The idea

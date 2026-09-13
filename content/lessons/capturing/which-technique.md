@@ -68,19 +68,21 @@ prompt: Capture a white stone.
 success: E4 is a double atari. White saves one stone; Black takes the other.
 ```
 
-<p class="puzzle-intro">5 · Capture the white stone at H1 — without losing your own.</p>
+<p class="puzzle-intro">5 · Capture the three white stones on the first line — without losing your own.</p>
 
 ```try
 size: 9
-black: J2 J3 H2 H3 F1 E1
-white: H1 G2 G3 H4
-solution: G1 (J4 J1) (pass J1)
+black: J2 H2 H1 G2 F2 E2 D2 D3 B1 B2 B3
+white: J3 H3 G3 F3 E3 D4 C2 C3 C4 B4 A4 F1 E1 D1
+solution: C1 (pass G1)
 expect: kill
-target: H1
-refute: J1
+target: F1
+quiet: 0
+refute: G1
+safe: J2
 hint: Count your own liberties before you atari.
-prompt: Capture the white stone.
-success: G1, the liberty that is White's alone. Playing the shared point J1 first would have been self-atari.
+prompt: Capture the white stones.
+success: C1, the liberty that is White's alone. Playing the shared point G1 first would have been self-atari.
 ```
 
 <p class="puzzle-intro">6 · Your stone is in atari. Save it.</p>

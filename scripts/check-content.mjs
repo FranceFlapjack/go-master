@@ -73,7 +73,8 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
             // `target: move` means the stone the reader just played (cutting problems)
             const fixed = p.target === 'move' ? null : parseCoord(p.target, pos.size)
             if (fixed != null && !g.board[fixed]) fail(tag, `target ${p.target} is empty`)
-            const works = m => { const target = fixed ?? m; const h = g.clone(); h.play(m); if (!h.group(target)) return p.expect === 'kill'; return p.expect === 'kill' ? !canEscape(h, target).escaped : !canCapture(h, target).captured }
+            const so = p.quiet != null ? { quiet: +p.quiet } : {} // `quiet: 0` — the attacker may only atari (no net move), for problems whose answer is a direct atari
+            const works = m => { const target = fixed ?? m; const h = g.clone(); h.play(m); if (!h.group(target)) return p.expect === 'kill'; return p.expect === 'kill' ? !canEscape(h, target, so).escaped : !canCapture(h, target, so).captured }
             const answers = new Set(tree.children.map(c => c.point))
             for (const a of answers) if (!works(a)) fail(tag, `expect: ${p.expect}, but after ${coordName(a, pos.size)} the chain at ${p.target} ${p.expect === 'kill' ? 'can escape' : 'can be captured'}`)
             if (p.expect === 'kill' || p.unique === 'true') {
@@ -92,10 +93,25 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
                 h.play(m)
                 if (r.captures.length && r.captures.includes(target)) { fail(tag, `refute: ${coordName(m, pos.size)} captures the target outright`); continue }
                 const stillThere = !!h.group(target)
-                const bad = p.expect === 'escape' ? (stillThere && !canCapture(h, target).captured) : (stillThere && !canEscape(h, target).escaped)
+                const so = p.quiet != null ? { quiet: +p.quiet } : {}
+                const bad = p.expect === 'escape' ? (stillThere && !canCapture(h, target, so).captured) : (stillThere && !canEscape(h, target, so).escaped)
                 if (bad) fail(tag, `refute: ${coordName(m, pos.size)} works too (the chain at ${p.target} ${p.expect === 'escape' ? 'is safe' : 'cannot escape'})`)
               }
             }
+          }
+          if (p.safe) {
+            // `safe: A2` — after every reader move of every line, the reader's chain at A2 must not be capturable (the oracle aimed at our own stones)
+            const safePt = parseCoord(p.safe, pos.size)
+            if (!g.board[safePt]) fail(tag, `safe: ${p.safe} is empty`)
+            const walk = (node, game, depth) => {
+              for (const c of node.children) {
+                const gg = game.clone(); if (!gg.check(c.point).ok) continue; gg.play(c.point)
+                if (depth % 2 === 0 && gg.group(safePt) && canCapture(gg, safePt).captured) fail(tag, `safe: after ${coordName(c.point, pos.size)} the chain at ${p.safe} can be captured`)
+                if (depth % 2 === 0 && !gg.group(safePt)) fail(tag, `safe: ${p.safe} is gone after ${coordName(c.point, pos.size)}`)
+                walk(c, gg, depth + 1)
+              }
+            }
+            const g2 = g.clone(); g2.turn = pos.turn; walk(tree, g2, 0)
           }
           if (p.expect === 'capture') {
             // the capturing move must be unique: any other legal capture is an ambiguous problem

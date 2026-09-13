@@ -30,6 +30,7 @@ node scripts/check-content.mjs    # every lesson: sources, legal positions, lega
 **Oracles, and their limits.** Chess Master verifies every puzzle against Stockfish; here we have three narrower oracles, and the checker uses each where a fence asks for it:
 - `score: B+3.5` — our scorer agrees with a diagram's count (`dead:` removed first). Use it on every counted diagram.
 - `expect: kill` / `expect: escape` with `target: <stone>` (or `target: move`, the stone just played) — `js/rules/capture-search.js`, a ladder/net reader: after the reader's first move the target chain cannot escape / cannot be caught, and (`kill` always, `escape` with `unique: true`) no other first move works. Scope: the attacker only plays ataris plus at most one quiet move (the net); the defender extends or captures adjacent stones in atari; three liberties is safety. It does **not** read capturing races, counter-attacks on the reader's other chains, or eyes — for those use `expect: capture` and read by hand.
+- `safe: A2` — after every reader move of every line, the reader's own chain at A2 cannot be captured (the search aimed at our stones). Required wherever the prose says "without losing your own". `quiet: 0` restricts the search to ataris (no net move) for problems whose answer is a direct atari, so preparatory quiet moves do not count as alternative solutions.
 - `refute: A1 E4` (needs `target:`) — the moves the prose says fail must fail under the capture search: no immediate capture of the target, and the chain still escapes (`kill`) / is still caught (`escape`). Use it on every "had you played X instead" sentence.
 - `expect: capture` — every solution line is legal, ends on a reader move that captures, and no *other first move* captures (uniqueness at the root only).
 Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound — is caught by reading, not by a machine. Say which oracle checked a lesson in its `sources:`, and never claim more.
@@ -59,6 +60,7 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
     tri: … / sq: … / x: …                             solution: E3 (D2 E2) (C2 D1)
     highlight: F5                                    expect: capture | kill | escape   (see Oracles)
                                                      target: E5 | move   unique: true   refute: A1 E4
+                                                     safe: A2   quiet: 0
     score: B+3.5   (checker: our scorer agrees)        ko: F5             (a pending ko point)
     territory: true  (paint the counted areas; dead: … removes stones first)
     last: E5                                         hint: … / prompt: … / success: …

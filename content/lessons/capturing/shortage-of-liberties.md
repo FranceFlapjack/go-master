@@ -15,44 +15,48 @@ Count liberties on both sides before you attack. When your own chain has only tw
 
 ```board
 size: 9
-black: A2 A3 B2 B3 D1 E1
-white: B1 C2 C3 B4
-highlight: A1 C1
-caption: Black's four stones have two liberties, A1 and A4. White's stone at B1 has A1 and C1. Black A1 would be atari on it — and self-atari, since Black's chain would be left with A4 alone, and White captures four stones there. Black C1 is the move: White's only liberty is then A1, and White cannot play there.
+black: A2 B2 B1 C2 D2 E2 F2 F3 H1 H2 H3
+white: A3 B3 C3 D3 E3 F4 G2 G3 G4 H4 J4 D1 E1 F1
+highlight: C1 G1
+caption: Black's chain along the second line has two liberties: the eye at A1 and the shared point C1. White's three stones on the first line have C1 and G1. Black C1 would be atari — and self-atari: the chain would be left with A1 alone, and White A1 captures nine stones. Black G1 is the move. White's only liberty is then C1, and White cannot play there.
 ```
 
-Read White's attempt after C1: White A1 has no liberties and captures nothing, because Black still has A4, so it is suicide and illegal. White can play A4 instead, putting Black in atari; Black then captures at A1 and the chain has liberties again.
+Read White's attempt after G1: White C1 has no liberties of its own and captures nothing, because Black still has A1; it is suicide, and illegal. White cannot play A1 either, for the same reason. Had White been first to play, G1 would have connected the three stones to the white group above and saved them; Black's G1 takes that away.
 
 ## Problems
 
-<p class="puzzle-intro">1 · The position above. Capture the white stone without losing your own.</p>
+<p class="puzzle-intro">1 · The position above. Capture the three white stones without losing your own.</p>
 
 ```try
 size: 9
-black: A2 A3 B2 B3 D1 E1
-white: B1 C2 C3 B4
-solution: C1 (A4 A1) (pass A1)
+black: A2 B2 B1 C2 D2 E2 F2 F3 H1 H2 H3
+white: A3 B3 C3 D3 E3 F4 G2 G3 G4 H4 J4 D1 E1 F1
+solution: G1 (pass C1)
 expect: kill
-target: B1
-refute: A1
-hint: Which of the white stone's two liberties is not also yours?
-prompt: Capture the white stone at B1.
-success: C1. The shared liberty at A1 is the last one to fill, and it is White who cannot fill it. If White plays A4 to put you in atari, A1 captures and you are safe.
+target: D1
+quiet: 0
+refute: C1
+safe: A2
+hint: Which of White's two liberties is not also yours?
+prompt: Capture the white stones on the first line.
+success: G1. The shared liberty at C1 is the last one to fill, and it is White who cannot fill it; the three stones are dead where they stand, and you capture at C1 whenever you like.
 ```
 
 <p class="puzzle-intro">2 · The same fight in the opposite corner, turned round. Read it afresh.</p>
 
 ```try
 size: 9
-black: J8 J7 H8 H7 F9 E9
-white: H9 G8 G7 H6
-solution: G9 (J6 J9) (pass J9)
+black: J8 H8 H9 G8 F8 E8 D8 D7 B9 B8 B7
+white: J7 H7 G7 F7 E7 D6 C8 C7 C6 B6 A6 F9 E9 D9
+solution: C9 (pass G9)
 expect: kill
-target: H9
-refute: J9
-hint: Your chain has J9 and J6; the white stone has J9 and G9.
-prompt: Capture the white stone at H9.
-success: G9. Filling the shared liberty at J9 first would have been self-atari; the outside liberty leaves White with nothing.
+target: F9
+quiet: 0
+refute: G9
+safe: J8
+hint: Your chain has the eye at J9 and the shared point G9; the white stones have G9 and C9.
+prompt: Capture the white stones on the top edge.
+success: C9. Filling the shared liberty at G9 first would have been self-atari; the outside liberty leaves White with nothing.
 ```
 
 <p class="puzzle-intro">3 · Two white stones, each with two liberties, and one point touches both. A double atari: White cannot save both.</p>
