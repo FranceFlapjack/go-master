@@ -1,8 +1,8 @@
 /* Design tokens — the one file to tweak between design drafts.
    Draft 1 (2026-09-13): the Chess Master language (metar-taf): white ground, near-black ink, Helvetica Neue,
    small uppercase letter-spaced labels, hairline borders, square corners. Draft 2 (2026-09-13, owner's
-   comment): the accent is a dark red — Chess Master's bottle green (HSL 162° 67% 18%) turned to hue 355°
-   with the same saturation and lightness, so the two apps read as siblings in different colours.
+   comment): the accent is a dark red, Chess Master's bottle green (HSL 162° 67% 18%) turned to red.
+   Draft 2b: one step redder (HSL 357° 82% 24%) after the exact-tone match read as brown.
    Comment on any line here and it becomes a small diff. */
 :root {
   /* ground & ink */
@@ -16,10 +16,10 @@
   --line-2: #cccccc;
 
   /* theme: dark red, the same tone as Chess Master's green. Used for everything selected, done, or primary. */
-  --accent: #4d0f14;
+  --accent: #6f0b10;
   --accent-ink: #ffffff;
-  --accent-soft: #ede3e4;
-  --accent-deep: #380a0e;
+  --accent-soft: #efe1e2;
+  --accent-deep: #54070b;
 
   /* semantic (used only on the board and problem states) — green/red mean right/wrong, not theme */
   --good: #0f4c3a;
@@ -39,7 +39,7 @@
   --stone-shadow: rgba(0, 0, 0, 0.28);
   --gb-last-on-black: #f6f5f0;
   --gb-last-on-white: #161616;
-  --gb-hint: rgba(77, 15, 20, 0.28);
+  --gb-hint: rgba(111, 11, 16, 0.28);
   --gb-ghost: 0.45;
   --gb-mark-good: #1f8a5c;
   --gb-mark-bad: #c00000;
@@ -76,8 +76,8 @@
 
   /* activity grid levels: paper to theme red */
   --act-0: #eeeeee;
-  --act-1: #dececf;
-  --act-2: #b78f92;
-  --act-3: #874a4f;
-  --act-4: #4d0f14;
+  --act-1: #e2cacb;
+  --act-2: #c38386;
+  --act-3: #983a3e;
+  --act-4: #6f0b10;
 }

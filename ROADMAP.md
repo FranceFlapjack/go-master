@@ -45,7 +45,7 @@ Open questions for the owner: which board size they want to start playing on for
 
 ## Phase 3 — Design drafts
 - Draft 1 (2026-09-13): the Chess Master language, kaya board, slate and shell stones.
-- Draft 2 (2026-09-13, owner's first comment): the accent is dark red `#4d0f14` — Chess Master's green with the hue turned to 355° and saturation/lightness kept, so the two apps are siblings in different colours. Board good/bad marks stay green/red (meaning, not theme); the hint tint and the activity grid follow the accent.
+- Draft 2 (2026-09-13, owner's first comment): the accent is dark red `#6f0b10` — Chess Master's green turned to red, then one step redder at the owner's comment (HSL 357° 82% 24%; the exact-tone match `#4d0f14` read as brown), so the two apps are siblings in different colours. Board good/bad marks stay green/red (meaning, not theme); the hint tint and the activity grid follow the accent.
 - Still open: stone rendering (flat as now, or a subtle radial highlight); whether coordinates show on lesson diagrams by default.
 
 ## Play mode & a computer opponent (later, and honestly)

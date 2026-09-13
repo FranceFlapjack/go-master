@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 42 42" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
   <!-- same 30×30 footprint as the chess board: a 2×2 grid of lines -->
   <path d="M1 1 H31 M1 16 H31 M1 31 H31 M1 1 V31 M16 1 V31 M31 1 V31"/>
   <!-- black stone at the centre, white stone on the top-right point -->
