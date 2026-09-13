@@ -56,7 +56,7 @@ export function mountExercise(container, o, ctx = {}) {
       node = node.children[0]
       await board.play(node.point)
       if (!node.children.length) return finish()
-      setStatus('Keep going.')
+      setStatus(node.point === null ? `${oppName} passes. Keep going.` : 'Keep going.')
       arm()
     } else {
       wrong++

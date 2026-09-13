@@ -27,7 +27,7 @@ Validate before committing:
 node scripts/rules-test.mjs       # the rules engine (run before touching js/rules/go.js)
 node scripts/check-content.mjs    # every lesson: sources, legal positions, legal solution trees
 ```
-**There is no engine oracle.** Chess Master verifies every puzzle against Stockfish; here puzzles are authored, and the checker only proves that every line is legal and (with `expect: capture`) that the reader's last move captures. A wrong tsumego is caught by reading, not by a machine. Do not claim engine verification.
+**There is no engine oracle for problems.** Chess Master verifies every puzzle against Stockfish; here puzzles are authored. What the checker proves: every position is legal; every solution line is legal and ends on a reader move; with `expect: capture`, the last reader move of every line captures and no *other first move* captures (uniqueness is checked at the root only, not at later reader nodes); with `score:`, our scorer agrees with a diagram's count (`dead:` removed first) — that one **is** a real oracle, use it on every counted diagram. Whether a tsumego's reply is the opponent's best move is caught by reading, not by a machine. Do not claim engine verification of problems.
 
 ## Layout
 

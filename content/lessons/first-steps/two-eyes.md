@@ -65,30 +65,29 @@ prompt: Make two eyes.
 success: B1 divides the space into A1 and C1, two eyes. Any other move, or a pass, and White plays B1 first — then the group has a single three-point space with a white stone in it and dies.
 ```
 
-<p class="puzzle-intro">3 · The same shape with the colours reversed. Kill the white group before it makes two eyes.</p>
+<p class="puzzle-intro">3 · The same shape with the colours reversed. Stop White making two eyes.</p>
 
 ```try
 size: 9
 white: A2 B2 C2 D2 D1
 black: A3 B3 C3 D3 E2 E1
-solution: B1 (A1 C1) (C1 A1)
-expect: capture
+solution: B1
 hint: Play the point White wanted.
-prompt: Prevent two eyes, then finish the capture.
-success: B1 is the vital point. Whatever White does next, the group has one liberty left, and Black fills it to capture everything. Had White played B1 first, the group would have lived.
+prompt: Prevent two eyes.
+success: B1 is the vital point, and the white group is dead as it stands. If White plays A1 or C1 the group is left with one liberty and you capture at the other point; if White leaves it alone, so do you, and the stones come off at the end of the game. Had White played B1 first, the group would have lived.
 ```
 
-<p class="puzzle-intro">4 · White has one eye at J1 and one outside liberty. Take the outside liberty; White plays elsewhere; then finish.</p>
+<p class="puzzle-intro">4 · White has one eye at J1 and one outside liberty. Take the outside liberty; White can do nothing and passes; then finish.</p>
 
 ```try
 size: 9
 white: H1 H2 J2
 black: G1 H3 J3
-solution: G2 (D5 J1)
+solution: G2 (pass J1)
 expect: capture
 hint: You cannot play in the eye while the group has another liberty. Take that one first.
 prompt: Capture the white group in two moves.
-success: G2 leaves the eye as the group's only liberty; White can do nothing about it and plays elsewhere; J1 captures. One eye is one liberty, and a liberty can be filled.
+success: G2 leaves the eye as the group's only liberty. White cannot fill it (that would be suicide) and cannot escape, so White passes; J1 captures. One eye is one liberty, and a liberty can be filled.
 ```
 
 ## Remember
