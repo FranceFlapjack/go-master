@@ -81,9 +81,15 @@ export function think(pos, { timeMs = 1500, maxPlayouts = 200000, seed = Date.no
   const rand = rng(seed)
   const size = pos.size, n = size * size, komi = pos.komi ?? 7.5
   const root = new FastBoard(size).load(pos.board, pos.turn, pos.ko, pos.passes || 0)
+  const t0 = now()
+  // after the opponent's pass, a pass ends the game on the count as it stands: if that count is a win, take it.
+  // (Win/loss playouts cannot tell "win by 80" from "win by 5", so far ahead the tree would happily keep filling.)
+  if (root.passes >= 1) {
+    const margin = root.score(komi) * (pos.turn === BLACK ? 1 : -1)
+    if (margin > 0) return { move: null, winrate: 1, visits: 0, playouts: 0, ms: now() - t0, ownership: ownershipNow(root, new Float32Array(n)) }
+  }
   const b = new FastBoard(size)
   const cap = n * 2
-  const t0 = now()
   const rootNode = new Node(PASS, 3 - pos.turn)
   rootNode.untried = candidateMoves(root)
   const own = new Float64Array(n), ownBuf = new Uint8Array(n)
@@ -147,6 +153,13 @@ export function randomMove(pos, rand = Math.random) {
   const c = candidateMoves(b)
   const mv = c[(rand() * (c.length - 1)) | 0] // never pass while a move exists
   return c.length === 1 ? null : mv
+}
+
+/** ownership straight from the board as it stands (used when the search is skipped) */
+function ownershipNow(b, out) {
+  const buf = new Uint8Array(b.n); b.owners(buf)
+  for (let i = 0; i < b.n; i++) out[i] = buf[i] === BLACK ? 1 : buf[i] === WHITE ? -1 : 0
+  return out
 }
 
 const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now())

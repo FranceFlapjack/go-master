@@ -112,6 +112,27 @@ function sameLegality(g, fb) {
   check('passes to end the game when ahead after a pass', r.move === null, `played ${coordName(r.move, 9)}`)
 }
 {
+  // far ahead with the opponent's stones still on the board: play on (they count as alive until captured) …
+  const rand = rng(21)
+  const g = new Game(9)
+  for (let k = 0; k < 60; k++) { const l = g.legalMoves(); g.play(l[(rand() * l.length) | 0]) }
+  // … then, once passing wins on the count, pass — whatever the board looks like. Build such a board: White everywhere but two eyes.
+  const w = new Game(9); w.board.fill(WHITE); w.board[parseCoord('A1', 9)] = 0; w.board[parseCoord('J9', 9)] = 0; w.turn = WHITE; w.passes = 1
+  const r = think(pos(w), { maxPlayouts: 300, timeMs: 5000, seed: 9 })
+  check('passes at once when a pass wins the game', r.move === null && r.playouts === 0, `played ${coordName(r.move, 9)} after ${r.playouts} playouts`)
+  const w2 = new Game(9); w2.board.fill(WHITE); w2.board[parseCoord('A1', 9)] = 0; w2.board[parseCoord('J9', 9)] = 0; w2.turn = BLACK; w2.passes = 1
+  const r2 = think(pos(w2), { maxPlayouts: 100, timeMs: 5000, seed: 9 })
+  check('does not take a losing pass', r2.playouts > 0)
+}
+{
+  // a game of the bot against itself ends by two passes well before the board is exhausted
+  const g = new Game(9)
+  let plies = 0
+  while (!g.over && plies < 400) { g.play(think(pos(g), { maxPlayouts: 200, timeMs: 5000, seed: 500 + plies }).move); plies++ }
+  const stones = g.board.reduce((a, c) => a + (c ? 1 : 0), 0)
+  check('bot vs bot ends by two passes with the board not exhausted', g.over && plies < 200 && stones < 75, `${plies} plies, ${stones} stones, ${g.over ? 'over' : 'not over'}`)
+}
+{
   // beats a random player
   let wins = 0
   const N = 8

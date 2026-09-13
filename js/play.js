@@ -15,7 +15,7 @@ const OPPONENTS = [
 ]
 const BOT_SIZE = 9
 const RESIGN_BELOW = 0.06   // the computer resigns when its win rate falls this low (after some moves)
-const RESIGN_AFTER = 30     // … but never before this many moves: early estimates are noise
+const RESIGN_AFTER = 40     // … but never before this many plies (20 of its own moves): early estimates are noise
 
 export function mountPlay(main) {
   let size = +localStorage.getItem('go-master.play.size') || 9
