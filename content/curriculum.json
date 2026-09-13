@@ -8,10 +8,10 @@
       "lessons": [
         { "slug": "the-board-and-the-stones", "title": "The board and the stones", "ready": true },
         { "slug": "liberties-and-capture", "title": "Liberties and capture", "ready": true },
-        { "slug": "ko", "title": "Ko: no immediate retake", "ready": false },
-        { "slug": "two-eyes", "title": "Two eyes: a group that cannot die", "ready": false },
-        { "slug": "counting-the-score", "title": "How a game ends and is counted", "ready": false },
-        { "slug": "reading-a-game-record", "title": "Reading a game record", "ready": false }
+        { "slug": "ko", "title": "Ko: no immediate retake", "ready": true },
+        { "slug": "two-eyes", "title": "Two eyes: a group that cannot die", "ready": true },
+        { "slug": "counting-the-score", "title": "How a game ends and is counted", "ready": true },
+        { "slug": "reading-a-game-record", "title": "Reading a game record", "ready": true }
       ]
     },
     {

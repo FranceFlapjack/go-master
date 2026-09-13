@@ -52,7 +52,8 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
     labels: D4=a, E5=b                               turn: b            (default black)
     tri: … / sq: … / x: …                             solution: E3 (D2 E2) (C2 D1)
     highlight: F5                                    expect: capture    (checker: the last reader move captures, and no other move does)
-    score: B+3.5   (checker: our scorer agrees)
+    score: B+3.5   (checker: our scorer agrees)        ko: F5             (a pending ko point)
+    territory: true  (paint the counted areas; dead: … removes stones first)
     last: E5                                         hint: … / prompt: … / success: …
     caption: …
     interactive: true

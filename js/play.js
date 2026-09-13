@@ -78,6 +78,7 @@ export function mountPlay(main) {
   }
   function showScore() {
     const s = board.game.score([...dead])
+    board.paintTerritory(s.owner)
     scoreEl.hidden = false
     const w = s.winner === BLACK ? `Black wins by ${s.margin}` : s.winner === WHITE ? `White wins by ${-s.margin}` : 'Jigo (a tie)'
     scoreEl.innerHTML = `<span class="eyebrow">Area count</span><div class="score-row"><span class="turn-dot b"></span> Black <b>${s.black}</b></div><div class="score-row"><span class="turn-dot w"></span> White <b>${s.white}</b> <span class="small">(${s.white - s.komi} + ${s.komi} komi)</span></div><div class="score-win">${w}</div>`
@@ -91,7 +92,7 @@ export function mountPlay(main) {
     if (act === 'new') newGame()
     if (over && act !== 'new' && act !== 'undo') return
     if (act === 'pass') { await board.play(null); progress.recordMove(); afterMove() }
-    if (act === 'undo') { if (over) { over = false; scoring = false; dead.clear(); board.clearMarks(MARK.x); scoreEl.hidden = true; board.hit.onpointerdown = null; board.enableInput('turn', afterMove) } await board.undo(); setStatus(''); paint() }
+    if (act === 'undo') { if (over) { over = false; scoring = false; dead.clear(); board.clearMarks(MARK.x); board.clearTerritory(); scoreEl.hidden = true; board.hit.onpointerdown = null; board.enableInput('turn', afterMove) } await board.undo(); setStatus(''); paint() }
     if (act === 'resign') { const loser = board.game.turn; over = true; board.disableInput(); setStatus(`${colorName(loser)} resigns. ${colorName(3 - loser)} wins.`, 'good'); paint() }
   })
   newGame()

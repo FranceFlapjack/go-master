@@ -5,6 +5,7 @@ import { mountSgfViewer } from './sgf-viewer.js'
 import { mountExercise } from './exercise.js'
 import { progress } from './progress.js'
 import { positionFrom } from './position.js'
+import { parseCoords } from './rules/go.js'
 import { parseFrontmatter, parseParams } from './frontmatter.js'
 export { parseFrontmatter, parseParams }
 
@@ -53,7 +54,9 @@ export async function renderLesson(container, md, { lessonId, contentBase = 'con
       blk.replaceWith(fig)
       const pos = positionFrom(p)
       fig.querySelector('.board-wrap').style.setProperty('--board-size', pos.size)
-      mounted.push(new Goban(fig.querySelector('.board'), { ...pos, coordinates: p.coordinates !== 'false', interactive: p.interactive === 'true' ? 'turn' : false }))
+      const gb = new Goban(fig.querySelector('.board'), { ...pos, coordinates: p.coordinates !== 'false', interactive: p.interactive === 'true' ? 'turn' : false })
+      if (p.territory === 'true') gb.paintTerritory(gb.game.score(p.dead ? parseCoords(p.dead, pos.size) : []).owner) // the counted areas, dead stones removed first
+      mounted.push(gb)
     } else if (kind === 'sgf') {
       let sgf = p.rest
       if (p.file) sgf = await (await fetch(contentBase + 'games/' + p.file)).text()

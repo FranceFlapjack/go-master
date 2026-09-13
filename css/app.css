@@ -208,6 +208,8 @@ svg.goban { display: block; width: 100%; height: 100%; user-select: none; -webki
 .goban .label { font-family: var(--font-sans); font-size: 13px; font-weight: 600; fill: var(--gb-line); }
 .goban .label.on-black { fill: var(--gb-last-on-black); }
 .goban .label.on-white { fill: var(--gb-last-on-white); }
+.goban .terr.black { fill: var(--stone-black); opacity: 0.75; }
+.goban .terr.white { fill: var(--stone-white); stroke: var(--stone-white-edge); stroke-width: 0.6; opacity: 0.9; }
 .goban .illegal { fill: none; stroke: var(--bad); stroke-width: 2; animation: stone-capture 420ms ease-out forwards; }
 
 

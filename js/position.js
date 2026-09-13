@@ -10,6 +10,7 @@ export function positionFrom(p) {
     black: parseCoords(p.black, size), white: parseCoords(p.white, size),
     turn: p.turn ? (p.turn[0].toLowerCase() === 'w' ? WHITE : BLACK) : BLACK,
     marks: {}, labels: {},
+    ko: p.ko ? parseCoord(p.ko, size) : null, // a pending ko point, for problems posed mid-ko
   }
   for (const t of ['last', 'tri', 'sq', 'x']) if (p[t]) pos.marks[MARK[t]] = parseCoords(p[t], size)
   if (p.highlight) pos.marks[MARK.hint] = parseCoords(p.highlight, size) // `hint:` is the puzzle's text hint

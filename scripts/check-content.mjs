@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { parseFrontmatter, parseParams } from '../js/frontmatter.js'
 import { positionFrom } from '../js/position.js'
 import { parseSolution, loadSgf } from '../js/sgf.js'
-import { Game, coordName } from '../js/rules/go.js'
+import { Game, coordName, parseCoords } from '../js/rules/go.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const curriculum = JSON.parse(readFileSync(join(root, 'content/curriculum.json'), 'utf8'))
@@ -35,11 +35,12 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
         const pos = positionFrom(p)
         const g = new Game(pos.size)
         g.setup({ black: pos.black, white: pos.white })
+        if (pos.ko != null) { g.ko = pos.ko; if (g.board[pos.ko]) fail(tag, 'ko point is occupied') }
         const both = pos.black.filter(x => pos.white.includes(x))
         if (both.length) fail(tag, `point ${coordName(both[0], pos.size)} is both black and white`)
         if (p.score) {
           // `score: B+3.5` / `W+6.5` / `jigo` (area count, komi 7.5, no dead stones): the caption's arithmetic, checked by our scorer
-          const s = g.score(), got = s.winner === 1 ? `B+${s.margin}` : s.winner === 2 ? `W+${-s.margin}` : 'jigo'
+          const s = g.score(p.dead ? parseCoords(p.dead, pos.size) : []), got = s.winner === 1 ? `B+${s.margin}` : s.winner === 2 ? `W+${-s.margin}` : 'jigo'
           if (got !== p.score) fail(tag, `score: ${p.score} but the scorer says ${got} (black ${s.black}, white ${s.white})`)
         }
         if (kind === 'try') {

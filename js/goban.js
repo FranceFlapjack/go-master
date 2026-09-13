@@ -22,7 +22,8 @@ export class Goban {
     this.o = o
     this.inputWho = null
     this.onMove = null
-    this.judge = null      // optional fn(rec) → bool; false plays the "fail" sound instead of the stone sound
+    this.judge = null      // optional fn(point) → bool; false plays the "fail" sound instead of the stone sound
+    this.onIllegal = null  // optional fn(reason, point) after a refused click ('occupied' | 'ko' | 'suicide')
     this.labels = {}
     this.marks = new Map() // point → Set(type)
     this._build(o)
@@ -33,6 +34,7 @@ export class Goban {
     this.game = new Game(this.size, { komi: o.komi ?? 7.5 })
     this.game.setup({ black: o.black || [], white: o.white || [] })
     if (o.turn) this.game.turn = o.turn
+    if (o.ko != null) this.game.ko = o.ko
     this.coordinates = o.coordinates !== false
     const n = this.size, m = this.coordinates ? U * 1.1 : U * 0.6
     this.margin = m
@@ -96,10 +98,12 @@ export class Goban {
     this.stones.set(i, c)
     return c
   }
-  async showPosition({ black = [], white = [], turn = null, size = null, marks = null, labels = null } = {}) {
-    if (size && size !== this.size) { this._build({ ...this.o, size, black, white, turn, marks, labels }); return }
+  async showPosition({ black = [], white = [], turn = null, size = null, marks = null, labels = null, ko = null } = {}) {
+    if (size && size !== this.size) { this._build({ ...this.o, size, black, white, turn, marks, labels, ko }); return }
     this.game = new Game(this.size, { komi: this.o.komi ?? 7.5 }).setup({ black, white })
     if (turn) this.game.turn = turn
+    if (ko != null) this.game.ko = ko
+    this.clearTerritory()
     this.clearMarks(); this.setLabels({})
     this.render()
     if (marks) for (const [type, pts] of Object.entries(marks)) for (const p of pts) this.mark(p, type)
@@ -171,6 +175,18 @@ export class Goban {
     }
   }
 
+  // --- territory (the counted areas, from Game.score().owner) ---
+  paintTerritory(owner) {
+    this.clearTerritory()
+    const r = U * 0.17
+    for (let i = 0; i < owner.length; i++) {
+      if (!owner[i] || this.game.board[i]) continue
+      const { x, y } = this._xy(i)
+      el('rect', { class: `terr ${owner[i] === BLACK ? 'black' : 'white'}`, x: x - r, y: y - r, width: 2 * r, height: 2 * r }, this.hintLayer)
+    }
+  }
+  clearTerritory() { this.hintLayer.querySelectorAll('.terr').forEach(e => e.remove()) }
+
   // --- input ---
   /** who: 'turn' (whoever is to move), BLACK or WHITE. onMove(rec) is called after the stone is placed. */
   enableInput(who = 'turn', onMove) {
@@ -194,7 +210,7 @@ export class Goban {
     if (p == null) return
     sound.unlock()
     const r = this.game.check(p)
-    if (!r.ok) { sound.play('illegal'); this._flashIllegal(p); return }
+    if (!r.ok) { sound.play('illegal'); this._flashIllegal(p); if (this.onIllegal) this.onIllegal(r.reason, p); return }
     this.ghost.setAttribute('visibility', 'hidden')
     const verdict = this.judge ? this.judge(p) : true
     const rec = await this.play(p, { silent: !verdict })

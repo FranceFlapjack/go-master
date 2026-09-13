@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: **Phase 0 scaffold, draft 1, 2026-09-13.** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, progress + activity grid, two-player play page with area counting, and the first two lessons of the beginner track. Next: the owner's comments on the draft, then the rest of *First steps*.
+Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. Next: the owner's comments on the draft, then *Capturing techniques*.
 
 ## Decisions taken in the draft (say so if you want them changed)
 
@@ -22,14 +22,14 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13.** Rules engine (33 checks), SVG
 - `scripts/check-content.mjs` validates positions and solution trees.
 
 ### Still to do in Phase 0
-- Paint the counted territory on the play board at game end: `score()` already returns an `owner` array per point; showing it is how a beginner learns to count.
+- ~~Paint the counted territory~~ done: `Goban.paintTerritory`, used by `territory: true` diagrams and the play page at game end.
 - Variation navigation in the viewer (branches as a small list under the move; keyboard `v`).
 - Handicap placement helper (`HA[]` + free placement) in the rules and the play page.
 - Mobile polish; a dark mode is not planned until Chess Master has one.
 
 ## Phase 1 — Content
 Write the tracks in this order, one branch each, running both checkers on every commit:
-1. **First steps** (6): board and stones ✔, liberties and capture ✔, ko, two eyes (why a group with two eyes cannot be captured, false eyes very briefly), how a game ends and is counted (area count with a full 9×9 example, dead stones, Japanese counting in one paragraph), reading a game record (the viewer, a short real 9×9 game).
+1. **First steps** (6) — **done 2026-09-13**: board and stones, liberties and capture (7 problems), ko (3, incl. a threat-then-retake tree with a `ko:` set-up point), two eyes (4), how a game ends and is counted (2, every diagram's count asserted by the scorer), reading a game record (AlphaGo – Lee Sedol game 4, record from A. Brouwer's archive checked against Wikipedia; comments ours).
 2. **Capturing techniques** (7): ladder (incl. ladder breakers and reading a ladder to the edge), net, snapback, throw-in, shortage of liberties, connecting and cutting, capturing races. 9×9 and 13×13.
 3. **Life and death** (6): eye shapes (straight three/four, bent four, the bulky five), false eyes, seki, corner shapes, two problem sets. Classical sources for problems: *Xuanxuan Qijing* (1349) and *Igo Hatsuyōron* (1713) are out of copyright.
 4. **The opening** (6): corners → sides → centre, 4-4 and 3-4, enclosures and approaches, extensions, the 9×9 opening, handicap go. Model games needed: professional records whose SGF comes from a checkable source.
