@@ -92,7 +92,7 @@ function showHome(main) {
         <h1>Learn Go from the games that taught everyone else.</h1>
         <p>Every lesson is built on a real game or a real book, with the board right there in the text so you can play through it and then try it yourself. Start on the small board; the rules fit on one page, the game does not.</p>
       </section>
-      <div class="card continue play-card"><div><span class="eyebrow">Play</span><h3>Two players, one screen</h3><div class="small">9×9, 13×13 or 19×19, area scoring, with the count at the end. A computer opponent comes later.</div></div><a class="btn" href="#/play">Play</a></div>
+      <div class="card continue play-card"><div><span class="eyebrow">Play</span><h3>Play a game</h3><div class="small">Two players on one screen on 9×9, 13×13 or 19×19, or a weak computer opponent on 9×9. Area scoring, with the count at the end.</div></div><a class="btn" href="#/play">Play</a></div>
       ${cont ? `<div class="card continue"><div><span class="eyebrow">${last && cont === last ? 'Continue' : 'Start here'}</span><h3>${esc(cont.title)}</h3><div class="small">${esc(cont.trackTitle)}</div></div><a class="btn primary" href="#/lesson/${cont.track}/${cont.slug}">Open lesson</a></div>` : ''}
       <div class="track-grid">
         ${visibleTracks().map((t, i) => {

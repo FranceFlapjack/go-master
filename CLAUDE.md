@@ -26,6 +26,7 @@ Validate before committing:
 ```
 node scripts/rules-test.mjs       # the rules engine (run before touching js/rules/go.js)
 node scripts/check-content.mjs    # every lesson: sources, legal positions, legal solution trees
+node scripts/bot-test.mjs         # the computer opponent (run before touching js/bot/)
 ```
 **Oracles, and their limits.** Chess Master verifies every puzzle against Stockfish; here we have three narrower oracles, and the checker uses each where a fence asks for it:
 - `score: B+3.5` — our scorer agrees with a diagram's count (`dead:` removed first). Use it on every counted diagram.
@@ -43,7 +44,8 @@ Everything else — whether the opponent's scripted reply is their best, whether
 - `js/goban.js` is the single board component (SVG goban, stones, marks, labels, ghost stone, input, animation, sounds). Every board in the app goes through it. Everything visual is in `css/app.css` under "the goban itself" and tokens in `css/tokens.css`.
 - `js/sgf.js` SGF parser (keeps the whole tree) + `loadSgf` (main line with positions) + `parseSolution` (the puzzle tree syntax). `js/sgf-viewer.js` annotated game viewer over the main line with keyboard nav; branch navigation is on the roadmap.
 - `js/exercise.js` "try it" blocks; `js/progress.js` localStorage progress (lessons, tries, games, and stones played per day); `js/activity-grid.js` the 12-week grid shaded by stones played per day (owner's rule from Chess Master: moves, not points; no streak).
-- `js/play.js` two players on one screen: 9/13/19, pass, undo, resign; after two passes click dead stones and read the area count.
+- `js/play.js` two players on one screen (9/13/19) or one player against the computer (9×9 only): pass, undo (two plies against the computer), resign; after two passes click dead stones and read the area count — with the computer on, it marks what its playouts say is dead first.
+- `js/bot/` the computer opponent, **ours and deliberately weak**: `board.js` a typed-array board for playouts (checked move by move against `rules/go.js` by `scripts/bot-test.mjs`), `mcts.js` plain UCT with random playouts that never fill a true eye and answer ataris, area scoring at the end; `worker.js` runs it off the page thread, `client.js` is the page's handle (one request at a time; a cancelled request's answer is dropped, so no stale move lands after undo or new game). ~6k playouts/s on 9×9 in Node; levels are wall-clock budgets (0.5 / 1.5 / 4 s). No patterns, no book, no network. The UI says so.
 - `content/curriculum.json` fixes track and lesson order; a lesson shows only when `"ready": true` and `content/lessons/<track>/<slug>.md` exists.
 - `content/games/*.sgf` full games with `C[]` comments; shared between lessons. Files starting with `_` are composed fixtures for the checker and the viewer, never game records; the checker loads every `.sgf` here.
 - **localStorage keys are prefixed `go-master.`** and nothing is ever adopted from another prefix: Chess Master will share the github.io origin, so a key collision would corrupt its progress.

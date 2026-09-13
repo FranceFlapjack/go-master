@@ -126,7 +126,7 @@ export class Game {
     const r = this.check(point, color)
     if (!r.ok) throw new Error(`Illegal move at ${coordName(point, this.size)}: ${r.reason}`)
     const rec = { color, point, captured: r.captures, ko: this.ko, passes: this.passes }
-    if (point === null) { this.passes++ }
+    if (point === null) { this.passes++; this.ko = null } // a pass lifts the ko: the position has changed
     else {
       this.board[point] = color
       for (const c of r.captures) this.board[c] = EMPTY

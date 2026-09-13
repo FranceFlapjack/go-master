@@ -47,6 +47,11 @@ for (const [stone, a, b] of [['A1', 'A2', 'B1'], ['J1', 'J2', 'H1'], ['A9', 'A8'
   ok(m.check(P(m, 'E5'), WHITE).ok, 'after a move elsewhere the ko may be retaken')
   m.play(P(m, 'E5'), WHITE)
   ok(m.get(P(m, 'F5')) === EMPTY && m.ko === P(m, 'F5'), 'retaking the ko captures and sets the ko point the other way') }
+{ const m = g9()
+  m.setup({ black: ['D5', 'E6', 'E4'].map(s => P(m, s)), white: ['G5', 'F6', 'F4', 'E5'].map(s => P(m, s)) })
+  m.play(P(m, 'F5'), BLACK); m.pass(WHITE)
+  ok(m.ko === null && m.check(P(m, 'E5'), BLACK).ok, 'a pass lifts the ko: Black may fill it')
+  m.undo(); ok(m.ko === P(m, 'E5'), 'undoing the pass restores the ko point') }
 // capturing several stones: never a ko
 { const g = g9()
   g.setup({ black: ['C3', 'C4', 'D5', 'E5', 'F4', 'F3', 'E2', 'D2'].map(s => P(g, s)), white: ['D4', 'E4', 'D3'].map(s => P(g, s)) })

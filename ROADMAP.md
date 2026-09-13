@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. *Capturing techniques* complete the same day (7 lessons, 25 problems) with a ladder/net reader as the checker's oracle. Next: the owner's comments, then *Life and death*.
+Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. *Capturing techniques* complete the same day (7 lessons, 25 problems) with a ladder/net reader as the checker's oracle. Design draft 2 (dark red) and a 9×9 computer opponent on 2026-09-14. Next: *Life and death*.
 
 ## Decisions taken in the draft (say so if you want them changed)
 
@@ -53,7 +53,7 @@ Open questions for the owner: which board size they want to start playing on for
 Chess Master could vendor Stockfish and write its own engine to a respectable strength because chess yields to hand-written search and evaluation. **Go does not**: before neural networks, the strongest hand-written programs were weak club players, and the strong open-source engine (KataGo) is a large neural network with a heavy runtime. What is realistic here, in order:
 
 1. **Two players on one screen** — done in the draft.
-2. **A small Monte-Carlo (MCTS) bot on 9×9** in a Web Worker, written by us. Beats a beginner, loses to anyone who has read the capturing track. Good as the first rung and as a teaching aid ("play the bot after each lesson").
+2. **A small Monte-Carlo (MCTS) bot on 9×9** in a Web Worker, written by us — **done 2026-09-14** (`js/bot/`). What the tests show: it never plays an illegal move or fills its own eye, wins a one-liberty capturing race, does not pass while behind, passes to end the game when ahead, and beats a random player (8 games). What they do not show: any rank. It has no patterns and no opening knowledge; expect it to lose to anyone who has done the capturing track, and to play slack moves in the opening. Levels are thinking time (0.5 / 1.5 / 4 s), not strength claims. Possible next steps, in order of value: RAVE/AMAF in the tree, a few 3×3 playout patterns, a small opening book of 9×9 first moves.
 3. **A stronger opponent** only by vendoring a real engine; **check what actually exists, its size and licence, before promising anything** (a GnuGo WebAssembly build, or a small KataGo network with an ONNX/WebGPU runtime, are the two candidates to investigate; neither is assumed viable until tried).
 4. **Online play** needs a server or an OGS account; decide then.
 
