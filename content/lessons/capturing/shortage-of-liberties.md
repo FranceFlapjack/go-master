@@ -34,7 +34,6 @@ white: A3 B3 C3 D3 E3 F4 G2 G3 G4 H4 J4 D1 E1 F1
 solution: G1 (pass C1)
 expect: kill
 target: D1
-quiet: 0
 refute: C1
 safe: A2
 hint: Which of White's two liberties is not also yours?
@@ -51,7 +50,6 @@ white: J7 H7 G7 F7 E7 D6 C8 C7 C6 B6 A6 F9 E9 D9
 solution: C9 (pass G9)
 expect: kill
 target: F9
-quiet: 0
 refute: G9
 safe: J8
 hint: Your chain has the eye at J9 and the shared point G9; the white stones have G9 and C9.

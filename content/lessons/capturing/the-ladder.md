@@ -101,7 +101,7 @@ target: E5
 unique: true
 hint: The ladder runs up and to the right, towards J7.
 prompt: Save the black stone.
-success: F5. White can atari at G5 and F6 in turn, but the chain reaches H7 and connects to J7 with liberties to spare. A ladder breaker is worth checking for before you give a stone up.
+success: F5. White can keep playing atari (G5, then F7, then H6 …), but each extension keeps two liberties and the chain reaches H7, where it connects to J7 with liberties to spare. A ladder breaker is worth checking for before you give a stone up.
 ```
 
 ## Remember

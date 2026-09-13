@@ -77,7 +77,6 @@ white: J3 H3 G3 F3 E3 D4 C2 C3 C4 B4 A4 F1 E1 D1
 solution: C1 (pass G1)
 expect: kill
 target: F1
-quiet: 0
 refute: G1
 safe: J2
 hint: Count your own liberties before you atari.

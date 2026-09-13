@@ -74,7 +74,7 @@ expect: escape
 target: move
 hint: The two white stones touch corners at D5–E4. The cutting points are E5 and D4.
 prompt: Cut the white stones apart.
-success: E5. With D4 already black, this completes the cut. E5 has two liberties, but an atari from either side lets it connect to F6 or G5, so it cannot be captured; nor can D4, which has three liberties and open ground below.
+success: E5. With D4 already black, this completes the cut. E5 has two liberties, but an atari from either side lets it connect to F6 or G5, so it cannot be captured; nor can D4: it has two liberties, C4 and D3, but an atari on either lets it extend into open ground and reach three.
 ```
 
 ## Remember
