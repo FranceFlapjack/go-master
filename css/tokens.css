@@ -1,7 +1,9 @@
 /* Design tokens — the one file to tweak between design drafts.
    Draft 1 (2026-09-13): the Chess Master language (metar-taf): white ground, near-black ink, Helvetica Neue,
-   small uppercase letter-spaced labels, hairline borders, square corners; bottle green kept as the family
-   accent so the two apps read as siblings. Comment on any line here and it becomes a small diff. */
+   small uppercase letter-spaced labels, hairline borders, square corners. Draft 2 (2026-09-13, owner's
+   comment): the accent is a dark red — Chess Master's bottle green (HSL 162° 67% 18%) turned to hue 355°
+   with the same saturation and lightness, so the two apps read as siblings in different colours.
+   Comment on any line here and it becomes a small diff. */
 :root {
   /* ground & ink */
   --bg: #ffffff;
@@ -13,13 +15,13 @@
   --line: #e6e6e6;
   --line-2: #cccccc;
 
-  /* theme: deep bottle green, shared with Chess Master. Used for everything selected, done, or primary. */
-  --accent: #0f4c3a;
+  /* theme: dark red, the same tone as Chess Master's green. Used for everything selected, done, or primary. */
+  --accent: #4d0f14;
   --accent-ink: #ffffff;
-  --accent-soft: #e4ede8;
-  --accent-deep: #0a3629;
+  --accent-soft: #ede3e4;
+  --accent-deep: #380a0e;
 
-  /* semantic (used only on the board and problem states) */
+  /* semantic (used only on the board and problem states) — green/red mean right/wrong, not theme */
   --good: #0f4c3a;
   --bad: #c00000;
   --warn: #7a5c00;
@@ -37,7 +39,7 @@
   --stone-shadow: rgba(0, 0, 0, 0.28);
   --gb-last-on-black: #f6f5f0;
   --gb-last-on-white: #161616;
-  --gb-hint: rgba(15, 76, 58, 0.28);
+  --gb-hint: rgba(77, 15, 20, 0.28);
   --gb-ghost: 0.45;
   --gb-mark-good: #1f8a5c;
   --gb-mark-bad: #c00000;
@@ -72,10 +74,10 @@
   --sidebar-w: 260px;
   --page-w: 900px;
 
-  /* activity grid levels: paper to theme green */
+  /* activity grid levels: paper to theme red */
   --act-0: #eeeeee;
-  --act-1: #cfdfd6;
-  --act-2: #8fb8a5;
-  --act-3: #4a856c;
-  --act-4: #0f4c3a;
+  --act-1: #dececf;
+  --act-2: #b78f92;
+  --act-3: #874a4f;
+  --act-4: #4d0f14;
 }

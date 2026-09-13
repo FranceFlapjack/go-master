@@ -44,8 +44,9 @@ Open questions for the owner: which board size they want to start playing on for
 - Problem sets by rank (30k → 10k) once the life-and-death track has enough material.
 
 ## Phase 3 — Design drafts
-- Draft 1 (2026-09-13): the Chess Master language, kaya board, slate and shell stones. Owner comments next.
-- Candidates for the owner to decide: a distinct accent colour for Go (indigo, vermilion) versus the shared green; stone rendering (flat as now, or a subtle radial highlight); whether coordinates show on lesson diagrams by default.
+- Draft 1 (2026-09-13): the Chess Master language, kaya board, slate and shell stones.
+- Draft 2 (2026-09-13, owner's first comment): the accent is dark red `#4d0f14` — Chess Master's green with the hue turned to 355° and saturation/lightness kept, so the two apps are siblings in different colours. Board good/bad marks stay green/red (meaning, not theme); the hint tint and the activity grid follow the accent.
+- Still open: stone rendering (flat as now, or a subtle radial highlight); whether coordinates show on lesson diagrams by default.
 
 ## Play mode & a computer opponent (later, and honestly)
 
