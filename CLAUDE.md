@@ -38,17 +38,17 @@ node scripts/bot-test.mjs         # the computer opponent (run before touching j
 - `expect: seki` with `target: <a stone of each colour>` — both chains alive whoever moves; after every reader move in the tree still so; `refute:` entries (a move, or a line `A2/pass/E1` reader/opponent/reader…) leave the reader's own chain dead. The answer is usually `pass`; an exercise shows a Pass button only when its tree accepts a pass.
 - `life: A3 alive | dead | first | vital B1` on a `board` fence — the diagram's claim, by the same search: alive even if the attacker moves first / dead even if the defender moves first / whoever moves first wins / B1 is the one point that decides it for both sides.
 - `node scripts/life-explore.mjs 9 "<black>" "<white>" A3 b dead` prints every working first move and an answer to every reply, in the solution-tree syntax: use it to author, then let the checker confirm.
-Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound — is caught by reading, not by a machine. Say which oracle checked a lesson in its `sources:`, and never claim more.
+Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound, **every opening judgement** — is caught by reading, not by a machine. Opening problems accept the standard points named in the sources or the move played in the model game, and their `sources:` say so. Say which oracle checked a lesson in its `sources:`, and never claim more.
 
 ## Layout
 
 - `index.html` shell; `js/app.js` router + sidebar + home; `js/lesson.js` Markdown → components; `js/frontmatter.js` and `js/position.js` are the pure helpers shared with `scripts/`.
 - `js/rules/capture-search.js` the ladder/net reader and `js/rules/life-search.js` the life-and-death reader (Benson + eye-space search), both used only by the checker (see Oracles). `scripts/rules-test.mjs` covers them on the classical shapes.
-- `js/rules/go.js` the rules: board, chains and liberties, capture, suicide, **simple ko** (positional superko later), passes, **area (Chinese) scoring with komi 7.5** and a dead-stone list. Coordinates: `A1`…`T19` (no I) in lessons, `aa`…`ss` in SGF.
+- `js/rules/go.js` the rules: board, chains and liberties, capture, suicide, **simple ko** (positional superko later), passes, **area (Chinese) scoring with komi 7.5** and a dead-stone list; `handicapPoints` (fixed placement, the traditional order). Coordinates: `A1`…`T19` (no I) in lessons, `aa`…`ss` in SGF.
 - `js/goban.js` is the single board component (SVG goban, stones, marks, labels, ghost stone, input, animation, sounds). Every board in the app goes through it. Everything visual is in `css/app.css` under "the goban itself" and tokens in `css/tokens.css`.
 - `js/sgf.js` SGF parser (keeps the whole tree) + `loadSgf` (main line with positions) + `parseSolution` (the puzzle tree syntax). `js/sgf-viewer.js` annotated game viewer over the main line with keyboard nav; branch navigation is on the roadmap.
 - `js/exercise.js` "try it" blocks; `js/progress.js` localStorage progress (lessons, tries, games, and stones played per day); `js/activity-grid.js` the 12-week grid shaded by stones played per day (owner's rule from Chess Master: moves, not points; no streak).
-- `js/play.js` two players on one screen (9/13/19) or one player against the computer (9×9 only): pass, undo (two plies against the computer), resign; after two passes click dead stones and read the area count — with the computer on, it marks what its playouts say is dead first.
+- `js/play.js` two players on one screen (9/13/19) or one player against the computer (9×9 only): handicap 2–9 (2–5 on the small boards, komi 0.5, White first), pass, undo (two plies against the computer), resign; after two passes click dead stones and read the area count — with the computer on, it marks what its playouts say is dead first.
 - `js/bot/` the computer opponent, **ours and deliberately weak**: `board.js` a typed-array board for playouts (checked move by move against `rules/go.js` by `scripts/bot-test.mjs`), `mcts.js` plain UCT with random playouts that never fill a true eye and answer ataris, area scoring at the end; `worker.js` runs it off the page thread, `client.js` is the page's handle (one request at a time; a cancelled request's answer is dropped, so no stale move lands after undo or new game). ~6k playouts/s on 9×9 in Node; levels are wall-clock budgets (0.5 / 1.5 / 4 s). No patterns, no book, no network. The UI says so.
 - `content/curriculum.json` fixes track and lesson order; a lesson shows only when `"ready": true` and `content/lessons/<track>/<slug>.md` exists.
 - `content/games/*.sgf` full games with `C[]` comments; shared between lessons. Files starting with `_` are composed fixtures for the checker and the viewer, never game records; the checker loads every `.sgf` here.
@@ -60,6 +60,7 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
 
     ```board                 ```sgf                  ```try
     size: 9                  file: name.sgf          size: 9
+    handicap: 4  (stones on the star points, White to move)
     black: D4 E5             (or inline SGF)         black: …
     white: D5                start: 0                white: …
     labels: D4=a, E5=b                               turn: b            (default black)

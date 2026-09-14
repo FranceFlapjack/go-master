@@ -10,7 +10,7 @@ python3 scripts/serve.py 8001
 
 Open http://localhost:8001. Check the rules engine with `node scripts/rules-test.mjs` and the content with `node scripts/check-content.mjs`.
 
-Eight tracks planned (First steps, Capturing techniques, Life and death, The opening, Joseki, Direction of play, The endgame, Study a whole game); *First steps*, *Capturing techniques* and *Life and death* are ready (19 lessons, 74 problems). Plus a play page: two players on one screen, or a weak computer opponent on 9×9 (our own Monte-Carlo search, for practice), with area counting.
+Eight tracks planned (First steps, Capturing techniques, Life and death, The opening, Joseki, Direction of play, The endgame, Study a whole game); *First steps*, *Capturing techniques*, *Life and death* and *The opening* are ready (25 lessons, 98 problems). Plus a play page: two players on one screen, or a weak computer opponent on 9×9 (our own Monte-Carlo search, for practice), handicap games, area counting.
 
 The rules engine and the board are our own (`js/rules/go.js`, `js/goban.js`). The only library is [marked](https://github.com/markedjs/marked) (MIT). See `vendor/VERSIONS.md`.
 

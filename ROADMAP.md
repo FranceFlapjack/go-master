@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. *Capturing techniques* complete the same day (7 lessons, 25 problems) with a ladder/net reader as the checker's oracle. Design draft 2 (dark red), a 9×9 computer opponent and *Life and death* (6 lessons, 32 problems, with an exhaustive life-and-death reader as oracle) on 2026-09-14. Next: *The opening*.
+Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete the same day (6 lessons, 17 problems, one verified game record).** Rules engine (33 checks), SVG board, lesson renderer with `board` / `sgf` / `try` fences, exercises with solution trees, territory painting, progress + activity grid, two-player play page with area counting. *Capturing techniques* complete the same day (7 lessons, 25 problems) with a ladder/net reader as the checker's oracle. Design draft 2 (dark red), a 9×9 computer opponent and *Life and death* (6 lessons, 32 problems, with an exhaustive life-and-death reader as oracle) and *The opening* (6 lessons, two more verified records, handicap support) on 2026-09-14. Next: *Joseki*.
 
 ## Decisions taken in the draft (say so if you want them changed)
 
@@ -24,7 +24,7 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete th
 ### Still to do in Phase 0
 - ~~Paint the counted territory~~ done: `Goban.paintTerritory`, used by `territory: true` diagrams and the play page at game end.
 - Variation navigation in the viewer (branches as a small list under the move; keyboard `v`).
-- Handicap placement helper (`HA[]` + free placement) in the rules and the play page.
+- ~~Handicap placement helper~~ done 2026-09-14: fixed placement in the rules (`handicapPoints`), `handicap:` on fences, a selector on the Play page; free placement not offered.
 - Mobile polish; a dark mode is not planned until Chess Master has one.
 
 ## Phase 1 — Content
@@ -32,7 +32,7 @@ Write the tracks in this order, one branch each, running both checkers on every 
 1. **First steps** (6) — **done 2026-09-13**: board and stones, liberties and capture (7 problems), ko (3, incl. a threat-then-retake tree with a `ko:` set-up point), two eyes (4), how a game ends and is counted (2, every diagram's count asserted by the scorer), reading a game record (AlphaGo – Lee Sedol game 4, record from A. Brouwer's archive checked against Wikipedia; comments ours).
 2. **Capturing techniques** (7) — **done 2026-09-13**: ladder (4 problems incl. a 13×13 read and an escape), net (3), snapback (3), shortage of liberties (3), connecting and cutting (3), capturing races (3), and a mixed problem set (6). The planned *throw-in* lesson was dropped: every beginner-level throw-in shape collapses into a snapback or a ko, so the throw-in is mentioned inside *races* and left for the endgame track. `js/rules/capture-search.js` (ladders, nets, escapes) is the checker's oracle for this track; races and shortage positions were read by hand.
 3. **Life and death** (6) — **done 2026-09-14**: eye shapes (6 problems), false eyes (5), seki (4), life in the corner (5), two problem sets (6 + 6, one on 13×13). All positions composed (no classical problems: none could be verified against a source from here); every one read to the end by `js/rules/life-search.js` (Benson's pass-alive test plus an exhaustive eye-space search), which also proves uniqueness. Limits: closed walls only, no ko (reported as unknown). Classical collections (*Xuanxuan Qijing*, *Igo Hatsuyōron*) remain an option once a diagram source can be checked.
-4. **The opening** (6): corners → sides → centre, 4-4 and 3-4, enclosures and approaches, extensions, the 9×9 opening, handicap go. Model games needed: professional records whose SGF comes from a checkable source.
+4. **The opening** (6) — **done 2026-09-14**: corners/sides/centre (with a scorer-checked counting diagram), the 4-4 and 3-4 points, enclosures and approaches, extensions, the 9×9 opening, handicap games (24 problems). Model games: Gennan Inseki – Shusaku 1846 (the ear-reddening game, first 25 moves checked against Wikipedia) and AlphaGo – Lee Sedol 2016 game 2 (colours, result, length and move 37 checked), both from A. Brouwer's archive. No engine behind the opening judgements: problems accept the standard points from the sources or the game move, and say so.
 5. **Joseki** (5): a small set, why each move, when to leave. Kogo's Joseki Dictionary is freely distributable for non-commercial use — check the exact terms before quoting lines from it.
 6. **Direction of play** (7), **The endgame** (4).
 7. **Study a whole game** (3): Shusaku's ear-reddening game (Gennan Inseki – Shusaku, 1846), Go Seigen – Honinbo Shusai (1933, the "game of the century"), Lee Sedol – AlphaGo game 4 (2016, move 78). Records are public facts; each SGF must be checked against a published record and its origin written into the file.

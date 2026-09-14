@@ -150,7 +150,7 @@
         {
           "slug": "handicap-go",
           "title": "Handicap games",
-          "ready": false
+          "ready": true
         }
       ]
     },
