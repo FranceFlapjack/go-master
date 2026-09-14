@@ -101,6 +101,7 @@ black: A1 B1 C1 D1 B2 C2 D2 A4 B4 C4 D4 E4 F4 G3 G2 G1
 solution: (pass) (A2) (E1) (E2)
 expect: seki
 target: A3 B1
+refute: A2/pass/E1 A2/pass/E2 E1/pass/E2
 hint: After one fill, two shared liberties remain. After two, one remains, and the next stone captures.
 prompt: Play elsewhere (pass), or fill?
 success: Passing is simplest, and filling one liberty is also safe: two shared liberties remain and the position is seki again. A second fill would leave your chain with one liberty, and White's next stone captures it. Count your own liberties after the move, every time.

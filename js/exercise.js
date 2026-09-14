@@ -1,7 +1,7 @@
 // "Try it" exercise: the reader plays the solution; the opponent's replies are played automatically.
 // The solution is a tree ("E3 (D2 E2) (C2 D1)", see js/sgf.js): any branch at a reader node is
 // accepted, the first branch at an opponent node is the reply that gets played. A pass is a move on both sides:
-// the reader has a Pass button (the answer to a seki problem is to play elsewhere), and a wrong pass counts as a miss.
+// a Pass button appears when some reader node of the tree accepts a pass (seki problems), and a wrong pass counts as a miss.
 import { Goban, MARK } from './goban.js'
 import { sound } from './sound.js'
 import { progress } from './progress.js'
@@ -27,7 +27,7 @@ export function mountExercise(container, o, ctx = {}) {
       <div class="status" aria-live="polite"></div>
       <div class="hint" hidden></div>
       <div class="actions">
-        <button class="btn quiet" data-act="pass" title="Play elsewhere">Pass</button>
+        ${hasPass(tree) ? '<button class="btn quiet" data-act="pass" title="Play elsewhere">Pass</button>' : ''}
         <button class="btn quiet" data-act="hint">Hint</button>
         <button class="btn quiet" data-act="reset">Reset</button>
         <button class="btn quiet" data-act="solution">Show solution</button>
@@ -102,7 +102,7 @@ export function mountExercise(container, o, ctx = {}) {
   container.querySelector('.actions').addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return
     sound.unlock()
-    if (b.dataset.act === 'pass') { if (solved || showing || !board.inputWho) return; board.disableInput(); board.play(null).then(rec => { progress.recordMove(); onMove(rec) }) }
+    if (b.dataset.act === 'pass') { if (solved || showing || !board.inputWho) return; board.disableInput(); board.play(null).then(rec => onMove(rec)) }
     if (b.dataset.act === 'hint') { showHint(); if (!o.hint) setStatus('No hint for this one — count the liberties first.') }
     if (b.dataset.act === 'reset') reset()
     if (b.dataset.act === 'solution') showSolution()
@@ -115,4 +115,6 @@ export function mountExercise(container, o, ctx = {}) {
 }
 
 const wait = ms => new Promise(r => setTimeout(r, ms))
+/** does any reader node of the solution tree accept a pass? (depth 0, 2, 4 … from the root) */
+function hasPass(node, depth = 0) { return node.children.some(c => (depth % 2 === 0 && c.point === null) || hasPass(c, depth + 1)) }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }

@@ -204,12 +204,19 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
               }
             }
             const g2 = g.clone(); g2.turn = pos.turn; walk(tree, g2, 0)
+            // `refute: A1 E1 A2/pass/E1` — each entry is a reader move, or a line reader/opponent/reader… separated by "/",
+            // after which the reader's own chain must be dead
             const mine = ts.find(t => g.board[t] === pos.turn)
-            for (const m of parseCoords(p.refute || '', pos.size)) {
-              const gg = g.clone(); const r = gg.check(m); if (!r.ok) { fail(tag, `refute: ${name(m)} is not even legal (${r.reason})`); continue }
-              gg.play(m)
+            for (const entry of String(p.refute || '').split(/\s+/).filter(Boolean)) {
+              const line = entry.split('/').map(c => c.toLowerCase() === 'pass' ? null : parseCoord(c, pos.size))
+              const gg = g.clone(); gg.turn = pos.turn
+              let bad = false
+              for (const m of line) { const r = gg.check(m); if (!r.ok) { fail(tag, `refute: ${entry}: ${name(m)} is not legal (${r.reason})`); bad = true; break } gg.play(m) }
+              if (bad) continue
+              if (line.length % 2 === 0) { fail(tag, `refute: ${entry} must end on a reader move`); continue }
+              if (gg.board[mine] !== pos.turn) continue   // already captured: refuted
               const st = lifeStatus(gg, mine, 3 - pos.turn)
-              if (st.status !== 'dead') fail(tag, `refute: after ${name(m)} the reader's chain is ${st.status}, not dead`)
+              if (st.status !== 'dead') fail(tag, `refute: after ${entry} the reader's chain is ${st.status}, not dead`)
             }
           }
           if (p.expect === 'capture') {

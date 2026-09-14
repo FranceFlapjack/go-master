@@ -41,7 +41,7 @@ expect: dead
 target: A3
 hint: Four points in an L. Which one touches the most of the others?
 prompt: Kill the white group.
-success: B1. It touches A1 and C1, and it makes A2 and A1 a bent two that can never be two eyes. If White plays A2, you play A1; if A1, then A2; if C1, then A2 again. A bent four is alive in the open — but not squeezed into a corner with no outside liberties.
+success: B1. It touches A1 and C1, and it makes A2 and A1 a bent two that can never be two eyes. If White plays A2, you play A1; if A1, then A2; if C1, then A2 again. A bent four is alive in the open; this one is squeezed into the corner with no outside liberties, and it dies.
 ```
 
 <p class="puzzle-intro">3 · White to play. A black stone sits inside your eye space. Live.</p>

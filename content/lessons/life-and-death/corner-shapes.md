@@ -28,7 +28,7 @@ size: 9
 white: B2 C2 D2 E2 F2 G2 H2
 black: A2 J2 A3 B3 C3 D3 E3 F3 G3 H3 J3
 life: B2 first
-caption: Seven stones. Whoever plays first decides it: White lives with B1, E1 or H1; Black kills with B1 or H1, the points a hane would take.
+caption: Seven stones. Whoever plays first decides it — problems 1 and 2 below show the points that do it for each side.
 ```
 
 ```board
@@ -56,7 +56,7 @@ size: 9
 white: A2 B2 C2 D2 E2
 black: F2 F1 A3 B3 C3 D3 E3 F3
 life: A2 first
-caption: Five: whoever plays first — B1 or E1 for either side.
+caption: Five: whoever plays first (problems 3 and 4).
 ```
 
 ```board
@@ -76,7 +76,7 @@ size: 9
 white: A3 B3 C3 D3 D2 D1
 black: A4 B4 C4 D4 E4 E3 E2 E1
 life: A3 first
-caption: Rectangular six in the corner with no outside liberties. Black kills at B2 (B1 works too); White lives with either of the same points. With two or more outside liberties the same shape is alive without a move; with exactly one it is a ko.
+caption: Rectangular six in the corner with no outside liberties. Whoever plays first decides it; Black's killing moves are problem 5. With two or more outside liberties the same shape is alive without a move; with exactly one it is a ko.
 ```
 
 ## Problems
