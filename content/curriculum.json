@@ -125,12 +125,12 @@
         {
           "slug": "corners-sides-centre",
           "title": "Corners, sides, centre",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "the-4-4-and-3-4-points",
           "title": "The 4-4 and 3-4 points",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "enclosures-and-approaches",
