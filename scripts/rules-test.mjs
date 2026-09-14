@@ -2,6 +2,7 @@
 // Rules engine checks: run before touching js/rules/go.js. Exit code 1 on any failure.
 import { Game, BLACK, WHITE, EMPTY, parseCoord, coordName, parseSgfCoord, sgfCoord, starPoints } from '../js/rules/go.js'
 import { canCapture, canEscape } from '../js/rules/capture-search.js'
+import { lifeStatus, passAlive } from '../js/rules/life-search.js'
 
 let fails = 0
 const ok = (cond, msg) => { if (!cond) { fails++; console.log('FAIL', msg) } else console.log('ok  ', msg) }
@@ -93,6 +94,41 @@ for (const [stone, a, b] of [['A1', 'A2', 'B1'], ['J1', 'J2', 'H1'], ['A9', 'A8'
   for (const m of ['F5', 'E4']) { const h = g.clone(); h.play(P(h, m)); ok(canEscape(h, P(h, 'E5')).escaped, `…while the atari at ${m} lets it escape`) } }
 // legal moves count on an empty board
 ok(g9().legalMoves().length === 81, '81 legal moves on an empty 9×9')
+
+// life-and-death search (js/rules/life-search.js): the classical eye shapes in the corner, walls enclosed by black
+{ const shape = (white, black) => { const g = g9(); g.setup({ white: white.split(' ').map(s => P(g, s)), black: black.split(' ').map(s => P(g, s)) }); return g }
+  const status = (g, turn) => lifeStatus(g, P(g, 'A3'), turn)
+  const line = r => r.line.map(p => p === null ? 'pass' : coordName(p, 9)).join(' ')
+  // pass-alive: two real eyes are pass-alive, one eye is not, a straight four is not (it needs an answer)
+  { const g = g9(); g.setup({ white: ['A2', 'B2', 'C2', 'D2', 'D1', 'B1'].map(s => P(g, s)), black: ['A3', 'B3', 'C3', 'D3', 'E2', 'E1'].map(s => P(g, s)) })
+    ok(passAlive(g.board, 9, WHITE)[P(g, 'A2')] === 1, 'Benson: two eyes are pass-alive') }
+  { const g = g9(); g.setup({ white: ['A2', 'B2', 'B1'].map(s => P(g, s)), black: ['A3', 'B3', 'C2', 'C1'].map(s => P(g, s)) })
+    ok(passAlive(g.board, 9, WHITE)[P(g, 'A2')] === 0, 'Benson: one eye is not') }
+  let g = shape('A2 B2 C2 D2 E2 E1', 'A3 B3 C3 D3 E3 F2 F1')
+  ok(passAlive(g.board, 9, WHITE)[P(g, 'A2')] === 0 && lifeStatus(g, P(g, 'A2'), BLACK).status === 'alive', 'straight four: not pass-alive, but alive whoever moves')
+  g = shape('A2 B2 C2 D2 D1', 'A3 B3 C3 D3 E2 E1')
+  { const r = lifeStatus(g, P(g, 'A2'), BLACK); ok(r.status === 'dead' && coordName(r.line[0], 9) === 'B1', `straight three: Black kills at the middle point (${line(r)})`) }
+  { const r = lifeStatus(g, P(g, 'A2'), WHITE); ok(r.status === 'alive' && coordName(r.line[0], 9) === 'B1', `straight three: White lives at the middle point (${line(r)})`) }
+  g = shape('A3 B3 B2 C2 C1', 'A4 B4 C4 C3 D3 D2 D1')
+  ok(status(g, BLACK).status === 'dead' && coordName(status(g, BLACK).line[0], 9) === 'A1', 'bent three in the corner: the vital point is the corner')
+  ok(status(g, WHITE).status === 'alive', 'bent three in the corner: White first lives')
+  g = shape('A3 B3 C3 C2 C1', 'A4 B4 C4 D3 D2 D1')
+  ok(status(g, BLACK).status === 'dead' && status(g, WHITE).status === 'dead', 'square four is dead whoever moves')
+  g = shape('A3 B3 C3 C2 D2 D1', 'A4 B4 C4 D4 D3 E3 E2 E1')
+  ok(status(g, BLACK).status === 'dead' && coordName(status(g, BLACK).line[0], 9) === 'B1' && status(g, WHITE).status === 'alive', 'bulky five: the vital point B1 decides it')
+  g = shape('A2 B3 C2 D1 D2 A3 C3', 'A4 B4 C4 D4 D3 E2 E1')
+  ok(lifeStatus(g, P(g, 'A2'), BLACK).status === 'dead' && coordName(lifeStatus(g, P(g, 'A2'), BLACK).line[0], 9) === 'B1' && lifeStatus(g, P(g, 'A2'), WHITE).status === 'alive', 'pyramid four: the centre decides it')
+  g = shape('A3 B3 C3 D3 D2 D1', 'A4 B4 C4 D4 E4 F3 F2 E1')
+  ok(status(g, BLACK).status === 'alive', 'rectangular six in the corner with two outside liberties lives')
+  g = shape('A3 B3 C3 D3 D2 D1', 'A4 B4 C4 D4 E4 F3 E2 E1')
+  ok(status(g, BLACK).status === 'unknown', 'rectangular six in the corner with one outside liberty: a ko, reported as unknown')
+  g = shape('A3 B3 C3 D3 D2 D1', 'A4 B4 C4 D4 E4 E3 E2 E1')
+  ok(status(g, BLACK).status === 'dead' && coordName(status(g, BLACK).line[0], 9) === 'B2', 'rectangular six in the corner with no outside liberties dies to the 2-2 point')
+  // seki: two chains sharing two liberties, neither can approach; both are "alive" to the search
+  g = shape('A2 B2 C2 D2 E2 F2 F1', 'A3 B3 C3 D3 E3 F3 G2 G1 B1 C1 D1')
+  { const w = lifeStatus(g, P(g, 'A2'), BLACK), b = lifeStatus(g, P(g, 'B1'), WHITE)
+    ok(w.status === 'alive' && b.status === 'alive', `seki: neither side can capture the other (white ${w.status}, black ${b.status})`) }
+}
 
 console.log(fails ? `\n${fails} failure(s)` : '\nall rules checks passed')
 process.exit(fails ? 1 : 0)

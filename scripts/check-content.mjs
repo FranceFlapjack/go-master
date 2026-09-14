@@ -9,6 +9,7 @@ import { positionFrom } from '../js/position.js'
 import { parseSolution, loadSgf } from '../js/sgf.js'
 import { Game, coordName, parseCoords, parseCoord } from '../js/rules/go.js'
 import { canCapture, canEscape } from '../js/rules/capture-search.js'
+import { lifeStatus } from '../js/rules/life-search.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const curriculum = JSON.parse(readFileSync(join(root, 'content/curriculum.json'), 'utf8'))
@@ -43,6 +44,31 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
           // `score: B+3.5` / `W+6.5` / `jigo` (area count, komi 7.5, no dead stones): the caption's arithmetic, checked by our scorer
           const s = g.score(p.dead ? parseCoords(p.dead, pos.size) : []), got = s.winner === 1 ? `B+${s.margin}` : s.winner === 2 ? `W+${-s.margin}` : 'jigo'
           if (got !== p.score) fail(tag, `score: ${p.score} but the scorer says ${got} (black ${s.black}, white ${s.white})`)
+        }
+        if (p.life) {
+          // `life: A3 alive` — the group at A3 lives even if the attacker moves first; `life: A3 dead` — dead even if the
+          // defender moves first; `life: A3 vital B1` — whoever plays B1 first decides it, and no other point does.
+          const [stone, claim, vital] = p.life.split(/\s+/)
+          const t = parseCoord(stone, pos.size)
+          if (!g.board[t]) fail(tag, `life: ${stone} is empty`)
+          else {
+            const defender = g.board[t], attacker = 3 - defender
+            const name = m => m === null ? 'pass' : coordName(m, pos.size)
+            const st = (game, turn) => { const r = lifeStatus(game, t, turn); if (r.status === 'unknown') fail(tag, `life: search unknown (${r.reason || 'a ko?'})`); return r }
+            if (claim === 'alive') { const r = st(g, attacker); if (r.status !== 'alive') fail(tag, `life: ${stone} alive, but the attacker kills it (${r.line.map(name).join(' ')})`) }
+            else if (claim === 'dead') { const r = st(g, defender); if (r.status !== 'dead') fail(tag, `life: ${stone} dead, but the defender lives (${r.line.map(name).join(' ')})`) }
+            else if (claim === 'vital' && vital) {
+              const v = parseCoord(vital, pos.size)
+              const region = lifeStatus(g, t, attacker).region || []
+              for (const [who, want] of [[attacker, 'dead'], [defender, 'alive']]) {
+                const works = []
+                for (const m of region) { if (g.board[m] || !g.check(m, who).ok) continue; const gg = g.clone(); gg.turn = who; gg.play(m); if (gg.board[t] !== defender) { if (want === 'dead') works.push(m); continue } const r = lifeStatus(gg, t, 3 - who); if (r.status === 'unknown') fail(tag, `life: unknown after ${name(m)}`); if (r.status === want) works.push(m) }
+                if (!works.includes(v)) fail(tag, `life: vital ${vital}, but ${who === attacker ? 'the attacker' : 'the defender'} playing there does not ${want === 'dead' ? 'kill' : 'live'}`)
+                const others = works.filter(m => m !== v)
+                if (others.length) fail(tag, `life: vital ${vital}, but ${others.map(name).join(' ')} also ${want === 'dead' ? 'kill(s)' : 'live(s)'} for ${who === attacker ? 'the attacker' : 'the defender'}`)
+              }
+            } else fail(tag, `life: expected "<stone> alive|dead|vital <point>", got "${p.life}"`)
+          }
         }
         if (kind === 'try') {
           tries++
@@ -112,6 +138,49 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
               }
             }
             const g2 = g.clone(); g2.turn = pos.turn; walk(tree, g2, 0)
+          }
+          if (p.expect === 'live' || p.expect === 'dead') {
+            // the life-and-death oracle (js/rules/life-search.js): reads the target's eye space to the end.
+            // `dead`: the reader attacks — before the move the group would live if it moved first; after every reader
+            // move in the tree it is dead; no other first move kills. `live`: the mirror image. `unique: false` waives
+            // the uniqueness check. An `unknown` (ko, or too big a region) is a failure: problems must read out.
+            if (!p.target) { fail(tag, `expect: ${p.expect} needs target: <a stone of the group>`); continue }
+            const target = parseCoord(p.target, pos.size)
+            if (!g.board[target]) { fail(tag, `target: ${p.target} is empty`); continue }
+            const defender = g.board[target], attacker = 3 - defender
+            const reader = p.expect === 'dead' ? attacker : defender
+            if (pos.turn !== reader) fail(tag, `expect: ${p.expect}, but it is ${reader === attacker ? 'the defender' : 'the attacker'} to move`)
+            const name = m => m === null ? 'pass' : coordName(m, pos.size)
+            const st = (game, turn) => { const r = lifeStatus(game, target, turn); if (r.status === 'unknown') fail(tag, `life search: unknown (${r.reason || (r.complete ? 'too deep, a ko?' : 'node limit')}) with ${turn === attacker ? 'the attacker' : 'the defender'} to move`); return r }
+            // it must be a problem: the side not to move would get the opposite result
+            const before = st(g, 3 - reader)
+            if (before.status !== (p.expect === 'dead' ? 'alive' : 'dead')) fail(tag, `expect: ${p.expect}, but if the opponent moved first the group would already be ${before.status} (not a problem)`)
+            // after every reader move in the tree, the status the prose claims
+            const walk = (node, game, depth) => {
+              for (const c of node.children) {
+                const gg = game.clone(); if (!gg.check(c.point).ok) continue; gg.play(c.point)
+                if (depth % 2 === 0 && gg.board[target] === defender) {
+                  const r = st(gg, 3 - reader)
+                  if (r.status !== p.expect.replace('live', 'alive')) fail(tag, `expect: ${p.expect}, but after ${name(c.point)} the group is ${r.status}${r.line.length ? ' (' + r.line.map(name).join(' ') + ')' : ''}`)
+                } else if (depth % 2 === 0 && p.expect === 'live') fail(tag, `expect: live, but after ${name(c.point)} the target stone is gone`)
+                walk(c, gg, depth + 1)
+              }
+            }
+            const g2 = g.clone(); g2.turn = pos.turn; walk(tree, g2, 0)
+            if (p.unique !== 'false') {
+              const answers = new Set(tree.children.map(c => c.point))
+              const region = before.region || []
+              const others = []
+              for (const m of [...region.filter(q => !g.board[q]), null]) {
+                if (answers.has(m) || (m !== null && !g.check(m).ok)) continue
+                const gg = g.clone(); gg.play(m)
+                if (m !== null && gg.board[target] !== defender) { if (p.expect === 'dead') others.push(m); continue }
+                const r = lifeStatus(gg, target, 3 - reader)
+                if (r.status === p.expect.replace('live', 'alive')) others.push(m)
+                else if (r.status === 'unknown') fail(tag, `life search: unknown after the alternative ${name(m)} (a ko?)`)
+              }
+              if (others.length) fail(tag, `expect: ${p.expect}, but ${others.map(name).join(' ')} also work(s)`)
+            }
           }
           if (p.expect === 'capture') {
             // the capturing move must be unique: any other legal capture is an ambiguous problem

@@ -6,12 +6,36 @@
       "beginner": true,
       "blurb": "For someone who has never played. The board, liberties and capture, ko, two eyes, and how a game ends and is counted. All on the 9×9 board.",
       "lessons": [
-        { "slug": "the-board-and-the-stones", "title": "The board and the stones", "ready": true },
-        { "slug": "liberties-and-capture", "title": "Liberties and capture", "ready": true },
-        { "slug": "ko", "title": "Ko: no immediate retake", "ready": true },
-        { "slug": "two-eyes", "title": "Two eyes: a group that cannot die", "ready": true },
-        { "slug": "counting-the-score", "title": "How a game ends and is counted", "ready": true },
-        { "slug": "reading-a-game-record", "title": "Reading a game record", "ready": true }
+        {
+          "slug": "the-board-and-the-stones",
+          "title": "The board and the stones",
+          "ready": true
+        },
+        {
+          "slug": "liberties-and-capture",
+          "title": "Liberties and capture",
+          "ready": true
+        },
+        {
+          "slug": "ko",
+          "title": "Ko: no immediate retake",
+          "ready": true
+        },
+        {
+          "slug": "two-eyes",
+          "title": "Two eyes: a group that cannot die",
+          "ready": true
+        },
+        {
+          "slug": "counting-the-score",
+          "title": "How a game ends and is counted",
+          "ready": true
+        },
+        {
+          "slug": "reading-a-game-record",
+          "title": "Reading a game record",
+          "ready": true
+        }
       ]
     },
     {
@@ -19,13 +43,41 @@
       "title": "Capturing techniques",
       "blurb": "The ladder, the net, snapback, shortage of liberties, cutting, and the capturing race: the handful of shapes that decide whether stones can be caught.",
       "lessons": [
-        { "slug": "the-ladder", "title": "The ladder", "ready": true },
-        { "slug": "the-net", "title": "The net", "ready": true },
-        { "slug": "snapback", "title": "Snapback", "ready": true },
-        { "slug": "shortage-of-liberties", "title": "Shortage of liberties", "ready": true },
-        { "slug": "connect-and-cut", "title": "Connecting and cutting", "ready": true },
-        { "slug": "capturing-races", "title": "Capturing races", "ready": true },
-        { "slug": "which-technique", "title": "Which technique? A problem set", "ready": true }
+        {
+          "slug": "the-ladder",
+          "title": "The ladder",
+          "ready": true
+        },
+        {
+          "slug": "the-net",
+          "title": "The net",
+          "ready": true
+        },
+        {
+          "slug": "snapback",
+          "title": "Snapback",
+          "ready": true
+        },
+        {
+          "slug": "shortage-of-liberties",
+          "title": "Shortage of liberties",
+          "ready": true
+        },
+        {
+          "slug": "connect-and-cut",
+          "title": "Connecting and cutting",
+          "ready": true
+        },
+        {
+          "slug": "capturing-races",
+          "title": "Capturing races",
+          "ready": true
+        },
+        {
+          "slug": "which-technique",
+          "title": "Which technique? A problem set",
+          "ready": true
+        }
       ]
     },
     {
@@ -33,12 +85,36 @@
       "title": "Life and death",
       "blurb": "Eye shape, false eyes, seki and the corner shapes every player must know. Problems first, theory after.",
       "lessons": [
-        { "slug": "eye-shapes", "title": "Eye shapes: three, four, five in a row", "ready": false },
-        { "slug": "false-eyes", "title": "False eyes", "ready": false },
-        { "slug": "seki", "title": "Seki: mutual life", "ready": false },
-        { "slug": "corner-shapes", "title": "Life in the corner", "ready": false },
-        { "slug": "tsumego-set-1", "title": "Problems, set one", "ready": false },
-        { "slug": "tsumego-set-2", "title": "Problems, set two", "ready": false }
+        {
+          "slug": "eye-shapes",
+          "title": "Eye shapes: three, four, five in a row",
+          "ready": true
+        },
+        {
+          "slug": "false-eyes",
+          "title": "False eyes",
+          "ready": false
+        },
+        {
+          "slug": "seki",
+          "title": "Seki: mutual life",
+          "ready": false
+        },
+        {
+          "slug": "corner-shapes",
+          "title": "Life in the corner",
+          "ready": false
+        },
+        {
+          "slug": "tsumego-set-1",
+          "title": "Problems, set one",
+          "ready": false
+        },
+        {
+          "slug": "tsumego-set-2",
+          "title": "Problems, set two",
+          "ready": false
+        }
       ]
     },
     {
@@ -46,12 +122,36 @@
       "title": "The opening",
       "blurb": "Corners, then sides, then the centre. The 4-4 and 3-4 points, enclosures, approaches and extensions, from real professional games.",
       "lessons": [
-        { "slug": "corners-sides-centre", "title": "Corners, sides, centre", "ready": false },
-        { "slug": "the-4-4-and-3-4-points", "title": "The 4-4 and 3-4 points", "ready": false },
-        { "slug": "enclosures-and-approaches", "title": "Enclosures and approaches", "ready": false },
-        { "slug": "extensions", "title": "Extensions and the two-space rule", "ready": false },
-        { "slug": "the-9x9-opening", "title": "Opening on the small board", "ready": false },
-        { "slug": "handicap-go", "title": "Handicap games", "ready": false }
+        {
+          "slug": "corners-sides-centre",
+          "title": "Corners, sides, centre",
+          "ready": false
+        },
+        {
+          "slug": "the-4-4-and-3-4-points",
+          "title": "The 4-4 and 3-4 points",
+          "ready": false
+        },
+        {
+          "slug": "enclosures-and-approaches",
+          "title": "Enclosures and approaches",
+          "ready": false
+        },
+        {
+          "slug": "extensions",
+          "title": "Extensions and the two-space rule",
+          "ready": false
+        },
+        {
+          "slug": "the-9x9-opening",
+          "title": "Opening on the small board",
+          "ready": false
+        },
+        {
+          "slug": "handicap-go",
+          "title": "Handicap games",
+          "ready": false
+        }
       ]
     },
     {
@@ -59,11 +159,31 @@
       "title": "Joseki",
       "blurb": "Standard corner sequences: a small set worth knowing, why each move is played, and when to leave the book.",
       "lessons": [
-        { "slug": "4-4-knights-approach", "title": "4-4 point: the knight's approach", "ready": false },
-        { "slug": "4-4-attach-and-extend", "title": "4-4 point: attach and extend", "ready": false },
-        { "slug": "3-4-basics", "title": "3-4 point basics", "ready": false },
-        { "slug": "3-3-invasion", "title": "The 3-3 invasion", "ready": false },
-        { "slug": "leaving-joseki", "title": "When to leave the joseki", "ready": false }
+        {
+          "slug": "4-4-knights-approach",
+          "title": "4-4 point: the knight's approach",
+          "ready": false
+        },
+        {
+          "slug": "4-4-attach-and-extend",
+          "title": "4-4 point: attach and extend",
+          "ready": false
+        },
+        {
+          "slug": "3-4-basics",
+          "title": "3-4 point basics",
+          "ready": false
+        },
+        {
+          "slug": "3-3-invasion",
+          "title": "The 3-3 invasion",
+          "ready": false
+        },
+        {
+          "slug": "leaving-joseki",
+          "title": "When to leave the joseki",
+          "ready": false
+        }
       ]
     },
     {
@@ -71,13 +191,41 @@
       "title": "Direction of play",
       "blurb": "Attack and defence, influence against territory, thickness, invading and reducing. The middlegame as professionals explain it.",
       "lessons": [
-        { "slug": "urgent-before-big", "title": "Urgent before big", "ready": false },
-        { "slug": "attack-and-defence", "title": "Attack to gain, not to kill", "ready": false },
-        { "slug": "influence-and-territory", "title": "Influence and territory", "ready": false },
-        { "slug": "thickness", "title": "Thickness: use it, do not enclose with it", "ready": false },
-        { "slug": "invasion-and-reduction", "title": "Invading and reducing", "ready": false },
-        { "slug": "good-and-bad-shape", "title": "Good shape, bad shape", "ready": false },
-        { "slug": "ko-fights", "title": "Ko fights and threats", "ready": false }
+        {
+          "slug": "urgent-before-big",
+          "title": "Urgent before big",
+          "ready": false
+        },
+        {
+          "slug": "attack-and-defence",
+          "title": "Attack to gain, not to kill",
+          "ready": false
+        },
+        {
+          "slug": "influence-and-territory",
+          "title": "Influence and territory",
+          "ready": false
+        },
+        {
+          "slug": "thickness",
+          "title": "Thickness: use it, do not enclose with it",
+          "ready": false
+        },
+        {
+          "slug": "invasion-and-reduction",
+          "title": "Invading and reducing",
+          "ready": false
+        },
+        {
+          "slug": "good-and-bad-shape",
+          "title": "Good shape, bad shape",
+          "ready": false
+        },
+        {
+          "slug": "ko-fights",
+          "title": "Ko fights and threats",
+          "ready": false
+        }
       ]
     },
     {
@@ -85,10 +233,26 @@
       "title": "The endgame",
       "blurb": "Sente and gote, the value of a move, and the endgame tesuji that swing close games.",
       "lessons": [
-        { "slug": "sente-and-gote", "title": "Sente and gote", "ready": false },
-        { "slug": "counting-endgame-moves", "title": "Counting the value of a move", "ready": false },
-        { "slug": "endgame-tesuji", "title": "Endgame tesuji", "ready": false },
-        { "slug": "dame-and-the-final-count", "title": "Neutral points and the final count", "ready": false }
+        {
+          "slug": "sente-and-gote",
+          "title": "Sente and gote",
+          "ready": false
+        },
+        {
+          "slug": "counting-endgame-moves",
+          "title": "Counting the value of a move",
+          "ready": false
+        },
+        {
+          "slug": "endgame-tesuji",
+          "title": "Endgame tesuji",
+          "ready": false
+        },
+        {
+          "slug": "dame-and-the-final-count",
+          "title": "Neutral points and the final count",
+          "ready": false
+        }
       ]
     },
     {
@@ -96,9 +260,21 @@
       "title": "Study a whole game",
       "blurb": "Famous games played through move by move with commentary: Shusaku's ear-reddening game, Go Seigen against Shusai, AlphaGo against Lee Sedol.",
       "lessons": [
-        { "slug": "shusaku-ear-reddening-1846", "title": "Shusaku, the ear-reddening game (1846)", "ready": false },
-        { "slug": "go-seigen-shusai-1933", "title": "Go Seigen – Honinbo Shusai (1933)", "ready": false },
-        { "slug": "lee-sedol-alphago-2016", "title": "Lee Sedol – AlphaGo, game 4 (2016)", "ready": false }
+        {
+          "slug": "shusaku-ear-reddening-1846",
+          "title": "Shusaku, the ear-reddening game (1846)",
+          "ready": false
+        },
+        {
+          "slug": "go-seigen-shusai-1933",
+          "title": "Go Seigen – Honinbo Shusai (1933)",
+          "ready": false
+        },
+        {
+          "slug": "lee-sedol-alphago-2016",
+          "title": "Lee Sedol – AlphaGo, game 4 (2016)",
+          "ready": false
+        }
       ]
     }
   ]
