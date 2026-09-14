@@ -5,7 +5,8 @@ title: The 4-4 and 3-4 points
 lede: One stone takes a corner, but not all corner stones are the same. The 4-4 point is fast and loose; the 3-4 point is slower and wants a second stone. Which you choose says what kind of game you want.
 level: 3
 sources:
-  - Wikipedia, "Go opening theory", "Shimari" and "Shin Fuseki" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_opening_theory, https://en.wikipedia.org/wiki/Shimari, https://en.wikipedia.org/wiki/Shin_Fuseki — names of the points and enclosures; the 1930s history of the 4-4 point
+  - Wikipedia, "Go opening theory", "List of Go terms" and "Shin Fuseki" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_opening_theory, https://en.wikipedia.org/wiki/List_of_Go_terms, https://en.wikipedia.org/wiki/Shin_Fuseki — the corner points (hoshi, komoku, san-san), the low and high approach (kakari at 5-3 and 5-4), and the 1930s history of the 4-4 point
+  - Arthur Smith, The Game of Go (1908), chapter IV, on "shimari", "kakari" and the knight's-move relations — public domain, https://www.gutenberg.org/ebooks/66632
   - Game records — AlphaGo (B) v Lee Sedol (W), 2016, game 2, and Gennan Inseki (W) v Shusaku (B), 1846; see the previous lesson and the `SO[]` line of each file.
   - The problems in this track are judgement, not calculation; the accepted answers are the standard points named in the sources, or the move played in the model game. Nothing here was checked by an engine.
 ---
