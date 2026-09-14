@@ -70,27 +70,45 @@ function neighbours(size) {
   return out
 }
 
-/** the eye space around the target: empties reachable from its liberties, plus every chain (not the target)
- *  whose liberties all lie inside — those can be captured and their points become playable. */
+/** the eye space around the target: the empty points reachable from its liberties, grown until it is closed —
+ *  a chain (either colour, not the target) whose liberties all lie inside joins it, since it can be captured and its
+ *  points played on; an empty point joins when every neighbour is inside, is the target, or belongs to a chain that
+ *  touches the inside (a point hemmed in by inside stones, like the corner point behind a cutting stone). */
 export function lifeRegion(board, size, target) {
   const nb = neighbours(size), n = size * size
   const color = board[target]
   const inRegion = new Uint8Array(n), stack = []
-  // the target chain and its liberties
   const targetStones = new Uint8Array(n); stack.push(target); targetStones[target] = 1
   while (stack.length) { const p = stack.pop(); for (const q of nb[p]) if (board[q] === color && !targetStones[q]) { targetStones[q] = 1; stack.push(q) } }
-  for (let i = 0; i < n; i++) if (targetStones[i]) for (const q of nb[i]) if (board[q] === EMPTY && !inRegion[q]) { inRegion[q] = 1; stack.push(q) }
-  while (stack.length) { const p = stack.pop(); for (const q of nb[p]) if (board[q] === EMPTY && !inRegion[q]) { inRegion[q] = 1; stack.push(q) } }
-  // chains with every liberty inside the region (either colour, not the target) join the region
+  const floodEmpty = from => { stack.push(...from); for (const f of from) inRegion[f] = 1; while (stack.length) { const p = stack.pop(); for (const q of nb[p]) if (board[q] === EMPTY && !inRegion[q]) { inRegion[q] = 1; stack.push(q) } } }
+  const seeds = []; for (let i = 0; i < n; i++) if (targetStones[i]) for (const q of nb[i]) if (board[q] === EMPTY && !inRegion[q]) seeds.push(q)
+  floodEmpty(seeds)
+  // chains, once
+  const chainId = new Int32Array(n).fill(-1), chains = []
+  for (let i = 0; i < n; i++) {
+    if (!board[i] || chainId[i] >= 0) continue
+    const id = chains.length, stones = [], libs = new Set(); chainId[i] = id; stack.push(i)
+    while (stack.length) { const p = stack.pop(); stones.push(p); for (const q of nb[p]) { if (board[q] === board[i] && chainId[q] < 0) { chainId[q] = id; stack.push(q) } else if (board[q] === EMPTY) libs.add(q) } }
+    chains.push({ stones, libs, target: !!targetStones[i] })
+  }
   let grew = true
   while (grew) {
     grew = false
-    const seen = new Uint8Array(n)
-    for (let i = 0; i < n; i++) {
-      if (!board[i] || seen[i] || targetStones[i] || inRegion[i]) continue
-      const stones = [], libs = []; stack.push(i); seen[i] = 1
-      while (stack.length) { const p = stack.pop(); stones.push(p); for (const q of nb[p]) { if (board[q] === board[i] && !seen[q]) { seen[q] = 1; stack.push(q) } else if (board[q] === EMPTY) libs.push(q) } }
-      if (libs.length && libs.every(l => inRegion[l])) { for (const s of stones) inRegion[s] = 1; grew = true; for (const s of stones) for (const q of nb[s]) if (board[q] === EMPTY && !inRegion[q]) { inRegion[q] = 1; stack.push(q); while (stack.length) { const p = stack.pop(); for (const r of nb[p]) if (board[r] === EMPTY && !inRegion[r]) { inRegion[r] = 1; stack.push(r) } } } }
+    for (const c of chains) {
+      if (c.target || inRegion[c.stones[0]] || !c.libs.size) continue
+      let all = true; for (const l of c.libs) if (!inRegion[l]) { all = false; break }
+      if (all) { for (const s of c.stones) inRegion[s] = 1; grew = true }
+    }
+    for (let p = 0; p < n; p++) {
+      if (board[p] !== EMPTY || inRegion[p]) continue
+      let closed = true
+      for (const q of nb[p]) {
+        if (inRegion[q] || targetStones[q]) continue
+        if (board[q] === EMPTY) { closed = false; break }
+        let touches = false; for (const l of chains[chainId[q]].libs) if (inRegion[l]) { touches = true; break }
+        if (!touches) { closed = false; break }
+      }
+      if (closed) { floodEmpty([p]); grew = true }
     }
   }
   const points = []; for (let i = 0; i < n; i++) if (inRegion[i]) points.push(i)

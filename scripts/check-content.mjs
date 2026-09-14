@@ -57,6 +57,11 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
             const st = (game, turn) => { const r = lifeStatus(game, t, turn); if (r.status === 'unknown') fail(tag, `life: search unknown (${r.reason || 'a ko?'})`); return r }
             if (claim === 'alive') { const r = st(g, attacker); if (r.status !== 'alive') fail(tag, `life: ${stone} alive, but the attacker kills it (${r.line.map(name).join(' ')})`) }
             else if (claim === 'dead') { const r = st(g, defender); if (r.status !== 'dead') fail(tag, `life: ${stone} dead, but the defender lives (${r.line.map(name).join(' ')})`) }
+            else if (claim === 'first') {
+              const r1 = st(g, attacker), r2 = st(g, defender)
+              if (r1.status !== 'dead') fail(tag, `life: ${stone} first, but the attacker moving first does not kill (${r1.status})`)
+              if (r2.status !== 'alive') fail(tag, `life: ${stone} first, but the defender moving first does not live (${r2.status})`)
+            }
             else if (claim === 'vital' && vital) {
               const v = parseCoord(vital, pos.size)
               const region = lifeStatus(g, t, attacker).region || []
@@ -67,7 +72,7 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
                 const others = works.filter(m => m !== v)
                 if (others.length) fail(tag, `life: vital ${vital}, but ${others.map(name).join(' ')} also ${want === 'dead' ? 'kill(s)' : 'live(s)'} for ${who === attacker ? 'the attacker' : 'the defender'}`)
               }
-            } else fail(tag, `life: expected "<stone> alive|dead|vital <point>", got "${p.life}"`)
+            } else fail(tag, `life: expected "<stone> alive|dead|first|vital <point>", got "${p.life}"`)
           }
         }
         if (kind === 'try') {
