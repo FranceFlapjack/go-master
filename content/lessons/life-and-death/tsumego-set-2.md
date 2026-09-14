@@ -2,7 +2,7 @@
 id: life-and-death/tsumego-set-2
 track: Life and death
 title: Problems, set two
-lede: Six more, a little less tidy: stones inside the eye space, an outside liberty that matters, a false eye at the top, and one on the big board.
+lede: Six more, a little less tidy: stones inside the eye space, a hane not yet played, a false eye at the top, and one on the big board.
 level: 2
 sources:
   - Positions composed for this course (not taken from a classical collection). Every one is read to the end by the site's life-and-death search, which also confirms that the listed answers are the only ones.

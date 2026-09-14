@@ -34,12 +34,16 @@ node scripts/bot-test.mjs         # the computer opponent (run before touching j
 - `safe: A2` — after every reader move of every line, the reader's own chain at A2 cannot be captured (the search aimed at our stones). Required wherever the prose says "without losing your own". It checks **that one chain only**; name each chain at risk. `quiet: 0` restricts the hypothetical attacker to ataris; it *weakens* the uniqueness check (fewer moves count as kills), so use it only with a reason written into the fence, and never to silence a flood of alternatives — that flood means the position is wrong.
 - `refute: A1 E4` (needs `target:`) — the moves the prose says fail must fail under the capture search: no immediate capture of the target, and the chain still escapes (`kill`) / is still caught (`escape`). Use it on every "had you played X instead" sentence.
 - `expect: capture` — every solution line is legal, ends on a reader move that captures, and no *other first move* captures (uniqueness at the root only).
+- `expect: live` / `expect: dead` with `target: <stone>` — `js/rules/life-search.js`, the life-and-death reader: an exhaustive search of the target's eye space (every move for both sides, passes included) ending in capture, in Benson's pass-alive test, or in two passes. It asserts the position is a problem (the other side moving first gets the opposite result), that after every reader move in the tree the group is dead / alive, and that no other first move works (`unique: false` waives that; the tree should then list every working move). A `unknown` (a ko, or a region over 14 points) fails the check. Scope: the region is the closed eye space; the surrounding wall is taken as safe. Compose problems enclosed, ko-free, region ≤ 8 points or the checker gets slow.
+- `expect: seki` with `target: <a stone of each colour>` — both chains alive whoever moves; after every reader move in the tree still so; `refute:` moves leave the reader's own chain dead. The answer is usually `pass` (exercises have a Pass button).
+- `life: A3 alive | dead | first | vital B1` on a `board` fence — the diagram's claim, by the same search: alive even if the attacker moves first / dead even if the defender moves first / whoever moves first wins / B1 is the one point that decides it for both sides.
+- `node scripts/life-explore.mjs 9 "<black>" "<white>" A3 b dead` prints every working first move and an answer to every reply, in the solution-tree syntax: use it to author, then let the checker confirm.
 Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound — is caught by reading, not by a machine. Say which oracle checked a lesson in its `sources:`, and never claim more.
 
 ## Layout
 
 - `index.html` shell; `js/app.js` router + sidebar + home; `js/lesson.js` Markdown → components; `js/frontmatter.js` and `js/position.js` are the pure helpers shared with `scripts/`.
-- `js/rules/capture-search.js` the ladder/net reader used only by the checker (see Oracles). `scripts/rules-test.mjs` covers it.
+- `js/rules/capture-search.js` the ladder/net reader and `js/rules/life-search.js` the life-and-death reader (Benson + eye-space search), both used only by the checker (see Oracles). `scripts/rules-test.mjs` covers them on the classical shapes.
 - `js/rules/go.js` the rules: board, chains and liberties, capture, suicide, **simple ko** (positional superko later), passes, **area (Chinese) scoring with komi 7.5** and a dead-stone list. Coordinates: `A1`…`T19` (no I) in lessons, `aa`…`ss` in SGF.
 - `js/goban.js` is the single board component (SVG goban, stones, marks, labels, ghost stone, input, animation, sounds). Every board in the app goes through it. Everything visual is in `css/app.css` under "the goban itself" and tokens in `css/tokens.css`.
 - `js/sgf.js` SGF parser (keeps the whole tree) + `loadSgf` (main line with positions) + `parseSolution` (the puzzle tree syntax). `js/sgf-viewer.js` annotated game viewer over the main line with keyboard nav; branch navigation is on the roadmap.
@@ -64,6 +68,7 @@ Markdown with frontmatter (`id`, `track`, `title`, `lede`, `level`, `sources:` l
                                                      target: E5 | move   unique: true   refute: A1 E4
                                                      safe: A2   quiet: 0
     score: B+3.5   (checker: our scorer agrees)        ko: F5             (a pending ko point)
+    life: A3 alive|dead|first|vital B1  (checker)
     territory: true  (paint the counted areas; dead: … removes stones first)
     last: E5                                         hint: … / prompt: … / success: …
     caption: …
