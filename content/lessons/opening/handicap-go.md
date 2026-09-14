@@ -36,28 +36,28 @@ Every handicap stone is a 4-4 point: it takes a corner loosely and faces both si
 
 ## Problems
 
-<p class="puzzle-intro">1 · White to play against four stones. Approach one of them. (Any low or high approach to any corner stone is accepted.)</p>
+<p class="puzzle-intro">1 · White to play against four stones. Approach the stone in the upper-right corner, Q16. (Either knight's-move approach, low or high, is accepted.)</p>
 
 ```try
 size: 19
 turn: w
 handicap: 4
-solution: (C6) (F3) (D6) (F4) (C14) (F17) (D14) (F16) (R6) (O3) (Q6) (O4) (R14) (O17) (Q14) (O16)
-hint: A knight's move from the 4-4 stone, on the third line (low) or the fourth (high).
-prompt: Approach a corner.
-success: Any approach to any of the four stones: the knight's move on the third line (C6, F3 and their mirrors) or the one-point higher (D6, F4 and mirrors). Which corner is a matter of style; the shape is always the same.
+solution: (O17) (O16) (R14) (Q14)
+hint: A knight's move from the 4-4 stone, on the third line (low) or the fourth (high), from either side.
+prompt: Approach the upper-right stone.
+success: O17 or R14, the low approaches, or O16 and Q14, the high ones. A 4-4 stone can be approached from either side; the shape is the same each time, and which side is a matter of what else is on the board.
 ```
 
-<p class="puzzle-intro">2 · White to play against four stones, and you want a sure corner. Invade under one of them.</p>
+<p class="puzzle-intro">2 · White to play against four stones, and you want a sure corner. Invade under the upper-right stone.</p>
 
 ```try
 size: 19
 turn: w
 handicap: 4
-solution: (C3) (R3) (C17) (R17)
-hint: The 3-3 point under a 4-4 stone.
+solution: R17
+hint: The 3-3 point under the 4-4 stone at Q16.
 prompt: Invade at the 3-3 point.
-success: C3, R3, C17 or R17: the 3-3 point under any handicap stone. White lives in the corner; Black gets a wall. Early in a handicap game the wall is often the better half of the trade, which is why strong players usually approach first and invade later.
+success: R17, the 3-3 point under Q16. White lives in the corner; Black gets a wall. Early in a handicap game the wall is often the better half of the trade, which is why strong players usually approach first and invade later.
 ```
 
 <p class="puzzle-intro">3 · Black to play with three stones on 9×9. White's cutting stone at E5 has two liberties. Capture it — both ladders work here, thanks to your stones.</p>

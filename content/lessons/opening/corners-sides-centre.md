@@ -48,16 +48,16 @@ Once the corners are taken, the biggest points are on the sides, between corners
 
 ## Problems
 
-<p class="puzzle-intro">1 · Three corners are taken. Black to play: take the fourth. (Any of the three usual points is accepted.)</p>
+<p class="puzzle-intro">1 · Three corners are taken. Black to play: take the fourth. (Any of the usual corner points is accepted.)</p>
 
 ```try
 size: 13
 black: D4 K10
 white: D10
-solution: (K4) (K3) (L4)
-hint: The empty corner is bottom-right. The 4-4, 3-4 and 4-3 points are all corner moves.
+solution: (K4) (K3) (L4) (L3)
+hint: The empty corner is bottom-right. The 4-4, 3-4 and 3-3 points are all corner moves.
 prompt: Take the last corner.
-success: The last empty corner is the biggest thing on the board. K4 (the 4-4 point), K3 or L4 (the 3-4 points) all take it; which one is a matter of style, and the next lesson.
+success: The last empty corner is the biggest thing on the board. K4 (the 4-4 point), K3 or L4 (the 3-4 points), even L3 (the 3-3) all take it; which one is a matter of style, and the next lesson.
 ```
 
 <p class="puzzle-intro">2 · All four corners are taken. Black to play: which side is biggest?</p>
