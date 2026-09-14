@@ -162,27 +162,27 @@
         {
           "slug": "4-4-knights-approach",
           "title": "4-4 point: the knight's approach",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "4-4-attach-and-extend",
           "title": "4-4 point: attach and extend",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "3-4-basics",
           "title": "3-4 point basics",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "3-3-invasion",
           "title": "The 3-3 invasion",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "leaving-joseki",
           "title": "When to leave the joseki",
-          "ready": false
+          "ready": true
         }
       ]
     },
