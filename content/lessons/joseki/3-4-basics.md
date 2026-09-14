@@ -72,7 +72,7 @@ black: R16 Q15 D4
 solution: (L17) (M17) (K17) (R11)
 hint: Extend along the top — two, three or four spaces — or down the right side.
 prompt: Settle the approach stone.
-success: L17, the three-space extension, is the common choice; M17 and K17 are the tighter and wider versions, and R11 takes the side instead. All are joseki; which is best depends on the stones nearby.
+success: L17, the three-space extension, is the common choice; M17 is the tighter version, and R11 takes the side instead. K17, four spaces, is wide and wants a friendly stone in the upper-left corner to lean on — here D16 is one. All four are in the dictionary; which is best depends on the stones nearby.
 ```
 
 ## Remember

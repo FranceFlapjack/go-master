@@ -2,7 +2,7 @@
 id: joseki/3-3-invasion
 track: Joseki
 title: The 3-3 invasion
-lede: The 4-4 stone's open secret is the point underneath it. White plays there, lives in the corner, and Black gets a wall. Thirteen moves that every player must know, from both sides.
+lede: The 4-4 stone's open secret is the point underneath it. White plays there, lives in the corner, and Black gets a wall. Twelve moves, from the invasion to the last defence, that every player must know from both sides.
 level: 3
 sources:
   - Move sequence from Kogo's Joseki Dictionary (Gary Odom, Alexander Dinerchtein and contributors, 2014-02-25, http://waterfire.us/joseki.htm), the 4-4 point, the 3-3 invasion with the block — used as a move list only; the dictionary's commentary is copyrighted and not reproduced. Checked for legality by the site's rules engine; the mirror-image line is ours by symmetry and checked the same way.
@@ -62,7 +62,7 @@ success: R17, then the crawl and the two hanes: the white group has eyes at the 
 
 ## Remember
 
-- The 3-3 point under a 4-4 stone is always open. Thirteen moves; know them from both sides.
+- The 3-3 point under a 4-4 stone is always open. Twelve moves from the invasion to the defence of the cut; know them from both sides.
 - Black's block chooses the direction of the wall. Block towards where the wall is worth more.
 - White gets a small corner and ends in gote; Black gets a wall. Fair — if the wall faces something.
 

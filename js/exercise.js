@@ -82,7 +82,7 @@ export function mountExercise(container, o, ctx = {}) {
   }
   function showHint() { if (o.hint) { hintEl.textContent = o.hint; hintEl.hidden = false } }
   async function reset() {
-    showing = false; node = tree; solved = false
+    showing = false; node = tree; solved = false; wrong = 0
     board.disableInput()
     container.classList.remove('solved')
     await board.showPosition(pos)

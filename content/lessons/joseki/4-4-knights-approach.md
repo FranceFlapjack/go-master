@@ -49,8 +49,8 @@ black: Q16
 white: R14 D4
 solution: (O16 (S16 R17 (R11 K17)) (R10 K17)) (O17 (S16 R17 (R11 pass)))
 hint: A quiet move along the top: the one-space jump or the knight's move.
-prompt: Answer the approach, then keep going.
-success: The one-space jump or the knight's move, then the block against the slide, then the extension along the top — or, after the knight's move, a move elsewhere: the joseki is finished. Moves you will play a thousand times.
+prompt: Answer the approach, then keep going. When the joseki is finished and it is your turn, play elsewhere (Pass).
+success: The one-space jump or the knight's move, then the block against the slide, then the extension along the top — or, after the knight's move, a move elsewhere: the joseki is finished and the turn is yours. Moves you will play a thousand times.
 ```
 
 <p class="puzzle-intro">2 · White to play. Black has answered with the jump; make a base.</p>
