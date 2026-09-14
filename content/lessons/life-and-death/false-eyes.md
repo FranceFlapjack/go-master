@@ -7,6 +7,7 @@ level: 2
 sources:
   - Wikipedia, "Eye (Go)" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Eye_(Go) — the diagonal rule for real and false eyes
   - Positions composed for this lesson; every problem and every diagram carrying a `life:` line is read to the end by the site's life-and-death search, including the uniqueness of the answer.
+  - Every problem here is composed with a closed wall and no ko: the search treats the surrounding stones as safe and reports a ko as unknown, so positions were chosen to read out completely.
 ---
 
 ## The diagonal rule

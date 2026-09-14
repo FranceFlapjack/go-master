@@ -8,6 +8,7 @@ sources:
   - Wikipedia, "Seki" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Seki
   - Arthur Smith, The Game of Go (1908), chapter III, where the position is explained under its Japanese name — public domain, https://www.gutenberg.org/ebooks/66632
   - Positions composed for this lesson; both chains of every seki are checked by the site's life-and-death search (`expect: seki`), and the listed wrong moves are checked to lose.
+  - Every problem here is composed with a closed wall and no ko: the search treats the surrounding stones as safe and reports a ko as unknown, so positions were chosen to read out completely.
 ---
 
 ## The standoff
@@ -102,7 +103,7 @@ expect: seki
 target: A3 B1
 hint: After one fill, two shared liberties remain. After two, one remains, and the next stone captures.
 prompt: Play elsewhere (pass), or fill?
-success: Passing is simplest, and filling one liberty is also safe: two shared liberties remain and the position is seki again. What you must never do is fill the second. Count your own liberties after the move, every time.
+success: Passing is simplest, and filling one liberty is also safe: two shared liberties remain and the position is seki again. A second fill would leave your chain with one liberty, and White's next stone captures it. Count your own liberties after the move, every time.
 ```
 
 ## Remember

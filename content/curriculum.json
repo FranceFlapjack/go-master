@@ -108,12 +108,12 @@
         {
           "slug": "tsumego-set-1",
           "title": "Problems, set one",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "tsumego-set-2",
           "title": "Problems, set two",
-          "ready": false
+          "ready": true
         }
       ]
     },

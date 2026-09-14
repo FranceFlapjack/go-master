@@ -8,6 +8,7 @@ sources:
   - Wikipedia, "Life and death" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Life_and_death
   - The counting proverbs ("on the second line, six die and eight live"; "in the corner, four die and six live") are traditional; every diagram here that states a status carries a `life:` line and was read to the end by the site's life-and-death search, and so was every problem.
   - Positions composed for this lesson.
+  - Every problem here is composed with a closed wall and no ko: the search treats the surrounding stones as safe and reports a ko as unknown, so positions were chosen to read out completely.
 ---
 
 ## Groups on the second line
@@ -90,7 +91,6 @@ black: A2 J2 A3 B3 C3 D3 E3 F3 G3 H3 J3
 solution: (B1 (D1 E1) (H1 D1) (G1 F1)) (E1 (B1 C1) (H1 G1)) (H1 (F1 E1) (B1 C1) (C1 D1))
 expect: live
 target: B2
-unique: false
 hint: Take one of the points Black's hane would take, or the middle.
 prompt: Make two eyes.
 success: B1, H1 or E1 all live: each leaves an eye space that Black can no longer cut down to a dead shape from both ends. Seven on the second line: the first player wins it.
@@ -105,7 +105,6 @@ white: B2 C2 D2 E2 F2 G2 H2
 solution: (B1 (C1 E1) (E1 G1) (F1 D1) (H1 F1)) (H1 (G1 E1) (E1 C1) (D1 F1) (B1 D1))
 expect: dead
 target: B2
-unique: false
 hint: Play in from one end, on the first line.
 prompt: Kill the white group.
 success: B1 or H1, the hane on the first line. Whatever White does to divide the rest, you take the vital point of what is left, and the middle point E1 — the one that would have saved White — is no longer enough.
@@ -121,7 +120,6 @@ black: F2 F1 A3 B3 C3 D3 E3 F3
 solution: (B1 (C1 D1) (D1 E1) (E1 D1)) (E1 (B1 C1) (C1 B1) (A1 B1))
 expect: live
 target: A2
-unique: false
 hint: Not the corner, not the middle: the second point from either end.
 prompt: Make two eyes.
 success: B1 or E1. After B1, A1 is one eye and C1–E1 is a straight three whose middle you will take when Black plays inside; after E1 the corner is a straight four that Black cannot kill.
@@ -136,7 +134,6 @@ white: A2 B2 C2 D2 E2
 solution: (B1 (C1 E1) (E1 C1) (A1 C1)) (E1 (B1 D1) (D1 B1) (A1 B1))
 expect: dead
 target: A2
-unique: false
 hint: The points White needed.
 prompt: Kill the white group.
 success: B1 or E1, the second point from an end. Whatever White does with the rest, the vital point of what remains is yours, and White never gets a second eye.
@@ -151,7 +148,6 @@ white: A3 B3 C3 D3 D2 D1
 solution: (B2 (A2 B1) (C2 A2) (B1 A2) (C1 A2)) (B1 (A2 B2) (B2 A2) (C2 A2) (A1 B2))
 expect: dead
 target: A3
-unique: false
 hint: The 2-2 point.
 prompt: Kill the white group.
 success: B2, the 2-2 point (B1 also works). In the open, White would simply answer and live; here the corner and the missing outside liberties turn every answer into a shortage of liberties. This is the exception every player learns once and then never forgets.
