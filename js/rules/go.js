@@ -35,7 +35,7 @@ export function sgfCoord(i, size) { return i == null ? '' : String.fromCharCode(
 
 // --- the game -------------------------------------------------------------------
 export class Game {
-  constructor(size = 19, { komi = 7.5 } = {}) {
+  constructor(size = 19, { komi = 7.5, handicap = 0 } = {}) {
     this.size = size
     this.komi = komi
     this.board = new Uint8Array(size * size)
@@ -44,10 +44,13 @@ export class Game {
     this.ko = null           // point that may not be retaken this turn (simple ko)
     this.history = []        // {color, point, captured:[points], ko, passes}
     this.passes = 0          // consecutive passes; two end the game
+    this.handicap = 0
+    if (handicap >= 2) { this.handicap = handicap; this.setup({ black: handicapPoints(size, handicap) }); this.turn = WHITE }
   }
 
   clone() {
     const g = new Game(this.size, { komi: this.komi })
+    g.handicap = this.handicap
     g.board = this.board.slice(); g.turn = this.turn
     g.captures = { ...this.captures }; g.ko = this.ko; g.history = this.history.slice(); g.passes = this.passes
     return g
@@ -194,6 +197,25 @@ export function starPoints(size) {
   if (size >= 7 && size % 2 === 1) return [Math.floor(size / 2) * size + Math.floor(size / 2)]
   return []
 }
+
+/** fixed handicap placement (the traditional order): upper right, lower left, lower right, upper left, then the centre,
+ *  then the side star points (left and right, then top and bottom). 9×9 and 13×13 have no side star points here, so at most 5. */
+export function handicapPoints(size, n) {
+  const c = size === 19 ? 3 : size === 13 ? 3 : size === 9 ? 2 : 3, f = size - 1 - c, m = Math.floor(size / 2)
+  const P = (x, y) => y * size + x
+  const order = [P(f, c), P(c, f), P(f, f), P(c, c)]           // UR, LL, LR, UL  (y counted from the top)
+  const sides = size === 19 ? [P(c, m), P(f, m), P(m, c), P(m, f)] : []
+  const centre = P(m, m)
+  const max = 4 + (sides.length ? 5 : 1)
+  if (n < 2 || n > max) throw new Error(`handicap ${n} is not available on ${size}×${size}`)
+  if (n <= 4) return order.slice(0, n)
+  if (n === 5) return [...order, centre]
+  if (n === 6) return [...order, sides[0], sides[1]]
+  if (n === 7) return [...order, sides[0], sides[1], centre]
+  if (n === 8) return [...order, ...sides]
+  return [...order, ...sides, centre]
+}
+export const maxHandicap = size => (size === 19 ? 9 : 5)
 
 /** parse "D4 E5, C3" into point indexes */
 export function parseCoords(s, size) { return s ? String(s).split(/[,\s]+/).filter(Boolean).map(c => parseCoord(c, size)) : [] }

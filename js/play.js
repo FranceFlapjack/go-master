@@ -4,7 +4,7 @@
 import { Goban, MARK } from './goban.js'
 import { sound } from './sound.js'
 import { progress } from './progress.js'
-import { BLACK, WHITE, colorName, coordName } from './rules/go.js'
+import { BLACK, WHITE, colorName, coordName, maxHandicap } from './rules/go.js'
 import { Bot, LEVELS } from './bot/client.js'
 
 const SIZES = [9, 13, 19]
@@ -19,7 +19,10 @@ const RESIGN_AFTER = 40     // … but never before this many plies (20 of its o
 
 export function mountPlay(main) {
   let size = +localStorage.getItem('go-master.play.size') || 9
-  let komi = 7.5
+  let handicap = +localStorage.getItem('go-master.play.handicap') || 0
+  if (handicap && (handicap < 2 || handicap > maxHandicap(size))) handicap = 0
+  const komiFor = () => (handicap ? 0.5 : 7.5)   // handicap games: no komi (a half point only to rule out a tie)
+  let komi = komiFor()
   let opponent = localStorage.getItem('go-master.play.opponent') || 'none'
   let level = localStorage.getItem('go-master.play.level') || 'normal'
   if (!OPPONENTS.some(o => o.id === opponent)) opponent = 'none'
@@ -40,11 +43,12 @@ export function mountPlay(main) {
         </div>
         <div class="play-side">
           <div class="field"><label>Board</label><div class="seg">${SIZES.map(s => `<button class="btn${s === size ? ' on' : ''}" data-size="${s}">${s}×${s}</button>`).join('')}</div></div>
+          <div class="field"><label>Handicap</label><div class="seg seg-wrap hcap"></div><div class="small hcap-note"></div></div>
           <div class="field"><label>Opponent</label><div class="seg seg-wrap">${OPPONENTS.map(o => `<button class="btn${o.id === opponent ? ' on' : ''}" data-opp="${o.id}">${o.label}</button>`).join('')}</div><div class="small opp-note"></div></div>
           <div class="field level-field"><label>Computer's thinking time</label><div class="seg">${LEVELS.map(l => `<button class="btn${l.id === level ? ' on' : ''}" data-level="${l.id}">${l.label} · ${l.timeMs / 1000}s</button>`).join('')}</div></div>
           <div class="turn"><span class="turn-dot b"></span><span class="turn-text">Black to play</span></div>
           <div class="status" aria-live="polite"></div>
-          <div class="caps small">Captures — <span class="turn-dot b"></span> <b class="cap-b">0</b> &nbsp; <span class="turn-dot w"></span> <b class="cap-w">0</b> &nbsp;·&nbsp; komi ${komi}</div>
+          <div class="caps small">Captures — <span class="turn-dot b"></span> <b class="cap-b">0</b> &nbsp; <span class="turn-dot w"></span> <b class="cap-w">0</b> &nbsp;·&nbsp; komi <span class="komi">${komi}</span></div>
           <div class="score" hidden></div>
           <div class="moves play-moves"></div>
         </div>
@@ -69,6 +73,10 @@ export function mountPlay(main) {
     main.querySelectorAll('[data-opp]').forEach(x => { x.classList.toggle('on', x.dataset.opp === opponent); x.disabled = x.dataset.opp !== 'none' && size !== BOT_SIZE })
     main.querySelectorAll('[data-level]').forEach(x => x.classList.toggle('on', x.dataset.level === level))
     $('.level-field').hidden = !botColor()
+    const max = maxHandicap(size)
+    $('.hcap').innerHTML = [0, ...Array.from({ length: max - 1 }, (_, i) => i + 2)].map(h => `<button class="btn${h === handicap ? ' on' : ''}" data-hcap="${h}">${h ? h : 'None'}</button>`).join('')
+    $('.hcap-note').textContent = handicap ? `Black has ${handicap} stones down and White plays first; komi 0.5.` : ''
+    $('.komi').textContent = komi
     $('.opp-note').textContent = size !== BOT_SIZE ? `The computer plays ${BOT_SIZE}×${BOT_SIZE} only.` : botColor() ? 'Plain Monte-Carlo search, no patterns: it will lose to anyone who has done the capturing track. Good for practice.' : ''
   }
 
@@ -76,12 +84,13 @@ export function mountPlay(main) {
     gen++; if (bot) bot.cancel(); thinking = false
     dead = new Set(); over = false; recorded = false
     wrap.style.setProperty('--board-size', size)
+    komi = komiFor()
     if (board) board.destroy()
-    board = new Goban($('.board'), { size, komi })
+    board = new Goban($('.board'), { size, komi, handicap })
     board.enableInput(humanColor(), afterMove)
     scoreEl.hidden = true; scoreEl.innerHTML = ''
     setStatus(''); paint(); paintSettings()
-    if (botColor() === BLACK) botMove()
+    if (botColor() && board.game.turn === botColor()) botMove()
   }
   function setStatus(t, cls = '') { statusEl.textContent = t; statusEl.className = 'status ' + cls }
   function paint() {
@@ -174,9 +183,10 @@ export function mountPlay(main) {
   }
 
   main.querySelector('.play').addEventListener('click', async e => {
-    const b = e.target.closest('[data-act], [data-size], [data-opp], [data-level]'); if (!b || b.disabled) return
+    const b = e.target.closest('[data-act], [data-size], [data-opp], [data-level], [data-hcap]'); if (!b || b.disabled) return
     sound.unlock()
-    if (b.dataset.size) { size = +b.dataset.size; localStorage.setItem('go-master.play.size', size); opponent = size === BOT_SIZE ? (localStorage.getItem('go-master.play.opponent') || 'none') : 'none'; if (!OPPONENTS.some(o => o.id === opponent)) opponent = 'none'; newGame(); return }
+    if (b.dataset.size) { size = +b.dataset.size; localStorage.setItem('go-master.play.size', size); if (handicap > maxHandicap(size)) handicap = 0; opponent = size === BOT_SIZE ? (localStorage.getItem('go-master.play.opponent') || 'none') : 'none'; if (!OPPONENTS.some(o => o.id === opponent)) opponent = 'none'; newGame(); return }
+    if (b.dataset.hcap !== undefined) { handicap = +b.dataset.hcap; localStorage.setItem('go-master.play.handicap', handicap); newGame(); return }
     if (b.dataset.opp) { opponent = b.dataset.opp; localStorage.setItem('go-master.play.opponent', opponent); newGame(); return }
     if (b.dataset.level) { level = b.dataset.level; localStorage.setItem('go-master.play.level', level); paintSettings(); return }
     const act = b.dataset.act

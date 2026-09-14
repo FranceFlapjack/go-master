@@ -31,7 +31,7 @@ export class Goban {
 
   _build(o) {
     this.size = o.size || 9
-    this.game = new Game(this.size, { komi: o.komi ?? 7.5 })
+    this.game = new Game(this.size, { komi: o.komi ?? 7.5, handicap: o.handicap || 0 })
     this.game.setup({ black: o.black || [], white: o.white || [] })
     if (o.turn) this.game.turn = o.turn
     if (o.ko != null) this.game.ko = o.ko

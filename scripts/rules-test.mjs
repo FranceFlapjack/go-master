@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Rules engine checks: run before touching js/rules/go.js. Exit code 1 on any failure.
-import { Game, BLACK, WHITE, EMPTY, parseCoord, coordName, parseSgfCoord, sgfCoord, starPoints } from '../js/rules/go.js'
+import { Game, BLACK, WHITE, EMPTY, parseCoord, coordName, parseSgfCoord, sgfCoord, starPoints, handicapPoints, maxHandicap } from '../js/rules/go.js'
 import { canCapture, canEscape } from '../js/rules/capture-search.js'
 import { lifeStatus, passAlive } from '../js/rules/life-search.js'
 
@@ -92,6 +92,17 @@ for (const [stone, a, b] of [['A1', 'A2', 'B1'], ['J1', 'J2', 'H1'], ['A9', 'A8'
   g = pos(9, 'D5 E6 F6 D4', 'E5 B2 H8 G2 B8')
   const net = canCapture(g, P(g, 'E5')); ok(net.captured && coordName(net.line[0], 9) === 'F4', `both ladders broken, the net at F4 still catches it (found ${net.line.map(p => coordName(p, 9)).join(' ')})`)
   for (const m of ['F5', 'E4']) { const h = g.clone(); h.play(P(h, m)); ok(canEscape(h, P(h, 'E5')).escaped, `…while the atari at ${m} lets it escape`) } }
+// handicap placement
+{ const n = (size, k) => handicapPoints(size, k).map(p => coordName(p, size)).join(' ')
+  ok(n(19, 2) === 'Q16 D4', `two stones: upper right, lower left (${n(19, 2)})`)
+  ok(n(19, 4) === 'Q16 D4 Q4 D16', `four stones: the corners (${n(19, 4)})`)
+  ok(n(19, 5) === 'Q16 D4 Q4 D16 K10', 'five: corners and centre')
+  ok(n(19, 6) === 'Q16 D4 Q4 D16 D10 Q10', 'six: corners, left and right')
+  ok(n(19, 9) === 'Q16 D4 Q4 D16 D10 Q10 K16 K4 K10' && maxHandicap(19) === 9, `nine: all star points (${n(19, 9)})`)
+  ok(n(9, 3) === 'G7 C3 G3' && maxHandicap(9) === 5, `9×9 three stones (${n(9, 3)})`)
+  ok(n(13, 5) === 'K10 D4 K4 D10 G7', `13×13 five stones (${n(13, 5)})`)
+  const g = new Game(19, { handicap: 4 }); ok(g.turn === WHITE && g.board[parseCoord('D16', 19)] === BLACK && g.handicap === 4, 'a handicap game starts with the stones down and White to play')
+  let threw = false; try { handicapPoints(9, 6) } catch { threw = true } ok(threw, 'no six-stone handicap on 9×9') }
 // legal moves count on an empty board
 ok(g9().legalMoves().length === 81, '81 legal moves on an empty 9×9')
 
