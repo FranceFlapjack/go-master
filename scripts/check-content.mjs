@@ -108,7 +108,7 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
               if (others.length) fail(tag, `expect: ${p.expect}, but ${others.map(m => coordName(m, pos.size)).join(' ')} also work(s)`)
             }
           }
-          if (p.refute) {
+          if (p.refute && p.expect !== 'seki') {
             // `refute: A1 C4` — moves the prose says fail must fail: no immediate capture, and (with a target) the chain escapes / is caught
             if (!p.target || p.target === 'move') fail(tag, 'refute: needs target: <a stone>')
             else {
@@ -180,6 +180,31 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
                 else if (r.status === 'unknown') fail(tag, `life search: unknown after the alternative ${name(m)} (a ko?)`)
               }
               if (others.length) fail(tag, `expect: ${p.expect}, but ${others.map(name).join(' ')} also work(s)`)
+            }
+          }
+          if (p.expect === 'seki') {
+            // `expect: seki` with `target: A2 B1` (one stone of each side): neither chain can be killed whoever moves first;
+            // after every reader move in the tree that is still true; `refute:` moves (the reader filling a liberty) leave the
+            // reader's own chain dead. The solution is usually `pass`.
+            const ts = parseCoords(p.target || '', pos.size)
+            if (ts.length !== 2 || !g.board[ts[0]] || !g.board[ts[1]] || g.board[ts[0]] === g.board[ts[1]]) { fail(tag, 'expect: seki needs target: <a stone of each colour>'); continue }
+            const name = m => m === null ? 'pass' : coordName(m, pos.size)
+            const alive = (game, t) => { const r = lifeStatus(game, t, 3 - game.board[t]); if (r.status === 'unknown') fail(tag, `seki: search unknown for ${name(t)}`); return r }
+            for (const t of ts) { const r = alive(g, t); if (r.status !== 'alive') fail(tag, `expect: seki, but the chain at ${name(t)} is ${r.status} (${r.line.map(name).join(' ')})`) }
+            const walk = (node, game, depth) => {
+              for (const c of node.children) {
+                const gg = game.clone(); if (!gg.check(c.point).ok) continue; gg.play(c.point)
+                if (depth % 2 === 0) for (const t of ts) { if (gg.board[t] !== g.board[t]) fail(tag, `seki: after ${name(c.point)} the chain at ${name(t)} is gone`); else if (alive(gg, t).status !== 'alive') fail(tag, `seki: after ${name(c.point)} the chain at ${name(t)} can be killed`) }
+                walk(c, gg, depth + 1)
+              }
+            }
+            const g2 = g.clone(); g2.turn = pos.turn; walk(tree, g2, 0)
+            const mine = ts.find(t => g.board[t] === pos.turn)
+            for (const m of parseCoords(p.refute || '', pos.size)) {
+              const gg = g.clone(); const r = gg.check(m); if (!r.ok) { fail(tag, `refute: ${name(m)} is not even legal (${r.reason})`); continue }
+              gg.play(m)
+              const st = lifeStatus(gg, mine, 3 - pos.turn)
+              if (st.status !== 'dead') fail(tag, `refute: after ${name(m)} the reader's chain is ${st.status}, not dead`)
             }
           }
           if (p.expect === 'capture') {

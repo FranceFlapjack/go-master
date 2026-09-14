@@ -93,12 +93,12 @@
         {
           "slug": "false-eyes",
           "title": "False eyes",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "seki",
           "title": "Seki: mutual life",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "corner-shapes",
