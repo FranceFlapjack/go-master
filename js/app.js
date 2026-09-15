@@ -91,7 +91,8 @@ function showHome(main) {
     <div class="page">
       <section class="hero">
         <span class="eyebrow">A course, not a feed</span>
-        <h1>Learn Go from the games that taught everyone else.</h1>
+        <h1>“Becoming one stone stronger is the supreme enjoyment.”</h1>
+        <div class="hero-cite">Go Seigen, <cite>A Way of Play for the 21st Century</cite> (2008), as quoted on <a href="https://en.wikiquote.org/wiki/Go_(game)">Wikiquote</a></div>
         <p>Every lesson is built on a real game or a real book, with the board right there in the text so you can play through it and then try it yourself. Start on the small board; the rules fit on one page, the game does not.</p>
       </section>
       <div class="card continue play-card"><div><span class="eyebrow">Play</span><h3>Play a game</h3><div class="small">Two players on one screen on 9×9, 13×13 or 19×19, or a weak computer opponent on 9×9. Area scoring, with the count at the end.</div></div><a class="btn" href="#/play">Play</a></div>
