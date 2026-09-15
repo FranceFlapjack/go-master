@@ -5,6 +5,7 @@ import { mountActivity } from './activity-grid.js'
 import { sound } from './sound.js'
 import { mountPlay } from './play.js'
 import { setActiveViewer } from './sgf-viewer.js'
+import { mountFamily } from './family.js'
 
 const $ = s => document.querySelector(s)
 let curriculum = null
@@ -22,6 +23,7 @@ async function boot() {
   const mute = $('#mute')
   const paintMute = () => { mute.innerHTML = sound.muted ? ICON_SOUND_OFF : ICON_SOUND_ON; mute.setAttribute('aria-pressed', String(sound.muted)); mute.title = sound.muted ? 'Sound off' : 'Sound on' }
   paintMute(); mute.addEventListener('click', () => { sound.toggle(); paintMute() })
+  mountFamily('go')
   $('#menu').addEventListener('click', () => toggleSidebar())
   $('#scrim').addEventListener('click', () => toggleSidebar(false))
   document.addEventListener('pointerdown', () => sound.unlock(), { once: true })

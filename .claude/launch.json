@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "go-master", "runtimeExecutable": "python3", "runtimeArgs": ["scripts/serve.py", "8001"], "port": 8001 }
+    { "name": "go-master", "url": "http://localhost:8001", "port": 8001 }
   ]
 }
