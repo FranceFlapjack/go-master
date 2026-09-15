@@ -2,7 +2,7 @@
 
 A Go course as a website, sibling of Chess Master (`../chess-master`, same owner, same shell, same design language): lessons built on real games and real books, with an interactive board inside the text. Play modes (two players on one screen now; a computer opponent later).
 
-Static site, **no build step, no framework** — deliberate. Plain HTML/CSS/ES modules. The only vendored library is `marked` (`vendor/VERSIONS.md`); **the rules engine and the board are our own** (`js/rules/go.js`, `js/goban.js`) because nothing like chess.js / cm-chessboard / Stockfish exists for Go that can simply be dropped in. Intended for GitHub Pages under `/go-master/`, so all paths stay relative. Not published yet (no remote); when it is, a push to main will be a deploy, so merge only what is tested.
+Static site, **no build step, no framework** — deliberate. Plain HTML/CSS/ES modules. The only vendored library is `marked` (`vendor/VERSIONS.md`); **the rules engine and the board are our own** (`js/rules/go.js`, `js/goban.js`) because nothing like chess.js / cm-chessboard / Stockfish exists for Go that can simply be dropped in. Published on GitHub Pages from `main` (https://github.com/FranceFlapjack/go-master → https://franceflapjack.github.io/go-master/, since 2026-09-16, sibling of `/chess-master/` on the same origin): **a push to main is a deploy**, so merge only what is tested. All paths stay relative (the site lives under `/go-master/`).
 
 **Before starting any work here, read `ROADMAP.md`** — it holds the agreed phases and what is next.
 

@@ -46,7 +46,7 @@ Open questions for the owner: which board size they want to start playing on for
 ## Phase 3 — Design drafts
 - Draft 1 (2026-09-13): the Chess Master language, kaya board, slate and shell stones.
 - Draft 2 (2026-09-13, owner's first comment): the accent is dark red `#6f0b10` — Chess Master's green turned to red, then one step redder at the owner's comment (HSL 357° 82% 24%; the exact-tone match `#4d0f14` read as brown), so the two apps are siblings in different colours. Board good/bad marks stay green/red (meaning, not theme); the hint tint and the activity grid follow the accent.
-- The Master series switcher (2026-09-15, owner's request): a bubble on the logo, Apple-style liquid glass (fillets, blur, rim light, no chevron), logos in their own accents and names only. The one rounded, translucent element of the shell; `--bubble-*` in `tokens.css`. Chess Master gets the same file; it links here, so it goes live in Chess Master only when Go Master is published.
+- The Master series switcher (2026-09-15, owner's request): a bubble on the logo, Apple-style liquid glass (fillets, blur, rim light, no chevron), logos in their own accents and names only. The one rounded, translucent element of the shell; `--bubble-*` in `tokens.css`. Chess Master gets the same file (its branch `family-switcher`); Go Master was published on 2026-09-16, so that branch can merge.
 - Still open: stone rendering (flat as now, or a subtle radial highlight); whether coordinates show on lesson diagrams by default.
 
 ## Play mode & a computer opponent (later, and honestly)

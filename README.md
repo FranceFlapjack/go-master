@@ -1,6 +1,6 @@
 # Go Master
 
-A Go course as a website, the sibling of [Chess Master](../chess-master). Every lesson is built on a real game or a real book, with an interactive board inside the text: play through the model game, then try the idea yourself.
+A Go course as a website, the sibling of [Chess Master](https://franceflapjack.github.io/chess-master/). Live at **https://franceflapjack.github.io/go-master/**. Every lesson is built on a real game or a real book, with an interactive board inside the text: play through the model game, then try the idea yourself.
 
 Static site, no build. Run locally:
 
