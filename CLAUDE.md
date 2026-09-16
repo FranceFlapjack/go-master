@@ -40,6 +40,8 @@ node scripts/bot-test.mjs         # the computer opponent (run before touching j
 - `life: A3 alive | dead | first | vital B1` on a `board` fence — the diagram's claim, by the same search: alive even if the attacker moves first / dead even if the defender moves first / whoever moves first wins / B1 is the one point that decides it for both sides.
 - Joseki lessons: the sequences are move lists from Kogo's dictionary, checked only for legality; exercises play the joseki through (the tree is the sequence, both sides). No engine judges them, and the lessons say so.
 - `node scripts/life-explore.mjs 9 "<black>" "<white>" A3 b dead` prints every working first move and an answer to every reply, in the solution-tree syntax: use it to author, then let the checker confirm.
+- `node scripts/capture-explore.mjs 9 "<black>" "<white>" E5 b kill|escape` does the same for the capture search: the target's status with the opponent to move, then every reader move that works.
+- Strategy lessons (the *Direction of play* track): no oracle judges direction. Each problem either carries an oracle for its tactical kernel (`expect:` / `refute:` / `life:` / `score:`) or accepts the point a quoted source names or the move played in a verified record — and its `sources:` says which. Sentences with a point value, a frequency or a strength comparison cite a source or are rewritten as a reason.
 Everything else — whether the opponent's scripted reply is their best, whether a tsumego is sound, **every opening judgement** — is caught by reading, not by a machine. Opening problems accept the standard points named in the sources or the move played in the model game, and their `sources:` say so. Say which oracle checked a lesson in its `sources:`, and never claim more.
 
 ## Layout

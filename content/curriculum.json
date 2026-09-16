@@ -219,12 +219,12 @@
         {
           "slug": "good-and-bad-shape",
           "title": "Good shape, bad shape",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "ko-fights",
           "title": "Ko fights and threats",
-          "ready": false
+          "ready": true
         }
       ]
     },
