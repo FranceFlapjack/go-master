@@ -236,22 +236,22 @@
         {
           "slug": "sente-and-gote",
           "title": "Sente and gote",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "counting-endgame-moves",
           "title": "Counting the value of a move",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "endgame-tesuji",
           "title": "Endgame tesuji",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "dame-and-the-final-count",
           "title": "Neutral points and the final count",
-          "ready": false
+          "ready": true
         }
       ]
     },
