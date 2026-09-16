@@ -194,17 +194,17 @@
         {
           "slug": "urgent-before-big",
           "title": "Urgent before big",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "attack-and-defence",
           "title": "Attack to gain, not to kill",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "influence-and-territory",
           "title": "Influence and territory",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "thickness",
