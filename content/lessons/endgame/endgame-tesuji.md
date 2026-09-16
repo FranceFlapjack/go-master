@@ -2,17 +2,17 @@
 id: endgame/endgame-tesuji
 track: The endgame
 title: Endgame tesuji
-lede: A tesuji is a clever local move — one that gains more than the plain move because of a tactical point the opponent cannot answer. Three that decide close games — the monkey jump, the placement on the first line, and knowing when the hane is death.
+lede: A tesuji is a clever local move — one that gains more than the plain move because of a tactical point the opponent cannot answer. Three that decide close games — the monkey jump, the placement on the first line, and knowing when a hane simply dies.
 level: 3
 sources:
-  - Wikipedia, "Go proverb" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_proverb — "The monkey jump is worth 8 points"; "There is death in the hane"; "Strange things happen at the 1–2 points"
+  - Wikipedia, "Go proverb" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_proverb — "The monkey jump is worth 8 points"; "Strange things happen at the 1–2 points"
   - Wikipedia, "Go strategy and tactics" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_strategy_and_tactics — the endgame as maximising one's own boundaries while minimising the opponent's
-  - Machine-checked: the monkey-jump stone cannot be captured once played (`expect: escape` with `target: move`, the capture search); the continuations in the tree are read by hand and checked for legality only; the two counted diagrams that give its value here are checked by the scorer (`score:`); the hane that dies and the placement that kills are checked by the capture search (`expect: capture`, `expect: kill`). The proverb's "8 points" is the proverb's; the value in *this* position is the one the diagrams show.
+  - Machine-checked: the monkey-jump stone cannot be captured once played (`expect: escape` with `target: move`, the capture search); the cut at F1 is caught (`capture-explore`: after Black's F2 the cutting stone cannot escape); the crawl-back continuations are read by hand and checked for legality only; the two counted diagrams that give its value here are checked by the scorer (`score:`); the hane that dies and the placement that kills are checked by the capture search (`expect: capture`, `expect: kill`). The proverb's "8 points" is the proverb's; the value in *this* position is the one the diagrams show.
 ---
 
 ## The monkey jump
 
-From a stone on the second line, jump to the first line three points along — a large knight's move under the opponent's third-line stones. The stone looks cut off. It is not: whatever the opponent does, it connects back or captures the cutting stone, and on the way it destroys most of the first- and second-line territory. The proverb says it is worth eight points, which is a rule of thumb; count it in the position in front of you.
+From a stone on the second line, jump to the first line three points along — a large knight's move under the opponent's third-line stones. The stone looks cut off. In the standard lines it is not: the opponent blocks and it crawls back, or the opponent cuts and the cutting stone is caught — and on the way it destroys most of the first- and second-line territory. The proverb says it is worth eight points, which is a rule of thumb; count it in the position in front of you.
 
 ```board
 size: 9
@@ -48,15 +48,15 @@ caption: The monkey jump, in one standard line: G1, White blocks H1, Black F1, W
 size: 9
 black: D2 D3 D4 D5 D6 D7 D8 D9
 white: E3 E4 E5 E6 E7 E8 E9 F3 G3 H3 J3
-solution: G1 (H1 F1 (F2 E1 (E2 D1))) (F2 F1 (E2 E1 (H1 D1))) (F1 E1 (F2 E2))
+solution: G1 (H1 F1 (F2 E1 (E2 D1))) (F2 F1 (E2 E1 (H1 D1))) (F1 F2 (E1 E2 (D1 C1)) (G2 E1))
 expect: escape
 target: move
 hint: From D2, the large knight's move to the first line.
 prompt: Play the monkey jump and bring it home.
-success: G1. If White blocks at H1 you crawl back — F1, E1, D1 — and White must answer each one. If White attaches on top at F2, the same crawl. If White tries to cut underneath at F1, atari it from your side with E1; after F2 your E2 leaves the two cutting stones with one liberty. The jump itself is safe — the site's search confirms the stone at G1 cannot be captured with White to move — and the three lines are ours, read by hand.
+success: G1. If White blocks at H1 you crawl back — F1, E1, D1 — and White must answer each one. If White attaches on top at F2, the same crawl. If White tries to cut underneath at F1, atari it from above with F2: the cutting stone cannot escape — if White extends to E1 you play E2, and D1 is then a stone with one liberty. The jump itself is safe (the site's search confirms G1 cannot be captured with White to move) and so is the cutting stone's fate (the same search: after F2 it cannot escape); the crawl-back lines are read by hand and checked for legality.
 ```
 
-<p class="puzzle-intro">2 · White to play. Black has played the hane at E1 — but this time White's stone at F1 is already there. There is death in the hane.</p>
+<p class="puzzle-intro">2 · White to play. Black has played the hane at E1 — but this time White's stone at F1 is already there.</p>
 
 ```try
 size: 9
@@ -86,7 +86,7 @@ success: B1, the placement. Whichever side White takes, you take the other and t
 
 ## Remember
 
-- Monkey jump: second line to first line, three along. It cannot be cut off, and it takes the first and second lines.
+- Monkey jump: second line to first line, three along. In the standard lines it connects back, and it takes the first and second lines.
 - Before a first-line hane, look at the stone beside it. If the hane would have one liberty, it dies.
 - On the first line, the placement in the middle of the liberties often beats the atari at the end.
 

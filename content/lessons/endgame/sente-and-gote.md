@@ -87,7 +87,7 @@ size: 9
 turn: w
 white: E2 E3 E4 E5 E6 E7 E8 F2
 black: D2 D3 D4 D5 D6 D7 D8 E1 D1
-solution: (F1 (D9 E9)) (D9 (F1 G1))
+solution: (F1 (D9 E9)) (D9 (C9 E9 (F1 G1)))
 hint: Neither move has to be answered. How much does each one swing?
 prompt: Take the bigger gote move — if there is one.
 success: Either. Both are gote, and both are worth two points: whichever you take, Black takes the other, and the count is the same — the two diagrams below prove it. Two moves of equal size are *miai*: the order does not matter, and knowing that is worth more than guessing. The lesson is not "F1" or "D9"; it is that you counted.

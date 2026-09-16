@@ -118,7 +118,7 @@ success: D5. Without it the whole left side counts for nobody — the diagram ab
 
 ## Remember
 
-- Neutral points are worth a point each under area scoring. Fill them in turn; never pass with one open.
+- Neutral points are worth a point each under area scoring — a two-point swing between the two players, in the counting lesson's terms. Fill them in turn; never pass with one open.
 - A border with a gap is not a border. Walk them all before passing.
 - Dead stones come off by agreement; if there is no agreement, capture them — it costs nothing under area scoring.
 - The game ends with two passes in a row, and the count is what is on the board.
