@@ -209,12 +209,12 @@
         {
           "slug": "thickness",
           "title": "Thickness: use it, do not enclose with it",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "invasion-and-reduction",
           "title": "Invading and reducing",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "good-and-bad-shape",

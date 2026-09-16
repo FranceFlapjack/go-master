@@ -6,7 +6,7 @@ lede: A stone on the third line takes the side; a stone on the fourth line faces
 level: 3
 sources:
   - Wikipedia, "Go strategy and tactics" (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Go_strategy_and_tactics — "A play on the fourth line is directed more towards influence to the center, a play on the third line more towards making territory along the side"; and "Thick positions are important as they radiate influence across the board"
-  - Game record — AlphaGo (W) v Lee Sedol (B), 2016, game 2, to move 37 (the shoulder hit at P10 on the fifth line); see the file's `SO[]` line. The comments are ours.
+  - Game record — AlphaGo (B) v Lee Sedol (W), 2016, game 2, to move 37 (the shoulder hit at P10 on the fifth line); see the file's `SO[]` line. The comments are ours.
   - The two counted diagrams are checked by the site's scorer (`score:`); the choice of direction in the problems follows the rule from the joseki track — block towards where the wall is worth more — and was judged by no engine.
 ---
 
@@ -39,7 +39,7 @@ file: alphago-lee-sedol-2016-g2.sgf
 start: 36
 ```
 
-Move 37, White's shoulder hit at P10 against Black's stone at Q11, is played on the fifth line — a line higher still. It does not take territory; it presses down on the right side and faces the centre. Whatever you make of the move (commentators at the time made a great deal of it), it is influence in its purest form: a stone whose value is entirely in what happens afterwards.
+Move 37, Black's shoulder hit at P10 against White's stone at Q11, is played on the fifth line — a line higher still. It does not take territory; it presses down on White's right side and faces the centre. Whatever you make of the move (commentators at the time made a great deal of it), it is influence in its purest form: a stone whose value is entirely in what happens afterwards.
 
 ## Problems
 
