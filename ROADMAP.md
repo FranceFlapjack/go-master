@@ -5,7 +5,7 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete th
 ## Decisions taken in the draft (say so if you want them changed)
 
 - **Scoring: area (Chinese), komi 7.5.** No prisoner bookkeeping, no agreement needed beyond "which stones are dead", so a beginner can count any finished game. Japanese territory counting is explained in the *counting* lesson as what they will meet on some servers; the winner is the same in all but rare cases.
-- **Ko: simple ko only.** A stone that captured exactly one stone and now has exactly one liberty may not be retaken at once. Positional superko (no repetition of any earlier whole-board position) is a later addition to `js/rules/go.js`; triple ko is rare enough to wait.
+- **Ko: simple ko plus positional superko** (added 2026-09-18). A stone that captured exactly one stone and now has exactly one liberty may not be retaken at once (the fast path, with its own message); beyond that, no move may recreate any earlier whole-board position of the game — Zobrist-hashed, undone with `undo()`, reset by `setup()`. The bot's playout board keeps simple ko only, deliberately.
 - **SGF, tree-native.** The parser keeps every variation; the viewer walks the main line for now. Puzzles are trees from day one (`solution: E3 (D2 E2) (C2 D1)`), because tsumego are trees.
 - **Narrow oracles, not an engine.** The scorer checks counted diagrams; a small ladder/net reader checks kill/escape problems; everything else is read by hand (see CLAUDE.md, Oracles). This is the one place where the Chess Master method does not transfer.
 - **Coordinates: `A1`…`T19`, no I.** What servers and books use. SGF's `aa` style stays inside SGF files.

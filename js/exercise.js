@@ -40,7 +40,7 @@ export function mountExercise(container, o, ctx = {}) {
   let node = tree, wrong = 0, solved = progress.isTryDone(id), showing = false
   const expected = p => node.children.find(c => c.point === p)
   board.judge = p => !!expected(p)
-  board.onIllegal = reason => setStatus(reason === 'ko' ? 'That is the ko: you may not retake it at once.' : reason === 'suicide' ? 'No liberties there, and it captures nothing: not allowed.' : '', 'bad')
+  board.onIllegal = reason => setStatus(reason === 'ko' ? 'That is the ko: you may not retake it at once.' : reason === 'superko' ? 'That would repeat an earlier position of the game (superko): not allowed.' : reason === 'suicide' ? 'No liberties there, and it captures nothing: not allowed.' : '', 'bad')
 
   function setStatus(text, cls = '') { statusEl.textContent = text; statusEl.className = 'status ' + cls }
   function arm() { if (!solved && !showing) board.enableInput(side, onMove) }

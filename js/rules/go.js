@@ -1,4 +1,8 @@
-// Go rules: the board, liberties, capture, suicide, simple ko, passes and area scoring.
+// Go rules: the board, liberties, capture, suicide, ko (simple ko as the fast path, positional superko behind it),
+// passes and area scoring.
+// Positional superko: a move may not recreate any earlier board position of the game, whoever is to move. Positions
+// are tracked as Zobrist hashes (two independent 32-bit hashes per position, joined as a string key), one entry per
+// position reached; setup() resets the record, undo() removes the undone position.
 // Pure data, no DOM: `scripts/rules-test.mjs` runs it under Node. Every board in the app goes through this.
 
 export const EMPTY = 0, BLACK = 1, WHITE = 2
@@ -33,6 +37,19 @@ export function parseSgfCoord(s, size) {
 }
 export function sgfCoord(i, size) { return i == null ? '' : String.fromCharCode(97 + i % size) + String.fromCharCode(97 + Math.floor(i / size)) }
 
+// --- Zobrist hashing for superko ---------------------------------------------------
+// Deterministic pseudo-random 32-bit values per (point, colour), from a seeded LCG, so hashes are stable across runs.
+const ZOBRIST = new Map()   // size → Uint32Array(2 * 3 * size*size): [hashIndex][colour][point]
+function zobrist(size) {
+  let t = ZOBRIST.get(size)
+  if (t) return t
+  const n = size * size; t = new Uint32Array(2 * 3 * n)
+  let x = (size * 2654435761) >>> 0 || 1
+  for (let i = 0; i < t.length; i++) { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; x ^= x >>> 13; t[i] = x }
+  ZOBRIST.set(size, t)
+  return t
+}
+
 // --- the game -------------------------------------------------------------------
 export class Game {
   constructor(size = 19, { komi = 7.5, handicap = 0 } = {}) {
@@ -45,6 +62,8 @@ export class Game {
     this.history = []        // {color, point, captured:[points], ko, passes}
     this.passes = 0          // consecutive passes; two end the game
     this.handicap = 0
+    this.hash = [0, 0]       // Zobrist hash of the current board (two independent 32-bit hashes)
+    this.seen = new Set([this._key(this.hash)])   // every board position reached so far (positional superko)
     if (handicap >= 2) { this.handicap = handicap; this.setup({ black: handicapPoints(size, handicap) }); this.turn = WHITE }
   }
 
@@ -53,11 +72,16 @@ export class Game {
     g.handicap = this.handicap
     g.board = this.board.slice(); g.turn = this.turn
     g.captures = { ...this.captures }; g.ko = this.ko; g.history = this.history.slice(); g.passes = this.passes
+    g.hash = this.hash.slice(); g.seen = new Set(this.seen)
     return g
   }
 
   get(i) { return this.board[i] }
   get over() { return this.passes >= 2 }
+  _key(h) { return h[0] + ':' + h[1] }
+  /** flip the hash for a stone of `color` at `point` (adding and removing are the same operation) */
+  _flip(h, point, color) { const t = zobrist(this.size), n = this.size * this.size; h[0] ^= t[color * n + point]; h[1] ^= t[3 * n + color * n + point] }
+  _rehash() { this.hash = [0, 0]; for (let i = 0; i < this.board.length; i++) if (this.board[i]) this._flip(this.hash, i, this.board[i]); this.seen = new Set([this._key(this.hash)]) }
 
   neighbors(i) {
     const n = this.size, x = i % n, out = []
@@ -90,6 +114,7 @@ export class Game {
     for (const i of black) this.board[i] = BLACK
     for (const i of white) this.board[i] = WHITE
     for (const i of [...black, ...white]) if (this.board[i] && this.liberties(i) === 0) throw new Error(`Setup stone at ${coordName(i, this.size)} has no liberties`)
+    this._rehash()
     return this
   }
 
@@ -109,7 +134,12 @@ export class Game {
       for (const s of g.stones) seen.add(s)
       if (g.liberties.size === 1) captures.push(...g.stones)
     }
-    if (captures.length) return { ok: true, captures }
+    if (captures.length) {
+      // positional superko: the position after the captures must be new (the simple-ko test above is its fast path)
+      const h = this.hash.slice(); this._flip(h, point, color); for (const c of captures) this._flip(h, c, opp)
+      if (this.seen.has(this._key(h))) return { ok: false, reason: 'superko' }
+      return { ok: true, captures }
+    }
     // no capture: the stone needs a liberty of its own, or a friendly group with one to spare
     for (const q of this.neighbors(point)) {
       if (this.board[q] === EMPTY) return { ok: true, captures }
@@ -135,6 +165,8 @@ export class Game {
       for (const c of r.captures) this.board[c] = EMPTY
       this.captures[color] += r.captures.length
       this.passes = 0
+      this._flip(this.hash, point, color); for (const c of r.captures) this._flip(this.hash, c, other(color))
+      this.seen.add(this._key(this.hash))
       // simple ko: a single stone that captured a single stone and now has exactly one liberty
       this.ko = null
       if (r.captures.length === 1) {
@@ -152,9 +184,11 @@ export class Game {
     const rec = this.history.pop()
     if (!rec) return null
     if (rec.point !== null) {
+      this.seen.delete(this._key(this.hash))
       this.board[rec.point] = EMPTY
       for (const c of rec.captured) this.board[c] = other(rec.color)
       this.captures[rec.color] -= rec.captured.length
+      this._flip(this.hash, rec.point, rec.color); for (const c of rec.captured) this._flip(this.hash, c, other(rec.color))
     }
     this.ko = rec.ko; this.passes = rec.passes; this.turn = rec.color
     return rec

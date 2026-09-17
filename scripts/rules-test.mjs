@@ -53,6 +53,23 @@ for (const [stone, a, b] of [['A1', 'A2', 'B1'], ['J1', 'J2', 'H1'], ['A9', 'A8'
   m.play(P(m, 'F5'), BLACK); m.pass(WHITE)
   ok(m.ko === null && m.check(P(m, 'E5'), BLACK).ok, 'a pass lifts the ko: Black may fill it')
   m.undo(); ok(m.ko === P(m, 'E5'), 'undoing the pass restores the ko point') }
+// positional superko: a move may not recreate an earlier board position, even when simple ko allows it
+{ const g = new Game(5, { komi: 0 })
+  const seq = 'B4 B5 C3 D2 D1 B3 A3 D5 A4 D3 A5 A2 B1 D4 E5 C5 C2 E2 B2 C4 E4 B3 A5 A3 B4 E3 E1 C1'.split(' ')
+  for (const m of seq) g.play(parseCoord(m, 5))
+  const d1 = parseCoord('D1', 5)
+  ok(g.ko === null, 'the position has no simple-ko point')
+  ok(!g.check(d1).ok && g.check(d1).reason === 'superko', 'Black D1 would recreate the position after move 26: refused as superko')
+  const h = new Game(5, { komi: 0 }); h.board = g.board.slice(); h.turn = g.turn; h._rehash()
+  ok(h.check(d1).ok, 'the same position with no history allows the move (superko is about the game, not the shape)')
+  const e4 = parseCoord('A1', 5); if (g.check(e4).ok) { g.play(e4); g.undo() }
+  ok(!g.check(d1).ok && g.check(d1).reason === 'superko', 'still refused after playing and undoing another move')
+  g.undo(); g.undo()
+  ok(g.check(parseCoord('E1', 5)).ok, 'after undoing two moves the position after move 26 is current again and E1 is legal') }
+{ const g = new Game(5, { komi: 0 }); g.play(parseCoord('C3', 5)); g.undo()
+  ok(g.check(parseCoord('C3', 5)).ok, 'undo removes the undone position from the superko record: the move can be replayed') }
+{ const g = new Game(5, { komi: 0 }); g.play(parseCoord('C3', 5)); g.play(parseCoord('D3', 5)); g.setup({ black: [], white: [] })
+  ok(g.seen.size === 1, 'setup resets the superko record to the current position') }
 // capturing several stones: never a ko
 { const g = g9()
   g.setup({ black: ['C3', 'C4', 'D5', 'E5', 'F4', 'F3', 'E2', 'D2'].map(s => P(g, s)), white: ['D4', 'E4', 'D3'].map(s => P(g, s)) })

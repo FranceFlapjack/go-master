@@ -23,7 +23,7 @@ export class Goban {
     this.inputWho = null
     this.onMove = null
     this.judge = null      // optional fn(point) → bool; false plays the "fail" sound instead of the stone sound
-    this.onIllegal = null  // optional fn(reason, point) after a refused click ('occupied' | 'ko' | 'suicide')
+    this.onIllegal = null  // optional fn(reason, point) after a refused click ('occupied' | 'ko' | 'superko' | 'suicide')
     this.labels = {}
     this.marks = new Map() // point → Set(type)
     this._build(o)

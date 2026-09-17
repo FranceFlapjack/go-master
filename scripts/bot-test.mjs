@@ -12,9 +12,13 @@ function check(name, ok, detail = '') { if (ok) passed++; else { failed++; conso
 function pos(game) { return { size: game.size, board: game.board, turn: game.turn, ko: game.ko, komi: game.komi, passes: game.passes } }
 
 // --- 1. FastBoard vs Game -------------------------------------------------------------
+// FastBoard knows simple ko only (playouts do not track positional superko): a move the engine refuses for
+// superko is expected to be legal on the fast board, and is counted rather than reported.
+let superkos = 0
 function sameLegality(g, fb) {
   for (let p = 0; p < g.board.length; p++) {
-    const a = g.check(p).ok, b = fb.isLegal(p)
+    const r = g.check(p), a = r.ok, b = fb.isLegal(p)
+    if (!a && r.reason === 'superko' && b) { superkos++; continue }
     if (a !== b) return `${coordName(p, g.size)}: engine ${a} fast ${b} (ko ${g.ko} / ${fb.ko})`
   }
   return ''
@@ -43,7 +47,8 @@ function sameLegality(g, fb) {
     const s = g.score()
     if (Math.abs(s.margin - fb.score(7.5)) > 1e-9) { mismatches++; console.log('  score differs', size, gi, s.margin, fb.score(7.5)) }
   }
-  check('FastBoard agrees with the engine on random games', mismatches === 0, `${mismatches} mismatches`)
+  check('FastBoard agrees with the engine on random games (superko aside)', mismatches === 0, `${mismatches} mismatches`)
+  check('random games met positional superko, which only the engine enforces', superkos > 0, `${superkos} superko refusals`)
   check('random games exercised captures and kos', captures > 200 && kos > 20, `${captures} captures, ${kos} kos over ${moves} moves in ${games} games`)
 }
 
