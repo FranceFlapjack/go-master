@@ -369,6 +369,27 @@ svg.goban { display: block; width: 100%; height: 100%; user-select: none; -webki
   .topbar .brand { padding: 0; }
   .main { padding: var(--s-5) var(--s-4) var(--s-8); }
   h1 { font-size: var(--fs-3); }
+
+  /* phones: thumbs, not pointers — taller buttons, and the words above the board so that feedback is visible while tapping */
+  .btn, .icon-btn { min-height: 40px; }
+  .game-controls .icon-btn { width: 44px; height: 44px; }
+  .exercise { gap: var(--s-3); }
+  .exercise-side { display: contents; }
+  .exercise-side .turn { order: -3; }
+  .exercise-side .prompt { order: -2; }
+  .exercise-side .status { order: -1; min-height: 1.6em; }
+  .exercise-board { order: 0; margin-bottom: var(--s-2); }
+  .exercise-side .hint { order: 1; }
+  .exercise-side .actions { order: 2; }
+  .play { gap: var(--s-4); }
+  .play-side { display: contents; }
+  .play-side .turn { order: -2; }
+  .play-side .status { order: -1; }
+  .play-left { order: 0; }
+  .play-side .field, .play-side .caps, .play-side .score, .play-side .play-moves { order: 1; }
+  .play-side .score { order: 0; }
+  .moves .mv { width: calc(100% / 3); min-height: 32px; }
+  .moves { max-height: 240px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .goban .stone.appear, .goban .stone.shake { animation: none; }

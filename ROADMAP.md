@@ -25,7 +25,7 @@ Status: **Phase 0 scaffold, draft 1, 2026-09-13; *First steps* track complete th
 - ~~Paint the counted territory~~ done: `Goban.paintTerritory`, used by `territory: true` diagrams and the play page at game end.
 - ~~Variation navigation in the viewer~~ — done 2026-09-18 (a Variations row under the comment and "or …" buttons in the move list; keys 1–9 pick).
 - ~~Handicap placement helper~~ done 2026-09-14: fixed placement in the rules (`handicapPoints`), `handicap:` on fences, a selector on the Play page; free placement not offered.
-- Mobile polish; a dark mode is not planned until Chess Master has one.
+- ~~Mobile polish~~ — done 2026-09-18: at phone widths the turn, prompt and status sit above the board (feedback visible while tapping), the play page's turn and status too; buttons 40 px, viewer controls 44 px; the move list rows 32 px. No page scrolls sideways at 375 px (checked on the home page, a lesson with exercises, a game lesson and the play page).
 
 ## Phase 1 — Content
 Write the tracks in this order, one branch each, running both checkers on every commit:
