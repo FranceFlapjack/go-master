@@ -3,6 +3,7 @@
 import { Game, BLACK, WHITE, EMPTY, parseCoord, coordName, parseSgfCoord, sgfCoord, starPoints, handicapPoints, maxHandicap } from '../js/rules/go.js'
 import { canCapture, canEscape } from '../js/rules/capture-search.js'
 import { lifeStatus, passAlive } from '../js/rules/life-search.js'
+import { parseSgf, lineOf, replayLine, loadSgf } from '../js/sgf.js'
 
 let fails = 0
 const ok = (cond, msg) => { if (!cond) { fails++; console.log('FAIL', msg) } else console.log('ok  ', msg) }
@@ -160,3 +161,14 @@ ok(g9().legalMoves().length === 81, '81 legal moves on an empty 9×9')
 
 console.log(fails ? `\n${fails} failure(s)` : '\nall rules checks passed')
 process.exit(fails ? 1 : 0)
+
+// SGF variations: one line through the tree by choice
+{ const text = '(;GM[1]SZ[9];B[ee];W[de](;B[ed]C[main];W[df])(;B[gg]C[side])(;B[cc]))'
+  const root = parseSgf(text)
+  const main = lineOf(root), side = lineOf(root, new Map([[main[2], 1]])), third = lineOf(root, new Map([[main[2], 2]]))
+  ok(main.length === 5 && side.length === 4 && third.length === 4, `lines: main ${main.length} nodes, side ${side.length}, third ${third.length}`)
+  const a = replayLine(root, 9, 7.5).moves, b = replayLine(root, 9, 7.5, new Map([[main[2], 1]])).moves
+  ok(coordName(a[3].point, 9) === 'E6' && a[3].comment === 'main' && a[2].variations === 3, 'main line: E6 with 3 variations at the branching node')
+  ok(coordName(b[3].point, 9) === 'G3' && b[3].comment === 'side' && b.length === 4, 'the side line: G3, and the line ends there')
+  ok(loadSgf(text).moves.length === 5 && loadSgf(text, new Map([[main[2], 2]])).moves.length === 4, 'loadSgf follows the main line by default and a choice map when given')
+  const clamp = lineOf(root, new Map([[main[2], 9]])); ok(clamp.length === 4 && coordName(replayLine(root, 9, 7.5, new Map([[main[2], 9]])).moves[3].point, 9) === 'C7', 'an out-of-range choice clamps to the last variation') }

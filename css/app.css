@@ -281,6 +281,12 @@ svg.goban { display: block; width: 100%; height: 100%; user-select: none; -webki
 .moves .mv-comment { width: 100%; font-family: var(--font-sans); font-size: var(--fs-1); color: var(--ink-2); padding: var(--s-2) 0 var(--s-2) 0.4em; line-height: 1.45; }
 .moves .mv-break { width: 100%; height: 0; }
 .moves .mv-result { width: 100%; color: var(--ink-3); padding: var(--s-2) 0 0 0.4em; }
+.moves .mv-alt { padding-top: 0; padding-bottom: var(--s-1); color: var(--ink-3); }
+.mv-vars .mv-var, .game-vars .mv-var { font: inherit; }
+.moves .mv-var { border: 0; background: none; padding: 0 2px; cursor: pointer; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.game-vars { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-bottom: var(--s-3); }
+.game-vars-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: var(--s-1); }
+.game-vars .mv-var.chosen { border-color: var(--accent); color: var(--accent); }
 
 .exercise-side { display: flex; flex-direction: column; gap: var(--s-3); }
 .exercise-side .turn { display: flex; align-items: center; gap: var(--s-2); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }

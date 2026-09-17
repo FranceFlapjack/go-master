@@ -48,18 +48,29 @@ export function parseSgf(text) {
 }
 
 /** the first child at every branch, as an array of nodes */
-export function mainLine(root) { const out = []; let n = root; while (n) { out.push(n); n = n.children[0] } return out }
+export function mainLine(root) { return lineOf(root) }
+/** one line through the tree: at every branch take `choices.get(node)` (an index into node.children), else the first child */
+export function lineOf(root, choices = null) {
+  const out = []; let n = root
+  while (n) { out.push(n); const k = choices && choices.has(n) ? Math.min(choices.get(n), n.children.length - 1) : 0; n = n.children[k] }
+  return out
+}
 
 /** Turn an SGF tree into what the viewer needs: headers, size, and the main line as
  *  [{color, point, comment, setup}] with a Game position after each node. */
-export function loadSgf(text) {
+export function loadSgf(text, choices = null) {
   const root = parseSgf(text)
   const p = root.props
   const size = +(p.SZ && p.SZ[0]) || 19
   const komi = p.KM ? parseFloat(p.KM[0]) : 7.5
   const headers = { black: one(p.PB), white: one(p.PW), blackRank: one(p.BR), whiteRank: one(p.WR), event: one(p.EV), date: one(p.DT), result: one(p.RE), place: one(p.PC), komi: one(p.KM), handicap: one(p.HA), name: one(p.GN), source: one(p.SO) }
+  const { moves, positions } = replayLine(root, size, komi, choices)
+  return { root, headers, size, komi, moves, positions }
+}
+/** replay one line of the tree (see lineOf): moves and positions, one per node; each move records its node and the number of variations it heads */
+export function replayLine(root, size, komi, choices = null) {
   const game = new Game(size, { komi })
-  const nodes = mainLine(root)
+  const nodes = lineOf(root, choices)
   const positions = [] // one per node: the board *after* the node
   const moves = []
   for (const node of nodes) {
@@ -71,10 +82,17 @@ export function loadSgf(text) {
     else if (q.W) { color = WHITE; point = parseSgfCoord(q.W[0], size) }
     if (color) game.play(point, color)
     if (q.PL) game.turn = q.PL[0].toUpperCase() === 'W' ? WHITE : BLACK
-    moves.push({ color, point, comment: one(q.C), setup, captured: color ? game.history[game.history.length - 1].captured : [] })
+    moves.push({ color, point, comment: one(q.C), setup, captured: color ? game.history[game.history.length - 1].captured : [], node, variations: node.children.length })
     positions.push(game.clone())
   }
-  return { root, headers, size, komi, moves, positions }
+  return { moves, positions }
+}
+/** the move (colour, point) a node holds, or null */
+export function nodeMove(node, size) {
+  const q = node.props
+  if (q.B) return { color: BLACK, point: parseSgfCoord(q.B[0], size) }
+  if (q.W) return { color: WHITE, point: parseSgfCoord(q.W[0], size) }
+  return null
 }
 const one = v => (v && v[0]) || ''
 /** SGF point lists may be compressed rectangles "aa:cc" */
