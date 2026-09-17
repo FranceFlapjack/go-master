@@ -263,17 +263,17 @@
         {
           "slug": "shusaku-ear-reddening-1846",
           "title": "Shusaku, the ear-reddening game (1846)",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "go-seigen-shusai-1933",
           "title": "Go Seigen – Honinbo Shusai (1933)",
-          "ready": false
+          "ready": true
         },
         {
           "slug": "lee-sedol-alphago-2016",
           "title": "Lee Sedol – AlphaGo, game 4 (2016)",
-          "ready": false
+          "ready": true
         }
       ]
     }
