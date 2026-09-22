@@ -1,4 +1,6 @@
 // "Try it" exercise: the reader plays the solution; the opponent's replies are played automatically.
+// `ctx.review: true` (the review page) ignores the stored "solved earlier" state, so the problem can be played
+// again, does not re-record the original solve, and reports a first miss through `ctx.onMiss`.
 // The solution is a tree ("E3 (D2 E2) (C2 D1)", see js/sgf.js): any branch at a reader node is
 // accepted, the first branch at an opponent node is the reply that gets played. A pass is a move on both sides:
 // a Pass button appears when some reader node of the tree accepts a pass (seki problems), and a wrong pass counts as a miss.
@@ -9,6 +11,7 @@ import { setActiveViewer } from './sgf-viewer.js'
 import { parseSolution, solutionLines } from './sgf.js'
 import { positionFrom } from './position.js'
 import { BLACK, WHITE, coordName } from './rules/go.js'
+import { review } from './review.js'
 
 export function mountExercise(container, o, ctx = {}) {
   const pos = positionFrom(o)
@@ -37,7 +40,7 @@ export function mountExercise(container, o, ctx = {}) {
   const statusEl = container.querySelector('.status')
   const hintEl = container.querySelector('.hint')
   const board = new Goban(container.querySelector('.board'), { ...pos })
-  let node = tree, wrong = 0, solved = progress.isTryDone(id), showing = false
+  let node = tree, wrong = 0, solved = ctx.review ? false : progress.isTryDone(id), showing = false
   const expected = p => node.children.find(c => c.point === p)
   board.judge = p => !!expected(p)
   board.onIllegal = reason => setStatus(reason === 'ko' ? 'That is the ko: you may not retake it at once.' : reason === 'superko' ? 'That would repeat an earlier position of the game (superko): not allowed.' : reason === 'suicide' ? 'No liberties there, and it captures nothing: not allowed.' : '', 'bad')
@@ -62,6 +65,7 @@ export function mountExercise(container, o, ctx = {}) {
       arm()
     } else {
       wrong++
+      if (ctx.onMiss) ctx.onMiss(id)
       if (rec.point !== null) { board.mark(rec.point, MARK.bad); board.shakeStone(rec.point) }
       setStatus(rec.point === null ? (wrong === 1 ? 'Not now: there is a move to make. Try again.' : 'Still not it. The hint may help.') : wrong === 1 ? 'Not that one. Try again.' : 'Still not it. The hint may help.', 'bad')
       await wait(600)
@@ -76,7 +80,7 @@ export function mountExercise(container, o, ctx = {}) {
     container.classList.add('solved')
     sound.play('success')
     setStatus(o.success || 'Solved.', 'good')
-    progress.recordTry(id, wrong === 0)
+    if (!ctx.review && progress.recordTry(id, wrong === 0)) review.add(id, wrong === 0)   // a newly solved problem joins the review ladder
     board.disableInput()
     if (ctx.onSolved) ctx.onSolved(id)
   }

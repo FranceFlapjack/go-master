@@ -4,6 +4,8 @@ import { progress } from './progress.js'
 import { mountActivity } from './activity-grid.js'
 import { sound } from './sound.js'
 import { mountPlay } from './play.js'
+import { mountReview } from './review-page.js'
+import { review } from './review.js'
 import { setActiveViewer } from './sgf-viewer.js'
 import { mountFamily } from './family.js'
 
@@ -23,6 +25,7 @@ async function boot() {
   const mute = $('#mute')
   const paintMute = () => { mute.innerHTML = sound.muted ? ICON_SOUND_OFF : ICON_SOUND_ON; mute.setAttribute('aria-pressed', String(sound.muted)); mute.title = sound.muted ? 'Sound off' : 'Sound on' }
   paintMute(); mute.addEventListener('click', () => { sound.toggle(); paintMute() })
+  review.ensureSeeded()   // everything solved before the review existed joins the ladder, spread over two weeks
   mountFamily('go')
   $('#menu').addEventListener('click', () => toggleSidebar())
   $('#scrim').addEventListener('click', () => toggleSidebar(false))
@@ -42,7 +45,9 @@ function renderSidebar() {
   const open = new Set([...nav.querySelectorAll('.track.open')].map(t => t.dataset.track))
   if (current) open.add(current.track)
   const playLink = `<a class="nav-play${location.hash.startsWith('#/play') ? ' current' : ''}" href="#/play"><span class="num">▶</span><span class="name">Play</span></a>`
-  nav.innerHTML = playLink + visibleTracks().map((t, i) => {
+  const n = review.count()
+  const reviewLink = `<a class="nav-play${location.hash.startsWith('#/review') ? ' current' : ''}" href="#/review"><span class="num">↻</span><span class="name">Review</span>${n ? `<span class="nav-badge">${n}</span>` : ''}</a>`
+  nav.innerHTML = playLink + reviewLink + visibleTracks().map((t, i) => {
     const ready = t.lessons.filter(l => l.ready)
     const done = ready.filter(l => progress.isLessonDone(lessonId(t.id, l.slug))).length
     const pct = ready.length ? Math.round(100 * done / ready.length) : 0
@@ -78,6 +83,7 @@ async function route() {
   current = null
   renderSidebar()
   if (hash.startsWith('#/play')) { document.title = 'Play · Go Master'; unmountPage = mountPlay(main); window.scrollTo({ top: 0 }); return }
+  if (hash.startsWith('#/review')) { document.title = 'Review · Go Master'; unmountPage = mountReview(main); window.scrollTo({ top: 0 }); renderSidebar(); return }
   showHome(main)
 }
 
@@ -95,6 +101,7 @@ function showHome(main) {
         <div class="hero-cite">Go Seigen, <cite>A Way of Play for the 21st Century</cite> (2008), as quoted on <a href="https://en.wikiquote.org/wiki/Go_(game)">Wikiquote</a></div>
         <p>Every lesson is built on a real game or a real book, with the board right there in the text so you can play through it and then try it yourself. Start on the small board; the rules fit on one page, the game does not.</p>
       </section>
+      ${review.count() ? `<div class="card continue"><div><span class="eyebrow">Review</span><h3>${review.count()} problem${review.count() === 1 ? '' : 's'} to review</h3><div class="small">Problems you have solved before, back on a ladder: right, and it returns later; wrong, and it returns tomorrow.</div></div><a class="btn" href="#/review">Review</a></div>` : ''}
       <div class="card continue play-card"><div><span class="eyebrow">Play</span><h3>Play a game</h3><div class="small">Two players on one screen on 9×9, 13×13 or 19×19, or a weak computer opponent on 9×9. Area scoring, with the count at the end.</div></div><a class="btn" href="#/play">Play</a></div>
       ${cont ? `<div class="card continue"><div><span class="eyebrow">${last && cont === last ? 'Continue' : 'Start here'}</span><h3>${esc(cont.title)}</h3><div class="small">${esc(cont.trackTitle)}</div></div><a class="btn primary" href="#/lesson/${cont.track}/${cont.slug}">Open lesson</a></div>` : ''}
       <div class="track-grid">

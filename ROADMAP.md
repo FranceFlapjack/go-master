@@ -41,7 +41,7 @@ Write the tracks in this order, one branch each, running both checkers on every 
 Open questions for the owner: which board size they want to start playing on for real (9×9 is the recommendation); whether they have or want an OGS / KGS account (both allow bots and have public game records).
 
 ## Phase 2 — Exercises & review
-- Daily problem review (spaced repetition over solved/failed problems), same design as planned for Chess Master.
+- ~~Daily problem review~~ — done 2026-09-23: `#/review`, a Leitner ladder (1/3/7/16/35 days) over solved problems, 15 a day, oldest due first; problems are read from the lessons, never copied; old solves seeded over two weeks. `scripts/review-test.mjs` covers the ladder. Chess Master can copy the design (`js/review.js` + `js/review-page.js` + `js/tries.js`).
 - Problem sets by rank (30k → 10k) once the life-and-death track has enough material.
 
 ## Phase 3 — Design drafts
