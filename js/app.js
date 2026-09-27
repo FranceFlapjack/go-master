@@ -8,6 +8,7 @@ import { mountReview } from './review-page.js'
 import { review } from './review.js'
 import { setActiveViewer } from './sgf-viewer.js'
 import { mountFamily } from './family.js'
+import { mountWelcome } from './welcome.js'
 
 const $ = s => document.querySelector(s)
 let curriculum = null
@@ -32,6 +33,8 @@ async function boot() {
   document.addEventListener('pointerdown', () => sound.unlock(), { once: true })
   progress.onChange(() => renderSidebar())
   window.addEventListener('hashchange', route)
+  // the series welcome, the first time this browser opens the app — a curtain over the app, not a route
+  if (location.hash !== '#/welcome') mountWelcome({ app: 'go', word: 'Go' })
   window.addEventListener('resize', () => { if (innerWidth > 760) toggleSidebar(false) }) // an `open` left over from the narrow layout is invisible on desktop and must not survive back into it
   route()
 }
@@ -73,6 +76,10 @@ function toggleSidebar(force) {
 }
 
 async function route() {
+  if (location.hash === '#/welcome') {
+    history.replaceState(null, '', '#/')
+    mountWelcome({ app: 'go', word: 'Go', force: true })
+  }
   const hash = location.hash || '#/'
   const main = $('#main')
   toggleSidebar(false)
