@@ -15,3 +15,10 @@ Eight tracks — First steps, Capturing techniques, Life and death, The opening,
 The rules engine and the board are our own (`js/rules/go.js`, `js/goban.js`). The only library is [marked](https://github.com/markedjs/marked) (MIT). See `vendor/VERSIONS.md`.
 
 Game records are public facts; book quotations come only from public-domain or Creative Commons sources and every lesson lists its sources.
+
+## Using this
+
+Copyright (c) 2026 FranceFlapjack. Free to read, learn from, share and build on, **with credit and not for sale** — the code under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/), the lessons and the design under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Credit reads "Go Master by FranceFlapjack" with a link to https://franceflapjack.github.io/go-master/. Everything under `vendor/` keeps its own licence. See [LICENSE](LICENSE).
+
+`robots.txt` asks the generative-AI crawlers not to take the lessons for training. That is an opt-out the well-behaved ones honour, not a lock.
+
