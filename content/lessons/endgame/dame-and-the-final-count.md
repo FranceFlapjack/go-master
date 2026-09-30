@@ -77,6 +77,10 @@ score: W+14.5
 caption: Agreed dead and removed: White by 14.5, the same as if they had never been played. That is the count the play page shows after you mark them.
 ```
 
+```tip
+Under area scoring **never pass with a neutral point open**: it is a free point for whoever remembers it.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play. Every border is closed; one neutral point is left. Take it.</p>

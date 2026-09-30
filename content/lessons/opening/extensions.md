@@ -36,6 +36,10 @@ start: 14
 
 Moves 11 to 14 are all extensions. Black 11 (N4) is a one-point jump from P4 along the bottom. White 12 (R6) is a one-point jump up the right side from the corner stones. Black 13 (J17) is a much wider extension on the third line, between C16 and Q16 — not territory, but a framework that both corner stones support. White 14 (D10) answers with a fourth-line extension up the left from D4, also a framework. Black then approached R4 again at Q5, and White's R6 was already there to answer it.
 
+```tip
+From a stone on the third line, the **two-space extension** along the side is the basic unit: far enough to be worth something, close enough not to be cut in two.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play. Extend from your stone on the third line, along the bottom.</p>

@@ -24,6 +24,11 @@ highlight: F4
 caption: Black's two stones at E4–E5 have two liberties, F4 and E3. The top-left is wide open and looks like the biggest area on the board. But if White plays F4 the two stones are in atari, and E3 does not save them: F3 and E2 are waiting. F4 is urgent; the top-left is only big.
 ```
 
+```tip
+title: Urgent or big?
+Ask what the opponent's move on the point would do. If the answer is **a capture or a lost eye**, it is urgent — play it before the big point.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · The position above, Black to play. Which is it — the open corner or the connection?</p>

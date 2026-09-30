@@ -33,6 +33,11 @@ The block decides where the wall goes. Block at R16 and the wall faces the top; 
 - **The crawl** on the second line is White living; Black's answers on the third line are the wall. Each pair is one point for White and a stone of thickness for Black.
 - **The two hanes** into the corner make the group's eyes; Black's block and final defence keep the wall free of cuts.
 
+```tip
+title: Which side to block
+Block on the side that makes your wall **face your own stones**. The sequence is the same either way; the direction is the decision.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play. White has invaded at the 3-3 point. Block — from either side — and play the joseki through.</p>

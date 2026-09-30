@@ -13,7 +13,7 @@ import { lifeStatus } from '../js/rules/life-search.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const curriculum = JSON.parse(readFileSync(join(root, 'content/curriculum.json'), 'utf8'))
-let problems = 0, lessons = 0, fences = 0, tries = 0
+let problems = 0, lessons = 0, fences = 0, tries = 0, tips = 0
 const fail = (where, msg) => { problems++; console.log(`FAIL ${where}: ${msg}`) }
 
 for (const t of curriculum.tracks) for (const l of t.lessons) {
@@ -27,7 +27,7 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
   if (meta.id !== where) fail(where, `frontmatter id is "${meta.id}"`)
   if (!Array.isArray(meta.sources) || !meta.sources.length) fail(where, 'no sources')
   if (!meta.title) fail(where, 'no title')
-  const re = /^```(board|try|sgf)\n([\s\S]*?)^```/gm
+  const re = /^```(board|try|sgf|tip)\n([\s\S]*?)^```/gm
   let m, n = 0
   while ((m = re.exec(body))) {
     fences++; n++
@@ -230,6 +230,15 @@ for (const t of curriculum.tracks) for (const l of t.lessons) {
         const text = p.file ? readFileSync(join(root, 'content/games', p.file), 'utf8') : p.rest
         const game = loadSgf(text)
         if (!game.moves.some(x => x.color)) fail(tag, 'SGF has no moves')
+      } else if (kind === 'tip') {
+        // a tip is plain text for the cat's bubble: an optional first line `title: …`, then the text; **bold** only
+        const lines = m[2].trim().split('\n')
+        if (/^title:/i.test(lines[0])) { if (!lines[0].replace(/^title:\s*/i, '').trim()) fail(tag, 'empty title: line'); lines.shift() }
+        const text = lines.join(' ').trim()
+        if (!text) fail(tag, 'tip has no text')
+        if (/<|\[[^\]]*\]\(/.test(text)) fail(tag, 'tip text may use **bold** only — no HTML or links')
+        if ((text.match(/\*\*/g) || []).length % 2) fail(tag, 'unbalanced ** in tip text')
+        tips++
       }
     } catch (e) { fail(tag, e.message) }
   }
@@ -239,5 +248,5 @@ for (const f of readdirSync(join(root, 'content/games')).filter(f => f.endsWith(
   sgfs++
   try { const g = loadSgf(readFileSync(join(root, 'content/games', f), 'utf8')); if (!g.moves.some(x => x.color)) fail(f, 'no moves') } catch (e) { fail(f, e.message) }
 }
-console.log(`${sgfs} game records; ${lessons} lessons, ${fences} fences, ${tries} problems checked; ${problems} problem(s)`)
+console.log(`${sgfs} game records; ${lessons} lessons, ${fences} fences, ${tries} problems checked, ${tips} tips; ${problems} problem(s)`)
 process.exit(problems ? 1 : 0)

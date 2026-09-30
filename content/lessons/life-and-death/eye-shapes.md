@@ -78,6 +78,11 @@ highlight: B1
 caption: Pyramid four — A1, B1, C1 and B2. The vital point is the centre, B1.
 ```
 
+```tip
+title: The vital point
+The point that makes two eyes for one side **kills** for the other. Find it before you play anywhere else in the space.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Straight three, Black to play. Kill the white group.</p>

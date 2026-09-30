@@ -39,6 +39,10 @@ highlight: E5
 caption: Black has just captured at F5. White may not play E5 now. Black, if given a free move, connects at E5 and the ko is finished.
 ```
 
+```tip
+You may not retake a ko at once. Play a **ko threat** — a move the opponent must answer — and retake after the answer.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Take the ko. A plain capture, the first move of every ko.</p>

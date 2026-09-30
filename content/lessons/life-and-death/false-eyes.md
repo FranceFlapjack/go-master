@@ -31,6 +31,10 @@ caption: The white group has two eye points, B1 and F1. F1 is real: its diagonal
 
 Read Black's kill: after Black A2, the stone at A1 has one liberty, B1. If White connects at B1, the group has filled its own eye and is left with F1 alone; Black plays F1 and captures everything. If White does nothing, Black captures A1 by playing B1, and there is no eye there at all.
 
+```tip
+Count the **diagonals** before you count the eyes. Centre: three of four. Edge: both. Corner: the one.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · The position above. Black to play and kill.</p>

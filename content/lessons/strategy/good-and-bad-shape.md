@@ -28,6 +28,10 @@ Three shapes worth knowing by name, because they come up in every game:
 - **Bamboo joint**: two pairs of stones side by side with a one-point gap between them. It cannot be cut unless the pairs are short of liberties — so, the proverb says, never try.
 - **Hane at the head of two stones**: when two enemy stones stand side by side and yours are alongside, the turn around their end is the move — it takes their liberties and leaves them facing the wrong way.
 
+```tip
+Shape proverbs are shorthand for **counting liberties**. When the count and the proverb disagree, the count wins.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play. Connect D4 and E5 with a tiger's mouth, so that White's cut is captured on the spot.</p>

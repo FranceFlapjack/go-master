@@ -39,6 +39,10 @@ start: 9
 
 Moves 5 to 8 are a sequence in the lower right: approach, attachment, hane, connection. The local continuation would be Black's extension at N4. Move 9: Black approaches D4 at C6 instead — and comes back to N4 at move 11, after White has answered. The two moves were both big; the order was a whole-board choice.
 
+```tip
+A joseki is balanced **locally**. Whether it is the right one here depends on the stones around it — the one thing the dictionary cannot tell you.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · From the 1846 game after move 4. White has approached. Black to play: Shusaku's move.</p>

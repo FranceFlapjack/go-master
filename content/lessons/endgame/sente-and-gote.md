@@ -51,6 +51,10 @@ score: W+14.5
 caption: Black plays a and White ignores it, taking b's answer at E9 instead. Black captures the stone at E1, White blocks at F1. Four points better for Black than the reference: ignoring a sente move costs more than the move it was ignored for.
 ```
 
+```tip
+**Sente first, then the biggest gote.** A sente move keeps the initiative; a gote move hands it over, so it had better be the largest thing left.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play, the position at the top. Two moves are available. Which first?</p>

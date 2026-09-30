@@ -32,6 +32,10 @@ file: gennan-shusaku-1846.sgf
 
 **Moves 130–325.** The rest is a long endgame with a ko in the middle of the board that is retaken a dozen times. Black wins by two points.
 
+```tip
+Step to move 127 and look at what K11 touches. A great move often does **three ordinary things at once**.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play, move 9. White has approached your 3-4 stone at R16 from the top. Play what Shusaku played.</p>

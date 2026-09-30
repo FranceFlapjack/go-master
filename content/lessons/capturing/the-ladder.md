@@ -42,6 +42,11 @@ highlight: F5
 caption: With a white stone at H8, the ladder that starts with E4 (running up and right) fails: the chain reaches H7, connects, and escapes. The ladder that starts with F5 (down and left) still works. Read both before choosing.
 ```
 
+```tip
+title: Check the path
+Before every ladder, **follow the diagonal to the edge**. One stone of the running colour on the path — a ladder breaker — and the chain escapes.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · One atari starts a working ladder, the other runs into the stone at H8. Choose, then play the ladder to the end.</p>

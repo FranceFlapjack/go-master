@@ -12,6 +12,10 @@ import { parseSolution, solutionLines } from './sgf.js'
 import { positionFrom } from './position.js'
 import { BLACK, WHITE, coordName } from './rules/go.js'
 import { review } from './review.js'
+import { mascot } from './mascot.js'
+
+// what the cat says when a problem has no hint written and you ask for one anyway
+const NO_HINT = 'No hint written for this one. Count first: **your liberties, then theirs** — whoever has fewer is the one in trouble.'
 
 export function mountExercise(container, o, ctx = {}) {
   const pos = positionFrom(o)
@@ -71,7 +75,7 @@ export function mountExercise(container, o, ctx = {}) {
       await wait(600)
       board.clearMarks(MARK.bad)
       await board.undo({ silent: true })
-      if (wrong >= 2) showHint()
+      if (wrong >= 2) showHint(false)
       arm()
     }
   }
@@ -82,10 +86,23 @@ export function mountExercise(container, o, ctx = {}) {
     setStatus(o.success || 'Solved.', 'good')
     if (!ctx.review && progress.recordTry(id, wrong === 0)) review.add(id, wrong === 0)   // a newly solved problem joins the review ladder
     board.disableInput()
+    mascot.hide(container)
     if (ctx.onSolved) ctx.onSolved(id)
   }
-  function showHint() { if (o.hint) { hintEl.textContent = o.hint; hintEl.hidden = false } }
+  /**
+   * `asked`: the reader pressed Hint, so the cat opens it now; otherwise (a second miss) it only meows that
+   * it has one and waits to be clicked. With the cat switched off the hint goes inline, as it always did.
+   */
+  function showHint(asked) {
+    const text = o.hint || (asked ? NO_HINT : '')
+    if (!text) return
+    const msg = { kind: 'hint', text, owner: container }
+    if (asked ? mascot.say(msg) : mascot.notify(msg)) return
+    if (o.hint) { hintEl.textContent = o.hint; hintEl.hidden = false }
+    else setStatus('No hint for this one — count the liberties first.')
+  }
   async function reset() {
+    mascot.hide(container)
     showing = false; node = tree; solved = false; wrong = 0
     board.disableInput()
     container.classList.remove('solved')
@@ -94,6 +111,7 @@ export function mountExercise(container, o, ctx = {}) {
     arm()
   }
   async function showSolution() {
+    mascot.hide(container)
     showing = true; board.disableInput()
     await board.showPosition(pos)
     const line = solutionLines(tree)[0] || []
@@ -107,7 +125,7 @@ export function mountExercise(container, o, ctx = {}) {
     const b = e.target.closest('[data-act]'); if (!b) return
     sound.unlock()
     if (b.dataset.act === 'pass') { if (solved || showing || !board.inputWho) return; board.disableInput(); board.play(null).then(rec => onMove(rec)) }
-    if (b.dataset.act === 'hint') { showHint(); if (!o.hint) setStatus('No hint for this one — count the liberties first.') }
+    if (b.dataset.act === 'hint') showHint(true)
     if (b.dataset.act === 'reset') reset()
     if (b.dataset.act === 'solution') showSolution()
   })

@@ -46,6 +46,10 @@ Two games 170 years apart, same first idea: 2016, four corners in four moves (4-
 
 Once the corners are taken, the biggest points are on the sides, between corners: an **extension** from your own corner stone, or an **approach** to the opponent's. The third line makes territory; the fourth line makes influence — a framework that may become territory later. Both games above go to the sides next.
 
+```tip
+**Corners first, then sides, then the centre.** The edges help you surround points, so a corner takes the fewest stones to make secure.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Three corners are taken. Black to play: take the fourth. (Any of the usual corner points is accepted.)</p>

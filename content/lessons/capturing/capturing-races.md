@@ -25,6 +25,10 @@ caption: Black's chain has liberties a and b; White's has x and y. Two against t
 
 **Shared liberties** — points that touch both chains — change the count, because filling one takes a liberty from yourself as well. Fill the opponent's outside liberties first and the shared ones last; a chain with more outside liberties than the opponent wins a race with shared liberties even more comfortably, because the opponent can never approach.
 
+```tip
+In a race, count before you touch anything. Fill the opponent's **outside liberties first** and the shared ones last.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · The position above. Two liberties each, Black to play.</p>

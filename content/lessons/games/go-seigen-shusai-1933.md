@@ -30,6 +30,11 @@ file: go-seigen-shusai-1933.sgf
 
 **The end.** White by two points.
 
+```tip
+title: How to study a turning point
+Step to the move **before** it, then to one forty moves later — here 159 and 200 — and compare what changed on the board.
+```
+
 ## Problems
 
 <p class="puzzle-intro">1 · Black to play, move 5. You have the 3-3 point and the 4-4 point. Play the third move of the famous opening.</p>

@@ -48,6 +48,11 @@ Two consequences follow, and both are rules in their own right:
 - **You may not fill your own last liberty.** A move that would leave your own stone or chain with no liberties is illegal (*suicide*) —
 - **unless it captures.** If the move takes the opponent's last liberty first, their stones come off, your stone gains liberties from the empty points they leave, and the move is legal.
 
+```tip
+title: Count first
+Before you play next to a chain, **count its liberties** — yours and theirs. The side with fewer is the one in trouble.
+```
+
 ## Problems
 
 Black to play in every problem. Click the point; the board tells you whether it was right.
