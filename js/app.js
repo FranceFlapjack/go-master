@@ -9,6 +9,7 @@ import { review } from './review.js'
 import { setActiveViewer } from './sgf-viewer.js'
 import { mountFamily } from './family.js'
 import { mountWelcome } from './welcome.js'
+import { mountPixelGo } from './pixel-go.js'
 import { mascot, catHeadHTML } from './mascot.js'
 
 const $ = s => document.querySelector(s)
@@ -42,7 +43,7 @@ async function boot() {
   progress.onChange(() => renderSidebar())
   window.addEventListener('hashchange', route)
   // the series welcome, the first time this browser opens the app — a curtain over the app, not a route
-  if (location.hash !== '#/welcome') mountWelcome({ app: 'go', word: 'Go' })
+  if (location.hash !== '#/welcome') welcome()
   window.addEventListener('resize', () => { if (innerWidth > 760) toggleSidebar(false) }) // an `open` left over from the narrow layout is invisible on desktop and must not survive back into it
   route()
 }
@@ -83,10 +84,13 @@ function toggleSidebar(force) {
   s.classList.toggle('open', open); $('#scrim').classList.toggle('open', open)
 }
 
+/** The series welcome, with this app's 16-bit goban behind it. */
+function welcome(force = false) { const w = mountWelcome({ app: 'go', word: 'Go', force }); if (w) mountPixelGo(w.root) }
+
 async function route() {
   if (location.hash === '#/welcome') {
     history.replaceState(null, '', '#/')
-    mountWelcome({ app: 'go', word: 'Go', force: true })
+    welcome(true)
   }
   const hash = location.hash || '#/'
   const main = $('#main')

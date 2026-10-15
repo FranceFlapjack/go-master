@@ -526,3 +526,12 @@ svg.goban { display: block; width: 100%; height: 100%; user-select: none; -webki
 .icon-btn.cat-toggle { width: 32px; }
 .icon-btn.cat-toggle .tip-cat { width: 24px; height: auto; }
 .icon-btn.cat-toggle[aria-pressed="false"] { opacity: 0.4; }
+
+/* the welcome's background on this app only: a 16-bit goban replaying the ear-reddening game (js/pixel-go.js) */
+.wl-pixel { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; image-rendering: pixelated; }
+.wl-pixel-grid { fill: var(--wl-ink); opacity: .16; }
+.wl-pixel-stones .b { fill: #1a0405; opacity: .55; }
+.wl-pixel-stones .bh { fill: var(--wl-ink); opacity: .35; }
+.wl-pixel-stones .w { fill: var(--wl-ink); opacity: .5; }
+.wl-pixel-stones .wh { fill: var(--wl-ink); opacity: .25; }
+.wl-pixel-cursor { fill: var(--wl-ink); opacity: .9; }
